@@ -1,3 +1,7 @@
+## 0.1.2 (2023-10-11)
+* Refactor code
+* Update README
+
 ## 0.1.1 (2023-10-11)
 * Refactor code
 * Update README
