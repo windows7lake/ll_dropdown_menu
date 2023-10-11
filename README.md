@@ -38,9 +38,17 @@ Powerful and customizable drop-down menu component.
 * [Demo4](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo4.dart):
   Used in `CustomScrollView` with `SliverPersistentHeader`
 
-<img src="preview/demo1.gif" alt="Demo1" width="250"/>
-<img src="preview/demo3.gif" alt="Demo3" width="250"/>
-<img src="preview/demo4.gif" alt="Demo4" width="250"/>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo1.gif">
+<img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo1.gif" width="300" height="600" align="center" style="max-width:100%;">
+</a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo3.gif">
+<img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo3.gif" width="300" height="600" align="center" style="max-width:100%;">
+</a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo4.gif">
+<img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo4.gif" width="300" height="600" align="center" style="max-width:100%;">
+</a>
+
+[//]: # (<img src="https://github.com/GanZhiXiong/gzx_dropdown_menu/blob/master/preview_images/美团.gif" width="414" hegiht="736" align=center /><img src="https://github.com/GanZhiXiong/gzx_dropdown_menu/blob/master/preview_images/淘宝.gif" width="414" hegiht="736" align=center />)
 
 ## Install
 
