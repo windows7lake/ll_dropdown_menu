@@ -1,4 +1,4 @@
-## 0.1.0 (2021-10-20)
+## 0.1.0 (2023-10-11)
 
 * Support using `Stack` or `Overlay` to implement drop-down menu.
 * Customize the drop-down menu bar header
