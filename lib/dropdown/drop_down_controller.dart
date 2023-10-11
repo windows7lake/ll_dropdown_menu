@@ -31,9 +31,9 @@ class DropDownController extends ChangeNotifier {
   }
 
   /// Used to toggle DropDownView.
-  void toggle(int index, {double? offsetY}) {
+  void toggle(int index, {String? text, double? offsetY}) {
     if (isExpand && headerIndex == index) {
-      hide();
+      hide(index: index, text: text);
     } else {
       show(index, offsetY: offsetY);
     }

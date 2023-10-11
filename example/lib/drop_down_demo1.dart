@@ -85,7 +85,7 @@ class _DropDownDemoState extends State<DropDownDemo1>
               activeIcon: const Icon(Icons.arrow_drop_up),
             ),
           ),
-          viewOffsetY: MediaQuery.of(context).padding.top + 106,
+          viewOffsetY: MediaQuery.of(context).padding.top + 50,
           viewBuilders: [
             DropDownViewBuilder(
               height: 300,

@@ -10,17 +10,9 @@ class DropDownGridView extends StatefulWidget {
   final List<DropDownItem> items;
   final EdgeInsetsGeometry? padding;
   final int? headerIndex;
-
-  /// The number of children in the cross axis.
   final int crossAxisCount;
-
-  /// The number of logical pixels between each child along the main axis.
   final double mainAxisSpacing;
-
-  /// The number of logical pixels between each child along the cross axis.
   final double crossAxisSpacing;
-
-  /// The height of the crossAxis.
   final double itemHeight;
   final TextStyle textStyle;
   final TextStyle activeTextStyle;
