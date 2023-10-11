@@ -84,6 +84,7 @@ class _DropDownMenuState extends State<DropDownMenu>
   double viewHeight = 0;
   double animationViewHeight = 0;
   double maskOpacity = 0;
+  double maskHeight = 0;
   int currentIndex = 0;
   bool isExpand = false;
 
@@ -136,7 +137,10 @@ class _DropDownMenuState extends State<DropDownMenu>
         overlayEntry = OverlayEntry(
           builder: (context) {
             return Positioned(
-              top: widget.viewOffsetY,
+              top: widget.headerHeight +
+                  (widget.controller.viewOffsetY > 0
+                      ? widget.controller.viewOffsetY
+                      : widget.viewOffsetY ?? 0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -149,9 +153,15 @@ class _DropDownMenuState extends State<DropDownMenu>
         );
         overlayState!.insert(overlayEntry!);
       }
-      animationController?.forward();
+      maskHeight = MediaQuery.of(context).size.height -
+          (widget.viewOffsetY ?? 0) -
+          widget.headerHeight;
+      overlayState?.setState(() {});
+      await animationController?.forward();
     } else {
-      animationController?.reverse();
+      await animationController?.reverse();
+      maskHeight = 0;
+      overlayState?.setState(() {});
     }
   }
 
@@ -287,7 +297,7 @@ class _DropDownMenuState extends State<DropDownMenu>
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        height: maskHeight,
         color: widget.maskColor != null
             ? widget.maskColor!.withOpacity(maskOpacity)
             : Colors.black.withOpacity(maskOpacity),

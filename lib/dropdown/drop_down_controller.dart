@@ -10,10 +10,14 @@ class DropDownController extends ChangeNotifier {
   /// The text that user selected.
   List<String> headerText = [];
 
+  /// The offset of the DropDownView in DropDownMenu
+  double viewOffsetY = -1;
+
   /// Used to show DropDownView.
-  void show(int index) {
+  void show(int index, {double? offsetY}) {
     isExpand = true;
     headerIndex = index;
+    viewOffsetY = offsetY ?? -1;
     notifyListeners();
   }
 
@@ -27,11 +31,11 @@ class DropDownController extends ChangeNotifier {
   }
 
   /// Used to toggle DropDownView.
-  void toggle(int index) {
+  void toggle(int index, {double? offsetY}) {
     if (isExpand && headerIndex == index) {
       hide();
     } else {
-      show(index);
+      show(index, offsetY: offsetY);
     }
   }
 }

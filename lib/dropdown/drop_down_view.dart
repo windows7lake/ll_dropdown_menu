@@ -9,6 +9,7 @@ class DropDownView extends StatefulWidget {
   final Color? viewColor;
   final Color? maskColor;
   final Duration animationDuration;
+  final double offsetY;
 
   const DropDownView({
     super.key,
@@ -17,6 +18,7 @@ class DropDownView extends StatefulWidget {
     this.viewColor = Colors.white,
     this.maskColor,
     this.animationDuration = const Duration(milliseconds: 150),
+    this.offsetY = 0,
   });
 
   @override
@@ -30,6 +32,7 @@ class _DropDownViewState extends State<DropDownView>
   double viewHeight = 0;
   double animationViewHeight = 0;
   double maskOpacity = 0;
+  double maskHeight = 0;
   int currentIndex = 0;
   bool isExpand = false;
 
@@ -63,10 +66,13 @@ class _DropDownViewState extends State<DropDownView>
         .animate(animationController!)
       ..addListener(animationListener);
     if (isExpand) {
+      maskHeight = MediaQuery.of(context).size.height;
       animationController?.forward();
     } else {
       animationController?.reverse();
+      maskHeight = 0;
     }
+    if (mounted) setState(() {});
   }
 
   void animationListener() {
@@ -79,7 +85,9 @@ class _DropDownViewState extends State<DropDownView>
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 0,
+      top: widget.controller.viewOffsetY > 0
+          ? widget.controller.viewOffsetY
+          : widget.offsetY,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -112,7 +120,7 @@ class _DropDownViewState extends State<DropDownView>
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        height: maskHeight,
         color: widget.maskColor != null
             ? widget.maskColor!.withOpacity(maskOpacity)
             : Colors.black.withOpacity(maskOpacity),
