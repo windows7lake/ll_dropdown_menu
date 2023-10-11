@@ -3,10 +3,13 @@ import 'package:flutter/widgets.dart';
 class SliverPersistentHeaderBuilder extends SliverPersistentHeaderDelegate {
   /// The size of the header when it is not shrinking at the top of the viewport.
   final double max;
+
   /// The smallest size to allow the header to reach, when it shrinks at the start of the viewport.
   final double min;
+
   /// The size of the header, if it was specified that [max] and [min] are the same with [height].
   final double? height;
+
   /// The builder for the header.
   final Widget Function(BuildContext context, double offset) builder;
 

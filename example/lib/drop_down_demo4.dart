@@ -203,6 +203,7 @@ class _DropDownDemoState extends State<DropDownDemo4>
   }
 
   Widget usingStack() {
+    double statusBarHeight = MediaQuery.of(context).padding.top;
     return Stack(
       children: [
         CustomScrollView(
@@ -241,7 +242,10 @@ class _DropDownDemoState extends State<DropDownDemo4>
                     onItemTap: (index, item) {
                       dropDownController.toggle(
                         index,
-                        offsetY: dropDownViewOffsetY - 55, // appBar
+                        offsetY: dropDownViewOffsetY +
+                            dropDownMenuHeight -
+                            statusBarHeight -
+                            56, // appBar
                       );
                     },
                   );
@@ -262,7 +266,6 @@ class _DropDownDemoState extends State<DropDownDemo4>
           ],
         ),
         DropDownView(
-          offsetY: dropDownViewOffsetY - 55, // appBar
           controller: dropDownController,
           builders: [
             DropDownViewBuilder(

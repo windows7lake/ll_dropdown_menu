@@ -38,6 +38,10 @@ Powerful and customizable drop-down menu component.
 * [Demo4](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo4.dart):
   Used in `CustomScrollView` with `SliverPersistentHeader`
 
+<img src="preview/demo1.gif" alt="Demo1" width="250"/>
+<img src="preview/demo3.gif" alt="Demo3" width="250"/>
+<img src="preview/demo4.gif" alt="Demo4" width="250"/>
+
 ## Install
 
 Add dependencies in `pubspec.yaml`:
