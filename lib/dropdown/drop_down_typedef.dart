@@ -10,6 +10,7 @@ typedef OnDropDownItemChanged = void Function(List<DropDownItem> items);
 typedef OnDropDownItemsReset = void Function(List<DropDownItem> items);
 typedef OnDropDownItemsConfirm = void Function(List<DropDownItem> checkedItems);
 
+/// DropDownMenu data model
 class DropDownItem<T> {
   final String? text;
   final Widget? icon;
@@ -42,6 +43,7 @@ class DropDownItem<T> {
   }
 }
 
+/// DropDownMenu body component builder
 class DropDownViewBuilder {
   final double height;
   final Widget widget;

@@ -3,30 +3,78 @@ import 'package:flutter/material.dart';
 import 'drop_down_controller.dart';
 import 'drop_down_typedef.dart' hide IndexedWidgetBuilder;
 
+/// Drop-down menu header
 class DropDownHeader extends StatefulWidget {
+  /// Controller of the drop-down menu
   final DropDownController controller;
+
+  /// Data of the drop-down menu header component
   final List<DropDownItem> items;
+
+  /// Width of the drop-down menu header component
   final double? width;
+
+  /// Height of the drop-down menu header component
   final double height;
+
+  /// Background color of the drop-down menu header component
   final Color backgroundColor;
+
+  /// Border of the drop-down menu header component
   final BoxBorder? border;
+
+  /// Decorator of the drop-down menu header component, used to set the background color, border, etc.
   final Decoration? decoration;
+
+  /// Margin of the drop-down menu header component
   final EdgeInsetsGeometry margin;
+
+  /// Padding of the drop-down menu header component
   final EdgeInsetsGeometry padding;
+
+  /// Whether the drop-down menu header component fills the parent component
   final bool expand;
+
+  /// Text style of the drop-down menu header component
   final TextStyle textStyle;
+
+  /// Text style when the drop-down menu header component is selected
   final TextStyle activeTextStyle;
+
+  /// The icon size of the drop-down menu header component
   final double iconSize;
+
+  /// The icon size when the drop-down menu header component is selected
   final double activeIconSize;
+
+  /// The icon color of the drop-down menu header component
   final Color iconColor;
+
+  /// The color of the icon when the drop-down menu header component is selected
   final Color activeIconColor;
+
+  /// Decorator for the sub-items of the drop-down menu header component, used to set the background color, border, etc.
   final Decoration? itemDecoration;
+
+  /// The decorator of the sub-item when the drop-down menu header component is selected, used to set the background color, border, etc.
   final Decoration? activeItemDecoration;
+
+  /// Margins of the sub-items of the drop-down menu header component
   final EdgeInsetsGeometry itemMargin;
+
+  /// Padding of the child items of the drop-down menu header component
   final EdgeInsetsGeometry itemPadding;
+
+  /// Alignment of the sub-items of the drop-down menu header component
   final AlignmentGeometry itemAlignment;
+
+  /// Builder for the sub-items of the drop-down menu header component, used to customize Item
   final NullableIndexedWidgetBuilder? itemBuilder;
+
+  /// Builder of the dividing line between the children of the drop-down menu header component, used to customize the dividing line
   final IndexedWidgetBuilder? dividerBuilder;
+
+  /// Click event of the child item of the drop-down menu header component
   final OnDropDownHeaderItemTap? onItemTap;
 
   const DropDownHeader({

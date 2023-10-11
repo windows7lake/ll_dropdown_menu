@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 
+/// The controller of the drop-down menu, used to control the display and
+/// hiding of the drop-down menu.
 class DropDownController extends ChangeNotifier {
   /// Whether the DropDownView is expanded.
   bool isExpand = false;

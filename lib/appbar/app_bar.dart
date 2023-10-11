@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// Wrapper AppBar for customizing default values
 class WrapperAppBar extends AppBar {
   static Widget? _defaultLeading;
   static Widget? _defaultTitle;

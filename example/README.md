@@ -1,16 +1,13 @@
 # example
 
-A new Flutter project.
+* [Demo1](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo1.dart):
+  Basic drop-down menu implementation: `ListView`, `GridView` (Overlay implementation)
 
-## Getting Started
+* [Demo2](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo2.dart):
+  Basic drop-down menu implementation: `ListView`, `GridView` (Stack implementation)
 
-This project is a starting point for a Flutter application.
+* [Demo3](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo3.dart):
+  Customize the drop-down menu bar and content with `CascadeList`
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* [Demo4](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo4.dart):
+  Used in `CustomScrollView` with `SliverPersistentHeader`

@@ -1,5 +1,7 @@
 # ll_dropdown_menu
 
+[![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/LICENSE)
+
 [中文文档](https://github.com/windows7lake/ll_dropdown_menu/blob/main/README_CN.md)
 
 Powerful and customizable drop-down menu component.
@@ -66,7 +68,7 @@ void toggle({int? index, String? text}); // Show or hide the drop-down menu body
 ```
 
 The `index` parameter in the `show` method represents the index of the drop-down menu to be
-displayed, and `offsetY` represents the Y-axis offset of the drop-down menu. <br>
+displayed, and `offsetY` represents the Y-axis offset of the drop-down menu. <br><br>
 The `index` parameter in the `hide` method indicates the index of the drop-down menu to be hidden,
 and `text` indicates that the text of the drop-down button needs to be modified to be the selected
 content when it is to be hidden.
@@ -81,11 +83,11 @@ Parameter Description:
 ```dart
 final DropDownController controller; // Controller of the drop-down menu
 final List<DropDownItem> items; // Data of the drop-down menu header component
-final double? width; // The width of the drop-down menu header component
-final double height; // The height of the drop-down menu header component
-final Color backgroundColor; // The background color of the drop-down menu header component
-final BoxBorder? border; // The border of the drop-down menu header component
-final Decoration? decoration; // The decorator of the drop-down menu header component, used to set the background color, border, etc.
+final double? width; // Width of the drop-down menu header component
+final double height; // Height of the drop-down menu header component
+final Color backgroundColor; // Background color of the drop-down menu header component
+final BoxBorder? border; // Border of the drop-down menu header component
+final Decoration? decoration; // Decorator of the drop-down menu header component, used to set the background color, border, etc.
 final EdgeInsetsGeometry margin; // Margin of the drop-down menu header component
 final EdgeInsetsGeometry padding; // Padding of the drop-down menu header component
 final bool expand; // Whether the drop-down menu header component fills the parent component
@@ -94,7 +96,7 @@ final TextStyle activeTextStyle; // Text style when the drop-down menu header co
 final double iconSize; // The icon size of the drop-down menu header component
 final double activeIconSize; // The icon size when the drop-down menu header component is selected
 final Color iconColor; // The icon color of the drop-down menu header component
-final Color activeIconColor; //The color of the icon when the drop-down menu header component is selected
+final Color activeIconColor; // The color of the icon when the drop-down menu header component is selected
 final Decoration? itemDecoration; // Decorator for the sub-items of the drop-down menu header component, used to set the background color, border, etc.
 final Decoration? activeItemDecoration; // The decorator of the sub-item when the drop-down menu header component is selected, used to set the background color, border, etc.
 final EdgeInsetsGeometry itemMargin; // Margins of the sub-items of the drop-down menu header component
@@ -116,8 +118,8 @@ Parameter Description:
 final DropDownController controller; // Controller of the drop-down menu
 final List<DropDownViewBuilder> builders; // Data for the body component of the drop-down menu
 final Color? viewColor; // Background color of the drop-down menu body component
-final Color? maskColor; // Color of the mask layer of the main component of the drop-down menu
-final Duration animationDuration; // animation duration of the drop-down menu body component
+final Color? maskColor; // Color of the mask layer of the drop-down menu
+final Duration animationDuration; // Animation duration of the drop-down menu body component
 final double offsetY; // Y-axis offset of the drop-down menu body component
 ```
 
@@ -125,7 +127,7 @@ final double offsetY; // Y-axis offset of the drop-down menu body component
 
 `DropDownMenu` is a drop-down menu component, which internally integrates the buttons and content
 body of the drop-down menu, and controls the display and hiding of the content body through
-Overlay. <br>
+Overlay. <br><br>
 It is more flexible in layout, as long as the normal layout of components such as buttons is enough,
 there is no need to consider the layout of the content body. The position of the content body is
 controlled through the `viewOffsetY` parameter.
@@ -135,10 +137,10 @@ Parameter Description:
 ```dart
 final DropDownController controller; // Controller of the drop-down menu
 final List<DropDownItem> headerItems; // Data of the drop-down menu header component
-final List<DropDownViewBuilder> viewBuilders; // Data of the main component of the drop-down menu
+final List<DropDownViewBuilder> viewBuilders; // Data of the body component of the drop-down menu
 final DropDownDisposeController? disposeController; // The destruction controller of the drop-down menu, used to close the drop-down menu in advance when the page is destroyed
-final double? headerWidth; // The width of the drop-down menu header component
-final double headerHeight; //Height of the drop-down menu header component
+final double? headerWidth; // Width of the drop-down menu header component
+final double headerHeight; // Height of the drop-down menu header component
 final Color headerBackgroundColor; // The background color of the drop-down menu header component
 final BoxBorder? headerBorder; // The border of the drop-down menu header component
 final Decoration? headerDecoration; // The decorator of the drop-down menu header component, used to set the background color, border, etc.
@@ -148,9 +150,9 @@ final bool headerExpand; // Whether the drop-down menu header component fills th
 final TextStyle headerTextStyle; // Text style of the drop-down menu header component
 final TextStyle headerActiveTextStyle; // Text style when the drop-down menu header component is selected
 final double headerIconSize; // The icon size of the drop-down menu header component
-final double headerActiveIconSize; //The icon size when the drop-down menu header component is selected
+final double headerActiveIconSize; // The icon size when the drop-down menu header component is selected
 final Color headerIconColor; // The icon color of the drop-down menu header component
-final Color headerActiveIconColor; //The icon color when the drop-down menu header component is selected
+final Color headerActiveIconColor; // The icon color when the drop-down menu header component is selected
 final Decoration? headerItemDecoration; // Decorator for the sub-items of the drop-down menu header component, used to set background color, borders, etc.
 final Decoration? headerActiveItemDecoration; // The decorator of the child item when the drop-down menu header component is selected, used to set the background color, border, etc.
 final EdgeInsetsGeometry headerItemMargin; // Margins of the sub-items of the drop-down menu header component
@@ -161,7 +163,7 @@ final IndexedWidgetBuilder? headerDividerBuilder; // Builder of the dividing lin
 final OnDropDownHeaderItemTap? onHeaderItemTap; // Click event of the child item of the drop-down menu header component
 final Color? viewColor; // Background color of the drop-down menu body component
 final Color? maskColor; // Color of the mask layer in body component of the drop-down menu
-final Duration animationDuration; // animation duration of the drop-down menu body component
+final Duration animationDuration; // Animation duration of the drop-down menu body component
 final double? viewOffsetY; // Y-axis offset of the drop-down menu body component
 ```
 
@@ -173,17 +175,17 @@ Parameter Description:
 
 ```dart
 final DropDownController controller; // Controller of the drop-down menu
-final List<DropDownItem> items; //The data of the drop-down menu content body
+final List<DropDownItem> items; // The data of the drop-down menu content body
 final int? headerIndex; // Index of the drop-down menu header component
 final double itemHeight; // The height of the child items of the drop-down menu content body
 final TextStyle textStyle; // Text style of the sub-items of the drop-down menu content body
 final TextStyle activeTextStyle; // Text style when the sub-item of the drop-down menu content body is selected
 final Widget? icon; // The icon of the child item of the drop-down menu content body
 final Widget? activeIcon; // The icon when the sub-item of the drop-down menu content body is selected
-final double iconSize; //The icon size of the sub-items of the drop-down menu content body
-final double activeIconSize; //The size of the icon when the sub-item of the drop-down menu content body is selected
-final Color iconColor; //The icon color of the sub-items of the drop-down menu content body
-final Color activeIconColor; //The color of the icon when the sub-item of the drop-down menu content body is selected
+final double iconSize; // The icon size of the sub-items of the drop-down menu content body
+final double activeIconSize; // The size of the icon when the sub-item of the drop-down menu content body is selected
+final Color iconColor; // The icon color of the sub-items of the drop-down menu content body
+final Color activeIconColor; // The color of the icon when the sub-item of the drop-down menu content body is selected
 final Color itemBackgroundColor; // The background color of the child items of the drop-down menu content body
 final Color itemActiveBackgroundColor; // The background color of the sub-item of the drop-down menu content body when it is selected
 final BoxBorder? itemBorder; // The border of the child item of the drop-down menu content body
@@ -194,7 +196,7 @@ final double itemBorderRadius; // The corner radius of the child items of the dr
 final AlignmentGeometry itemAlignment; // Alignment of the sub-items of the drop-down menu content body
 final EdgeInsetsGeometry? itemPadding; // Padding of the sub-items of the drop-down menu content body
 final IndexedWidgetBuilder? itemBuilder; // Builder for the sub-items of the drop-down menu content body, used to customize Item
-final OnDropDownItemTap? onDropDownItemTap; //Click event for the child item of the drop-down menu content body
+final OnDropDownItemTap? onDropDownItemTap; // Click event for the child item of the drop-down menu content body
 final OnDropDownItemChanged? onDropDownItemChanged; // The selected state change event of the child item of the drop-down menu content body
 final int? maxMultiChoiceSize; // The maximum number of multiple choices for the sub-items of the drop-down menu content body
 final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded; // Callback event triggered when the number of multiple selections for the sub-items of the drop-down menu content body exceeds the maximum value
@@ -223,10 +225,10 @@ Parameter Description:
 
 ```dart
 final DropDownController controller; // Controller of the drop-down menu
-final List<DropDownItem> items; //The data of the drop-down menu content body
+final List<DropDownItem> items; // Data of the drop-down menu content body
 final int? headerIndex; // Index of the drop-down menu header component
 final EdgeInsetsGeometry? padding; // Padding of the drop-down menu content body
-final int crossAxisCount; //The number of columns of the sub-items of the drop-down menu content body
+final int crossAxisCount; // The number of columns of the sub-items of the drop-down menu content body
 final double mainAxisSpacing; // The line spacing of the sub-items of the drop-down menu content body
 final double crossAxisSpacing; // Column spacing of the sub-items of the drop-down menu content body
 final double itemHeight; // The height of the child items of the drop-down menu content body
@@ -234,10 +236,10 @@ final TextStyle textStyle; // Text style of the sub-items of the drop-down menu 
 final TextStyle activeTextStyle; // Text style when the sub-item of the drop-down menu content body is selected
 final Widget? icon; // The icon of the child item of the drop-down menu content body
 final Widget? activeIcon; // The icon when the sub-item of the drop-down menu content body is selected
-final double iconSize; //The icon size of the sub-items of the drop-down menu content body
-final double activeIconSize; //The size of the icon when the sub-item of the drop-down menu content body is selected
-final Color iconColor; //The icon color of the sub-items of the drop-down menu content body
-final Color activeIconColor; //The color of the icon when the sub-item of the drop-down menu content body is selected
+final double iconSize; // The icon size of the sub-items of the drop-down menu content body
+final double activeIconSize; // The size of the icon when the sub-item of the drop-down menu content body is selected
+final Color iconColor; // The icon color of the sub-items of the drop-down menu content body
+final Color activeIconColor; // The color of the icon when the sub-item of the drop-down menu content body is selected
 final Color itemBackgroundColor; // The background color of the child items of the drop-down menu content body
 final Color itemActiveBackgroundColor; // The background color of the sub-item of the drop-down menu content body when it is selected
 final BoxBorder? itemBorder; // The border of the child item of the drop-down menu content body
@@ -248,7 +250,7 @@ final double itemBorderRadius; // The corner radius of the child items of the dr
 final AlignmentGeometry itemAlignment; // Alignment of the sub-items of the drop-down menu content body
 final EdgeInsetsGeometry? itemPadding; // Padding of the sub-items of the drop-down menu content body
 final IndexedWidgetBuilder? itemBuilder; // Builder for the sub-items of the drop-down menu content body, used to customize Item
-final OnDropDownItemTap? onDropDownItemTap; //Click event for the child item of the drop-down menu content body
+final OnDropDownItemTap? onDropDownItemTap; // Click event for the child item of the drop-down menu content body
 final OnDropDownItemChanged? onDropDownItemChanged; // The selected state change event of the child item of the drop-down menu content body
 final int? maxMultiChoiceSize; // The maximum number of multiple choices for the sub-items of the drop-down menu content body
 final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded; // Callback event triggered when the number of multiple selections for the sub-items of the drop-down menu content body exceeds the maximum value
@@ -291,25 +293,25 @@ final Decoration? firstFloorActiveItemDecoration; // Decorator when the first-le
 final AlignmentGeometry firstFloorItemAlignment; // Alignment of the first-level sub-items of the drop-down menu content body
 final EdgeInsetsGeometry? firstFloorItemPadding; // Padding of the first-level sub-items of the drop-down menu content body
 final IndexedWidgetBuilder? firstFloorItemBuilder; // Builder for the first-level sub-items of the drop-down menu content body, used to customize Item
-final OnDropDownItemTap? onFirstFloorItemTap; //Click event for the first-level sub-item of the drop-down menu content body
+final OnDropDownItemTap? onFirstFloorItemTap; // Click event for the first-level sub-item of the drop-down menu content body
 final Color? secondFloorBackgroundColor; // The background color of the second level of the drop-down menu content body
 final double secondFloorItemHeight; // The height of the second-level sub-items of the drop-down menu content body
 final TextStyle secondFloorTextStyle; // The text style of the second-level sub-items of the drop-down menu content body
 final TextStyle secondFloorActiveTextStyle; // Text style when the second-level sub-item of the drop-down menu content body is selected
-final Color secondFloorItemBackgroundColor; //The background color of the second-level sub-items of the drop-down menu content body
+final Color secondFloorItemBackgroundColor; // The background color of the second-level sub-items of the drop-down menu content body
 final Color secondFloorItemActiveBackgroundColor; // The background color when the second-level sub-item of the drop-down menu content body is selected
 final Decoration? secondFloorItemDecoration; // Decorator for the second-level sub-items of the drop-down menu content body, used to set background color, borders, etc.
 final Decoration? secondFloorActiveItemDecoration; // Decorator when the second-level sub-item of the drop-down menu content body is selected, used to set the background color, border, etc.
 final Widget? secondFloorItemIcon; // The icon of the second-level sub-item of the drop-down menu content body
 final Widget? secondFloorItemActiveIcon; // The icon when the second-level sub-item of the drop-down menu content body is selected
-final double secondFloorItemIconSize; //The icon size of the second-level sub-items of the drop-down menu content body
-final double secondFloorItemActiveIconSize; //The icon size when the second-level sub-item of the drop-down menu content body is selected
-final Color secondFloorItemIconColor; //The icon color of the second-level sub-item of the drop-down menu content body
-final Color secondFloorItemActiveIconColor; //The icon color when the second-level sub-item of the drop-down menu content body is selected
+final double secondFloorItemIconSize; // The icon size of the second-level sub-items of the drop-down menu content body
+final double secondFloorItemActiveIconSize; // The icon size when the second-level sub-item of the drop-down menu content body is selected
+final Color secondFloorItemIconColor; // The icon color of the second-level sub-item of the drop-down menu content body
+final Color secondFloorItemActiveIconColor; // The icon color when the second-level sub-item of the drop-down menu content body is selected
 final AlignmentGeometry secondFloorItemAlignment; // Alignment of the second-level sub-items of the drop-down menu content body
 final EdgeInsetsGeometry? secondFloorItemPadding; // Padding of the second-level sub-items of the drop-down menu content body
 final IndexedWidgetBuilder? secondFloorItemBuilder; // Builder for the second-level sub-items of the drop-down menu content body, used to customize Item
-final OnDropDownItemTap? onSecondFloorItemTap; //Click event for the second-level sub-item of the drop-down menu content body
+final OnDropDownItemTap? onSecondFloorItemTap; // Click event for the second-level sub-item of the drop-down menu content body
 final OnDropDownItemChanged? onSecondFloorItemChanged; // Selected state change event of the second-level sub-item of the drop-down menu content body
 final int? maxMultiChoiceSize; // The maximum number of multiple choices for the second-level sub-items of the drop-down menu content body
 final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded; // Callback event triggered when the number of multiple selections for the second-level sub-items of the drop-down menu content body exceeds the maximum value

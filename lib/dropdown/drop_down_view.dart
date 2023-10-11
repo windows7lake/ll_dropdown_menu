@@ -3,12 +3,24 @@ import 'package:flutter/material.dart';
 import 'drop_down_controller.dart';
 import 'drop_down_typedef.dart';
 
+/// DropDownMenu body component
 class DropDownView extends StatefulWidget {
+  /// Controller of the drop-down menu
   final DropDownController controller;
+
+  /// Data for the body component of the drop-down menu
   final List<DropDownViewBuilder> builders;
+
+  /// Background color of the drop-down menu body component
   final Color? viewColor;
+
+  /// Color of the mask layer of the drop-down menu
   final Color? maskColor;
+
+  /// Animation duration of the drop-down menu body component
   final Duration animationDuration;
+
+  /// Y-axis offset of the drop-down menu body component
   final double offsetY;
 
   const DropDownView({

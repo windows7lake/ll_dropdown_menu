@@ -4,58 +4,163 @@ import '../button/text_button.dart';
 import 'drop_down_controller.dart';
 import 'drop_down_typedef.dart';
 
+/// The basic implementation of drop-down menu, cascading list, supporting
+/// single-selection and multi-selection operations.
 class DropDownCascadeList extends StatefulWidget {
+  /// Controller of the drop-down menu
   final DropDownController controller;
+
+  /// The data of the drop-down menu content body
   final List<DropDownItem<List<DropDownItem>>> items;
+
+  /// Index of the drop-down menu header component
   final int? headerIndex;
+
+  /// The width ratio of the first level of the drop-down menu content body
   final double firstFloorRatio;
+
+  /// The background color of the first level of the drop-down menu content body
   final Color? firstFloorBackgroundColor;
+
+  /// The height of the first-level sub-items of the drop-down menu content body
   final double firstFloorItemHeight;
+
+  /// The text style of the first-level sub-items of the drop-down menu content body
   final TextStyle firstFloorTextStyle;
+
+  /// Text style when the first-level sub-item of the drop-down menu content body is selected
   final TextStyle firstFloorActiveTextStyle;
+
+  /// The background color of the first-level sub-items of the drop-down menu content body
   final Color firstFloorItemBackgroundColor;
+
+  /// The background color of the first-level sub-item of the drop-down menu content body when it is selected
   final Color firstFloorItemActiveBackgroundColor;
+
+  /// Decorator for the first-level sub-items of the drop-down menu content body, used to set background color, borders, etc.
   final Decoration? firstFloorItemDecoration;
+
+  /// Decorator when the first-level sub-item of the drop-down menu content body is selected, used to set the background color, border, etc.
   final Decoration? firstFloorActiveItemDecoration;
+
+  /// Alignment of the first-level sub-items of the drop-down menu content body
   final AlignmentGeometry firstFloorItemAlignment;
+
+  /// Padding of the first-level sub-items of the drop-down menu content body
   final EdgeInsetsGeometry? firstFloorItemPadding;
+
+  /// Builder for the first-level sub-items of the drop-down menu content body, used to customize Item
   final IndexedWidgetBuilder? firstFloorItemBuilder;
+
+  /// Click event for the first-level sub-item of the drop-down menu content body
   final OnDropDownItemTap? onFirstFloorItemTap;
+
+  /// The background color of the second level of the drop-down menu content body
   final Color? secondFloorBackgroundColor;
+
+  /// The height of the second-level sub-items of the drop-down menu content body
   final double secondFloorItemHeight;
+
+  /// The text style of the second-level sub-items of the drop-down menu content body
   final TextStyle secondFloorTextStyle;
+
+  /// Text style when the second-level sub-item of the drop-down menu content body is selected
   final TextStyle secondFloorActiveTextStyle;
+
+  /// The background color of the second-level sub-items of the drop-down menu content body
   final Color secondFloorItemBackgroundColor;
+
+  /// The background color when the second-level sub-item of the drop-down menu content body is selected
   final Color secondFloorItemActiveBackgroundColor;
+
+  /// Decorator for the second-level sub-items of the drop-down menu content body, used to set background color, borders, etc.
   final Decoration? secondFloorItemDecoration;
+
+  /// Decorator when the second-level sub-item of the drop-down menu content body is selected, used to set the background color, border, etc.
   final Decoration? secondFloorActiveItemDecoration;
+
+  /// The icon of the second-level sub-item of the drop-down menu content body
   final Widget? secondFloorItemIcon;
+
+  /// The icon when the second-level sub-item of the drop-down menu content body is selected
   final Widget? secondFloorItemActiveIcon;
+
+  /// The icon size of the second-level sub-items of the drop-down menu content body
   final double secondFloorItemIconSize;
+
+  /// The icon size when the second-level sub-item of the drop-down menu content body is selected
   final double secondFloorItemActiveIconSize;
+
+  /// The icon color of the second-level sub-item of the drop-down menu content body
   final Color secondFloorItemIconColor;
+
+  /// The icon color when the second-level sub-item of the drop-down menu content body is selected
   final Color secondFloorItemActiveIconColor;
+
+  /// Alignment of the second-level sub-items of the drop-down menu content body
   final AlignmentGeometry secondFloorItemAlignment;
+
+  /// Padding of the second-level sub-items of the drop-down menu content body
   final EdgeInsetsGeometry? secondFloorItemPadding;
+
+  /// Builder for the second-level sub-items of the drop-down menu content body, used to customize Item
   final IndexedWidgetBuilder? secondFloorItemBuilder;
+
+  /// Click event for the second-level sub-item of the drop-down menu content body
   final OnDropDownItemTap? onSecondFloorItemTap;
+
+  /// Selected state change event of the second-level sub-item of the drop-down menu content body
   final OnDropDownItemChanged? onSecondFloorItemChanged;
+
+  /// The maximum number of multiple choices for the second-level sub-items of the drop-down menu content body
   final int? maxMultiChoiceSize;
+
+  /// Callback event triggered when the number of multiple selections for the second-level sub-items of the drop-down menu content body exceeds the maximum value
   final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded;
+
+  /// The maximum height of the drop-down menu content body
   final double? maxListHeight;
+
+  /// Whether the content body of the drop-down menu supports multiple selections
   final bool multipleChoice;
+
+  /// Button component of the drop-down menu content body in the multi-select state
   final Widget? btnWidget;
+
+  /// The reset button component of the drop-down menu content body in the multi-select state
   final Widget? resetWidget;
+
+  /// The confirmation button component of the drop-down menu content body in the multi-select state
   final Widget? confirmWidget;
+
+  /// The height of the reset button component of the drop-down menu content body in the multi-select state
   final double resetHeight;
+
+  /// The height of the confirmation button component of the drop-down menu content body in the multi-select state
   final double confirmHeight;
+
+  /// The text of the reset button component of the drop-down menu content body in the multi-select state
   final String resetText;
+
+  /// The text of the confirmation button component of the drop-down menu content body in the multi-select state
   final String confirmText;
+
+  /// The text style of the reset button component of the drop-down menu content body in the multi-select state
   final TextStyle resetTextStyle;
+
+  /// The text style of the confirmation button component of the drop-down menu content body in the multi-select state
   final TextStyle confirmTextStyle;
+
+  /// The background color of the reset button component of the drop-down menu content body in the multi-select state
   final Color resetBackgroundColor;
+
+  /// The background color of the confirmation button component of the drop-down menu content body in the multi-select state
   final Color confirmBackgroundColor;
+
+  /// The click event of the reset button component of the drop-down menu content body in the multi-select state
   final OnDropDownItemsReset? onDropDownItemsReset;
+
+  /// Click event of the confirmation button component of the drop-down menu content body in the multi-select state
   final OnDropDownItemsConfirm? onDropDownItemsConfirm;
 
   const DropDownCascadeList({

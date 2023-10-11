@@ -3,37 +3,99 @@ import 'package:flutter/material.dart';
 import 'drop_down_controller.dart';
 import 'drop_down_typedef.dart' hide IndexedWidgetBuilder;
 
+/// DropDownMenu component, which internally integrates the buttons and content
+/// body of the drop-down menu, and controls the display and hiding of the
+/// content body through Overlay.
 class DropDownMenu extends StatefulWidget {
+  /// Controller of the drop-down menu
   final DropDownController controller;
+
+  /// Data of the drop-down menu header component
   final List<DropDownItem> headerItems;
+
+  /// Data of the body component of the drop-down menu
   final List<DropDownViewBuilder> viewBuilders;
-  final double? viewOffsetY;
+
+  /// The destruction controller of the drop-down menu, used to close the drop-down menu in advance when the page is destroyed
   final DropDownDisposeController? disposeController;
+
+  /// Width of the drop-down menu header component
   final double? headerWidth;
+
+  /// Height of the drop-down menu header component
   final double headerHeight;
+
+  /// The background color of the drop-down menu header component
   final Color headerBackgroundColor;
+
+  /// The border of the drop-down menu header component
   final BoxBorder? headerBorder;
+
+  /// The decorator of the drop-down menu header component, used to set the background color, border, etc.
   final Decoration? headerDecoration;
+
+  /// Margins of the drop-down menu header component
   final EdgeInsetsGeometry headerMargin;
+
+  /// Padding of the drop-down menu header component
   final EdgeInsetsGeometry headerPadding;
+
+  /// Whether the drop-down menu header component fills the parent component
   final bool headerExpand;
+
+  /// Text style of the drop-down menu header component
   final TextStyle headerTextStyle;
+
+  /// Text style when the drop-down menu header component is selected
   final TextStyle headerActiveTextStyle;
+
+  /// The icon size of the drop-down menu header component
   final double headerIconSize;
+
+  /// The icon size when the drop-down menu header component is selected
   final double headerActiveIconSize;
+
+  /// The icon color of the drop-down menu header component
   final Color headerIconColor;
+
+  /// The icon color when the drop-down menu header component is selected
   final Color headerActiveIconColor;
+
+  /// Decorator for the sub-items of the drop-down menu header component, used to set background color, borders, etc.
   final Decoration? headerItemDecoration;
+
+  /// The decorator of the child item when the drop-down menu header component is selected, used to set the background color, border, etc.
   final Decoration? headerActiveItemDecoration;
+
+  /// Margins of the sub-items of the drop-down menu header component
   final EdgeInsetsGeometry headerItemMargin;
+
+  /// Padding of the sub-items of the drop-down menu header component
   final EdgeInsetsGeometry headerItemPadding;
+
+  /// Alignment of the sub-items of the drop-down menu header component
   final AlignmentGeometry headerItemAlignment;
+
+  /// Builder for the sub-items of the drop-down menu header component, used to customize Item
   final NullableIndexedWidgetBuilder? headerItemBuilder;
+
+  /// Builder of the dividing line between the children of the drop-down menu header component, used to customize the dividing line
   final IndexedWidgetBuilder? headerDividerBuilder;
+
+  /// Click event of the child item of the drop-down menu header component
   final OnDropDownHeaderItemTap? onHeaderItemTap;
+
+  /// Background color of the drop-down menu body component
   final Color? viewColor;
+
+  /// Color of the mask layer in body component of the drop-down menu
   final Color? maskColor;
+
+  /// Animation duration of the drop-down menu body component
   final Duration animationDuration;
+
+  /// Y-axis offset of the drop-down menu body component
+  final double? viewOffsetY;
 
   const DropDownMenu({
     super.key,

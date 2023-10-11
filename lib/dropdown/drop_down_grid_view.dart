@@ -5,51 +5,142 @@ import '../sliver/sliver_grid_delegate_height.dart';
 import 'drop_down_controller.dart';
 import 'drop_down_typedef.dart';
 
+/// The basic implementation of the drop-down menu. It is implemented internally
+/// using `GridView` and supports single-selection and multi-selection operations.
 class DropDownGridView extends StatefulWidget {
+  /// Controller of the drop-down menu
   final DropDownController controller;
+
+  /// Data of the drop-down menu content body
   final List<DropDownItem> items;
-  final EdgeInsetsGeometry? padding;
+
+  /// Index of the drop-down menu header component
   final int? headerIndex;
+
+  /// Padding of the drop-down menu content body
+  final EdgeInsetsGeometry? padding;
+
+  /// The number of columns of the sub-items of the drop-down menu content body
   final int crossAxisCount;
+
+  /// The line spacing of the sub-items of the drop-down menu content body
   final double mainAxisSpacing;
+
+  /// Column spacing of the sub-items of the drop-down menu content body
   final double crossAxisSpacing;
+
+  /// The height of the child items of the drop-down menu content body
   final double itemHeight;
+
+  /// Text style of the sub-items of the drop-down menu content body
   final TextStyle textStyle;
+
+  /// Text style when the sub-item of the drop-down menu content body is selected
   final TextStyle activeTextStyle;
+
+  /// The icon of the child item of the drop-down menu content body
   final Widget? icon;
+
+  /// The icon when the sub-item of the drop-down menu content body is selected
   final Widget? activeIcon;
+
+  /// The icon size of the sub-items of the drop-down menu content body
   final double iconSize;
+
+  /// The size of the icon when the sub-item of the drop-down menu content body is selected
   final double activeIconSize;
+
+  /// The icon color of the sub-items of the drop-down menu content body
   final Color iconColor;
+
+  /// The color of the icon when the sub-item of the drop-down menu content body is selected
   final Color activeIconColor;
+
+  /// The background color of the child items of the drop-down menu content body
   final Color itemBackgroundColor;
+
+  /// The background color of the sub-item of the drop-down menu content body when it is selected
   final Color itemActiveBackgroundColor;
+
+  /// The border of the child item of the drop-down menu content body
   final BoxBorder? itemBorder;
+
+  /// The border when the sub-item of the drop-down menu content body is selected
   final BoxBorder? itemActiveBorder;
+
+  /// Decorator for the sub-items of the drop-down menu content body, used to set background color, borders, etc.
   final Decoration? itemDecoration;
+
+  /// Decorator when the sub-item of the drop-down menu content body is selected, used to set the background color, border, etc.
   final Decoration? activeItemDecoration;
+
+  /// The corner radius of the child items of the drop-down menu content body
   final double itemBorderRadius;
+
+  /// Alignment of the sub-items of the drop-down menu content body
   final AlignmentGeometry itemAlignment;
+
+  /// Padding of the sub-items of the drop-down menu content body
   final EdgeInsetsGeometry? itemPadding;
+
+  /// Builder for the sub-items of the drop-down menu content body, used to customize Item
   final IndexedWidgetBuilder? itemBuilder;
+
+  /// Click event for the child item of the drop-down menu content body
   final OnDropDownItemTap? onDropDownItemTap;
+
+  /// The selected state change event of the child item of the drop-down menu content body
   final OnDropDownItemChanged? onDropDownItemChanged;
+
+  /// The maximum number of multiple choices for the sub-items of the drop-down menu content body
   final int? maxMultiChoiceSize;
+
+  /// Callback event triggered when the number of multiple selections for the sub-items of the drop-down menu content body exceeds the maximum value
   final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded;
+
+  /// The maximum height of the drop-down menu content body
   final double? maxListHeight;
+
+  /// Whether the content body of the drop-down menu supports multiple selections
   final bool multipleChoice;
+
+  /// Button component of the drop-down menu content body in the multi-select state
   final Widget? btnWidget;
+
+  /// The reset button component of the drop-down menu content body in the multi-select state
   final Widget? resetWidget;
+
+  /// The confirmation button component of the drop-down menu content body in the multi-select state
   final Widget? confirmWidget;
+
+  /// The height of the reset button component of the drop-down menu content body in the multi-select state
   final double resetHeight;
+
+  /// The height of the confirmation button component of the drop-down menu content body in the multi-select state
   final double confirmHeight;
+
+  /// The text of the reset button component of the drop-down menu content body in the multi-select state
   final String resetText;
+
+  /// The text of the confirmation button component of the drop-down menu content body in the multi-select state
   final String confirmText;
+
+  /// The text style of the reset button component of the drop-down menu content body in the multi-select state
   final TextStyle resetTextStyle;
+
+  /// The text style of the confirmation button component of the drop-down menu content body in the multi-select state
   final TextStyle confirmTextStyle;
+
+  /// The background color of the reset button component of the drop-down menu content body in the multi-select state
   final Color resetBackgroundColor;
+
+  /// The background color of the confirmation button component of the drop-down menu content body in the multi-select state
   final Color confirmBackgroundColor;
+
+  /// The click event of the reset button component of the drop-down menu content body in the multi-select state
   final OnDropDownItemsReset? onDropDownItemsReset;
+
+  /// Click event of the confirmation button component of the drop-down menu content body in the multi-select state
   final OnDropDownItemsConfirm? onDropDownItemsConfirm;
 
   const DropDownGridView({

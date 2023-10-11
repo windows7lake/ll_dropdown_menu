@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 enum IconPosition { left, right, top, bottom }
 
+/// Wrapper TextButton for customizing default values
 class WrapperTextButton extends StatelessWidget {
   final VoidCallback onPressed;
   final VoidCallback? onLongPress;
