@@ -1,3 +1,6 @@
+## 0.1.3 (2023-10-11)
+* Remove preview image
+
 ## 0.1.2 (2023-10-11)
 * Refactor code
 * Update README
