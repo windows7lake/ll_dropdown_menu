@@ -1,6 +1,6 @@
 # ll_dropdown_menu
 
-[英文文档](https://github.com/windows7lake/ll_dropdown_menu/blob/main/README_CN.md)
+[英文文档](https://github.com/windows7lake/ll_dropdown_menu/blob/main/README.md)
 
 强大且支持自定义的下拉菜单组件。
 
