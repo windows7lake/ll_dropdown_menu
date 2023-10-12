@@ -157,7 +157,9 @@ class _DropDownHeaderState extends State<DropDownHeader> {
       children.add(ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: (_width - widget.padding.horizontal) / widget.items.length -
-              widget.iconSize,
+              widget.iconSize -
+              widget.itemMargin.horizontal -
+              widget.itemPadding.horizontal,
         ),
         child: Text(
           text.isEmpty ? item.text! : text,

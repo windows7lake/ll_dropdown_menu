@@ -94,33 +94,48 @@ class _DropDownDemoState extends State<DropDownDemo1>
                 controller: dropDownController,
                 itemActiveBackgroundColor: Colors.blue.shade100,
                 items: items1,
+                onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+                  return checkedItems.map((e) => e.text).toList().join("、");
+                },
               ),
             ),
             DropDownViewBuilder(
               height: 300,
               widget: DropDownListView(
+                headerIndex: 1,
                 controller: dropDownController,
                 items: items2,
                 multipleChoice: true,
                 maxMultiChoiceSize: 2,
+                onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+                  return checkedItems.map((e) => e.text).toList().join("、");
+                },
               ),
             ),
             DropDownViewBuilder(
               height: 300,
               widget: DropDownGridView(
+                headerIndex: 2,
                 crossAxisCount: 3,
                 controller: dropDownController,
                 items: items3,
+                onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+                  return checkedItems.map((e) => e.text).toList().join("、");
+                },
               ),
             ),
             DropDownViewBuilder(
               height: 310,
               widget: DropDownGridView(
+                headerIndex: 3,
                 crossAxisCount: 3,
                 controller: dropDownController,
                 items: items4,
                 multipleChoice: true,
                 maxMultiChoiceSize: 2,
+                onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+                  return checkedItems.map((e) => e.text).toList().join("、");
+                },
               ),
             ),
           ],

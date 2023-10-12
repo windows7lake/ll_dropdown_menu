@@ -270,7 +270,9 @@ class _DropDownMenuState extends State<DropDownMenu>
         constraints: BoxConstraints(
           maxWidth: (_width - widget.headerPadding.horizontal) /
                   widget.headerItems.length -
-              widget.headerIconSize,
+              widget.headerIconSize -
+              widget.headerItemMargin.horizontal -
+              widget.headerItemPadding.horizontal,
         ),
         child: Text(
           text.isEmpty ? item.text! : text,

@@ -130,6 +130,10 @@ class DropDownListView extends StatefulWidget {
   /// Click event of the confirmation button component of the drop-down menu content body in the multi-select state
   final OnDropDownItemsConfirm? onDropDownItemsConfirm;
 
+  /// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
+  /// headerIndex should not be null when using this callback
+  final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
+
   const DropDownListView({
     super.key,
     required this.controller,
@@ -173,6 +177,7 @@ class DropDownListView extends StatefulWidget {
     this.confirmBackgroundColor = Colors.blue,
     this.onDropDownItemsReset,
     this.onDropDownItemsConfirm,
+    this.onDropDownHeaderUpdate,
   });
 
   @override
@@ -275,18 +280,28 @@ class _DropDownListViewState extends State<DropDownListView> {
                         textStyle: widget.confirmTextStyle,
                         backgroundColor: widget.confirmBackgroundColor,
                         onPressed: () {
-                          widget.controller.hide();
                           setState(() {});
                           confirmItems = List.generate(
                             items.length,
                             (index) => items[index].copyWith(),
                           );
+                          var checkItems =
+                              items.where((element) => element.check).toList();
                           if (widget.onDropDownItemsConfirm != null) {
-                            var checkItems = items
-                                .where((element) => element.check)
-                                .toList();
                             widget.onDropDownItemsConfirm!(checkItems);
                           }
+                          if (widget.onDropDownHeaderUpdate != null) {
+                            String? text =
+                                widget.onDropDownHeaderUpdate!(checkItems);
+                            if (text != null) {
+                              widget.controller.hide(
+                                index: widget.headerIndex,
+                                text: text,
+                              );
+                              return;
+                            }
+                          }
+                          widget.controller.hide();
                         },
                       ),
                 ),
@@ -336,6 +351,7 @@ class _DropDownListViewState extends State<DropDownListView> {
           widget.onDropDownItemTap!(index, item);
           return;
         }
+
         if (widget.multipleChoice) {
           int checkedCount = items.where((element) => element.check).length;
           if (!item.check &&
@@ -350,7 +366,15 @@ class _DropDownListViewState extends State<DropDownListView> {
             element.check = false;
           }
           item.check = true;
-          widget.controller.hide(index: widget.headerIndex, text: item.text);
+          if (widget.onDropDownHeaderUpdate != null) {
+            String? text = widget.onDropDownHeaderUpdate!([item]);
+            if (text != null) {
+              setState(() {});
+              widget.controller.hide(index: widget.headerIndex, text: text);
+              return;
+            }
+          }
+          widget.controller.hide(index: widget.headerIndex);
         }
         setState(() {});
       },

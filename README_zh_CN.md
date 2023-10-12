@@ -21,6 +21,7 @@
 * 支持在 `CustomScrollView` 和 `NestedScrollView` 中使用
 * 基础的下拉菜单实现：`ListView`、`GridView`、`CascadeList`(级联列表)
 * 支持单选和多选操作
+* 支持在选择完成之后更新下拉菜单的按钮文本
 
 ## Demo展示
 
@@ -32,6 +33,16 @@
   ：自定义下拉菜单栏头部：`CascadeList`(级联列表)
 * [Demo4](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo4.dart)
   ：在 `CustomScrollView` 中使用及 `SliverPersistentHeader` 的使用
+
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo1.gif">
+<img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo1.gif" width="250" height="500" align="center" style="max-width:100%;">
+</a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo3.gif">
+<img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo3.gif" width="250" height="500" align="center" style="max-width:100%;">
+</a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo4.gif">
+<img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo4.gif" width="250" height="500" align="center" style="max-width:100%;">
+</a>
 
 ## 安装
 
@@ -202,6 +213,9 @@ final Color resetBackgroundColor; // 下拉菜单内容主体在多选状态下�
 final Color confirmBackgroundColor; // 下拉菜单内容主体在多选状态下的确认按钮组件的背景颜色
 final OnDropDownItemsReset? onDropDownItemsReset; // 下拉菜单内容主体在多选状态下的重置按钮组件的点击事件
 final OnDropDownItemsConfirm? onDropDownItemsConfirm; // 下拉菜单内容主体在多选状态下的确认按钮组件的点击事件
+// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
+// headerIndex should not be null when using this callback
+final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 ```
 
 ### DropDownGridView
@@ -256,6 +270,9 @@ final Color resetBackgroundColor; // 下拉菜单内容主体在多选状态下�
 final Color confirmBackgroundColor; // 下拉菜单内容主体在多选状态下的确认按钮组件的背景颜色
 final OnDropDownItemsReset? onDropDownItemsReset; // 下拉菜单内容主体在多选状态下的重置按钮组件的点击事件
 final OnDropDownItemsConfirm? onDropDownItemsConfirm; // 下拉菜单内容主体在多选状态下的确认按钮组件的点击事件
+// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
+// headerIndex should not be null when using this callback
+final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 ```
 
 ### DropDownCascadeList
@@ -317,6 +334,9 @@ final Color resetBackgroundColor; // 下拉菜单内容主体在多选状态下�
 final Color confirmBackgroundColor; // 下拉菜单内容主体在多选状态下的确认按钮组件的背景颜色
 final OnDropDownItemsReset? onDropDownItemsReset; // 下拉菜单内容主体在多选状态下的重置按钮组件的点击事件
 final OnDropDownItemsConfirm? onDropDownItemsConfirm; // 下拉菜单内容主体在多选状态下的确认按钮组件的点击事件
+// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
+// headerIndex should not be null when using this callback
+final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 ```
 
 ## 使用
@@ -349,37 +369,54 @@ DropDownMenu(
     DropDownViewBuilder(
       height: 300,
       widget: DropDownListView(
-        headerIndex: 0,
         controller: dropDownController,
+        headerIndex: 0,
         itemActiveBackgroundColor: Colors.blue.shade100,
         items: items,
+        // 通过回调的返回值更新 header 组件按钮的文本
+        // 使用此回调时 headerIndex 不应为 null
+        onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+          return checkedItems.map((e) => e.text).toList().join("、");
+        },
       ),
     ),
     DropDownViewBuilder(
       height: 300,
       widget: DropDownListView(
         controller: dropDownController,
+        headerIndex: 1,
         items: items,
         multipleChoice: true,
         maxMultiChoiceSize: 2,
+        onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+          return checkedItems.map((e) => e.text).toList().join("、");
+        },
       ),
     ),
     DropDownViewBuilder(
       height: 300,
       widget: DropDownGridView(
-        crossAxisCount: 3,
         controller: dropDownController,
+        headerIndex: 2,
+        crossAxisCount: 3,
         items: items,
+        onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+          return checkedItems.map((e) => e.text).toList().join("、");
+        },
       ),
     ),
     DropDownViewBuilder(
       height: 310,
       widget: DropDownGridView(
-        crossAxisCount: 3,
         controller: dropDownController,
+        headerIndex: 3,
+        crossAxisCount: 3,
         items: items,
         multipleChoice: true,
         maxMultiChoiceSize: 2,
+        onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+          return checkedItems.map((e) => e.text).toList().join("、");
+        },
       ),
     ),
   ],

@@ -23,6 +23,7 @@ Powerful and customizable drop-down menu component.
 * Support use in `CustomScrollView` and `NestedScrollView`
 * Basic drop-down menu implementation: `ListView`, `GridView`, `CascadeList`
 * Support single and multiple selection operations
+* Support update the text of drop-down menu button after selection
 
 ## Demo
 
@@ -47,8 +48,6 @@ Powerful and customizable drop-down menu component.
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo4.gif">
 <img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo4.gif" width="250" height="500" align="center" style="max-width:100%;">
 </a>
-
-[//]: # (<img src="https://github.com/GanZhiXiong/gzx_dropdown_menu/blob/master/preview_images/美团.gif" width="414" hegiht="736" align=center /><img src="https://github.com/GanZhiXiong/gzx_dropdown_menu/blob/master/preview_images/淘宝.gif" width="414" hegiht="736" align=center />)
 
 ## Install
 
@@ -227,6 +226,9 @@ final Color resetBackgroundColor; // The background color of the reset button co
 final Color confirmBackgroundColor; // The background color of the confirmation button component of the drop-down menu content body in the multi-select state
 final OnDropDownItemsReset? onDropDownItemsReset; // The click event of the reset button component of the drop-down menu content body in the multi-select state
 final OnDropDownItemsConfirm? onDropDownItemsConfirm; // Click event of the confirmation button component of the drop-down menu content body in the multi-select state
+// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
+// headerIndex should not be null when using this callback
+final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 ```
 
 ### DropDownGridView
@@ -281,6 +283,9 @@ final Color resetBackgroundColor; // The background color of the reset button co
 final Color confirmBackgroundColor; // The background color of the confirmation button component of the drop-down menu content body in the multi-select state
 final OnDropDownItemsReset? onDropDownItemsReset; // The click event of the reset button component of the drop-down menu content body in the multi-select state
 final OnDropDownItemsConfirm? onDropDownItemsConfirm; // Click event of the confirmation button component of the drop-down menu content body in the multi-select state
+// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
+// headerIndex should not be null when using this callback
+final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 ```
 
 ### DropDownCascadeList
@@ -342,6 +347,9 @@ final Color resetBackgroundColor; // The background color of the reset button co
 final Color confirmBackgroundColor; // The background color of the confirmation button component of the drop-down menu content body in the multi-select state
 final OnDropDownItemsReset? onDropDownItemsReset; // The click event of the reset button component of the drop-down menu content body in the multi-select state
 final OnDropDownItemsConfirm? onDropDownItemsConfirm; // Click event of the confirmation button component of the drop-down menu content body in the multi-select state
+// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
+// headerIndex should not be null when using this callback
+final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 ```
 
 ## Use
@@ -374,37 +382,54 @@ DropDownMenu(
     DropDownViewBuilder(
       height: 300,
       widget: DropDownListView(
-        headerIndex: 0,
         controller: dropDownController,
+        headerIndex: 0,
         itemActiveBackgroundColor: Colors.blue.shade100,
         items: items,
+        // to update the text of the header component by the return value of the callback
+        // headerIndex should not be null when using this callback
+        onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+          return checkedItems.map((e) => e.text).toList().join("、");
+        },
       ),
     ),
     DropDownViewBuilder(
       height: 300,
       widget: DropDownListView(
         controller: dropDownController,
+        headerIndex: 1,
         items: items,
         multipleChoice: true,
         maxMultiChoiceSize: 2,
+        onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+          return checkedItems.map((e) => e.text).toList().join("、");
+        },
       ),
     ),
     DropDownViewBuilder(
       height: 300,
       widget: DropDownGridView(
-        crossAxisCount: 3,
         controller: dropDownController,
+        headerIndex: 2,
+        crossAxisCount: 3,
         items: items,
+        onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+          return checkedItems.map((e) => e.text).toList().join("、");
+        },
       ),
     ),
     DropDownViewBuilder(
       height: 310,
       widget: DropDownGridView(
-        crossAxisCount: 3,
         controller: dropDownController,
+        headerIndex: 3,
+        crossAxisCount: 3,
         items: items,
         multipleChoice: true,
         maxMultiChoiceSize: 2,
+        onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+          return checkedItems.map((e) => e.text).toList().join("、");
+        },
       ),
     ),
   ],

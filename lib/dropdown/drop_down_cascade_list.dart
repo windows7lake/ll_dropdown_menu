@@ -163,6 +163,10 @@ class DropDownCascadeList extends StatefulWidget {
   /// Click event of the confirmation button component of the drop-down menu content body in the multi-select state
   final OnDropDownItemsConfirm? onDropDownItemsConfirm;
 
+  /// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
+  /// headerIndex should not be null when using this callback
+  final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
+
   const DropDownCascadeList({
     super.key,
     required this.controller,
@@ -222,6 +226,7 @@ class DropDownCascadeList extends StatefulWidget {
     this.confirmBackgroundColor = Colors.blue,
     this.onDropDownItemsReset,
     this.onDropDownItemsConfirm,
+    this.onDropDownHeaderUpdate,
   });
 
   @override
@@ -344,7 +349,6 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
                         textStyle: widget.confirmTextStyle,
                         backgroundColor: widget.confirmBackgroundColor,
                         onPressed: () {
-                          widget.controller.hide();
                           setState(() {});
                           confirmItems = List.generate(
                             items.length,
@@ -358,15 +362,27 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
                               );
                             },
                           );
+                          List<DropDownItem> checkItems = [];
+                          for (var element in items) {
+                            if (element.data == null) continue;
+                            checkItems
+                                .addAll(element.data!.where((e) => e.check));
+                          }
                           if (widget.onDropDownItemsConfirm != null) {
-                            List<DropDownItem> checkItems = [];
-                            for (var element in items) {
-                              if (element.data == null) continue;
-                              checkItems
-                                  .addAll(element.data!.where((e) => e.check));
-                            }
                             widget.onDropDownItemsConfirm!(checkItems);
                           }
+                          if (widget.onDropDownHeaderUpdate != null) {
+                            String? text =
+                                widget.onDropDownHeaderUpdate!(checkItems);
+                            if (text != null) {
+                              widget.controller.hide(
+                                index: widget.headerIndex,
+                                text: text,
+                              );
+                              return;
+                            }
+                          }
+                          widget.controller.hide();
                         },
                       ),
                 ),
@@ -475,8 +491,7 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
           }
           return GestureDetector(
             onTap: () {
-              if (!widget.multipleChoice &&
-                  widget.onSecondFloorItemChanged != null) {
+              if (widget.onSecondFloorItemChanged != null) {
                 widget.onSecondFloorItemChanged!(items);
               }
               if (widget.onSecondFloorItemTap != null) {
@@ -506,10 +521,18 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
                   }
                 }
                 item.check = true;
-                widget.controller.hide(
-                  index: widget.headerIndex,
-                  text: item.text,
-                );
+                if (widget.onDropDownHeaderUpdate != null) {
+                  String? text = widget.onDropDownHeaderUpdate!([item]);
+                  if (text != null) {
+                    setState(() {});
+                    widget.controller.hide(
+                      index: widget.headerIndex,
+                      text: text,
+                    );
+                    return;
+                  }
+                }
+                widget.controller.hide();
               }
               setState(() {});
             },

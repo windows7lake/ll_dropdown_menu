@@ -1,3 +1,7 @@
+## 0.2.0 (2023-10-12)
+* Feature:
+    + Add `OnDropDownHeaderUpdate` callback to update the text of the drop-down menu header
+
 ## 0.1.3 (2023-10-11)
 * Remove preview image
 

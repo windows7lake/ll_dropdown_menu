@@ -83,6 +83,7 @@ class _DropDownDemoState extends State<DropDownDemo3>
                     height: 300,
                     widget: DropDownCascadeList(
                       controller: dropDownController,
+                      headerIndex: 0,
                       items: List.generate(
                         6,
                         (index) => DropDownItem<List<DropDownItem>>(
@@ -96,8 +97,12 @@ class _DropDownDemoState extends State<DropDownDemo3>
                           ),
                         ),
                       ),
-                      onDropDownItemsConfirm: (items) {
-                        print(items);
+                      onDropDownHeaderUpdate:
+                          (List<DropDownItem> checkedItems) {
+                        return checkedItems
+                            .map((e) => e.text)
+                            .toList()
+                            .join("、");
                       },
                     ),
                   ),
@@ -105,6 +110,7 @@ class _DropDownDemoState extends State<DropDownDemo3>
                     height: 300,
                     widget: DropDownCascadeList(
                       controller: dropDownController,
+                      headerIndex: 1,
                       items: List.generate(
                         6,
                         (index) => DropDownItem<List<DropDownItem>>(
@@ -119,9 +125,13 @@ class _DropDownDemoState extends State<DropDownDemo3>
                         ),
                       ),
                       multipleChoice: true,
-                      maxMultiChoiceSize: 1,
-                      onDropDownItemsConfirm: (items) {
-                        print(items);
+                      maxMultiChoiceSize: 3,
+                      onDropDownHeaderUpdate:
+                          (List<DropDownItem> checkedItems) {
+                        return checkedItems
+                            .map((e) => e.text)
+                            .toList()
+                            .join("、");
                       },
                     ),
                   ),

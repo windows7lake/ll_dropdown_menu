@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 typedef OnDropDownHeaderItemTap = void Function(int index, DropDownItem item);
-
+typedef OnDropDownHeaderUpdate = String? Function(
+    List<DropDownItem> checkedItems);
 typedef IndexedWidgetBuilder = Widget Function(
     BuildContext context, int index, bool check);
 typedef OnDropDownItemLimitExceeded = void Function(List<DropDownItem> items);
