@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'drop_down_controller.dart';
+import 'drop_down_style.dart';
 import 'drop_down_typedef.dart' hide IndexedWidgetBuilder;
 
 /// Drop-down menu header
@@ -11,62 +12,11 @@ class DropDownHeader extends StatefulWidget {
   /// Data of the drop-down menu header component
   final List<DropDownItem> items;
 
-  /// Width of the drop-down menu header component
-  final double? width;
+  /// Style of the drop-down menu header component
+  final DropDownBoxStyle boxStyle;
 
-  /// Height of the drop-down menu header component
-  final double height;
-
-  /// Background color of the drop-down menu header component
-  final Color backgroundColor;
-
-  /// Border of the drop-down menu header component
-  final BoxBorder? border;
-
-  /// Decorator of the drop-down menu header component, used to set the background color, border, etc.
-  final Decoration? decoration;
-
-  /// Margin of the drop-down menu header component
-  final EdgeInsetsGeometry margin;
-
-  /// Padding of the drop-down menu header component
-  final EdgeInsetsGeometry padding;
-
-  /// Whether the drop-down menu header component fills the parent component
-  final bool expand;
-
-  /// Text style of the drop-down menu header component
-  final TextStyle textStyle;
-
-  /// Text style when the drop-down menu header component is selected
-  final TextStyle activeTextStyle;
-
-  /// The icon size of the drop-down menu header component
-  final double iconSize;
-
-  /// The icon size when the drop-down menu header component is selected
-  final double activeIconSize;
-
-  /// The icon color of the drop-down menu header component
-  final Color iconColor;
-
-  /// The color of the icon when the drop-down menu header component is selected
-  final Color activeIconColor;
-
-  /// Decorator for the sub-items of the drop-down menu header component, used to set the background color, border, etc.
-  final Decoration? itemDecoration;
-
-  /// The decorator of the sub-item when the drop-down menu header component is selected, used to set the background color, border, etc.
-  final Decoration? activeItemDecoration;
-
-  /// Margins of the sub-items of the drop-down menu header component
-  final EdgeInsetsGeometry itemMargin;
-
-  /// Padding of the child items of the drop-down menu header component
-  final EdgeInsetsGeometry itemPadding;
-
-  /// Alignment of the sub-items of the drop-down menu header component
-  final AlignmentGeometry itemAlignment;
+  /// Style of the drop-down menu header item
+  final DropDownItemStyle itemStyle;
 
   /// Builder for the sub-items of the drop-down menu header component, used to customize Item
   final NullableIndexedWidgetBuilder? itemBuilder;
@@ -81,25 +31,8 @@ class DropDownHeader extends StatefulWidget {
     super.key,
     required this.controller,
     required this.items,
-    this.width,
-    this.height = 50,
-    this.backgroundColor = Colors.transparent,
-    this.border,
-    this.decoration,
-    this.margin = EdgeInsets.zero,
-    this.padding = EdgeInsets.zero,
-    this.expand = true,
-    this.textStyle = const TextStyle(fontSize: 14, color: Colors.black),
-    this.activeTextStyle = const TextStyle(fontSize: 14, color: Colors.black),
-    this.iconSize = 20,
-    this.activeIconSize = 20,
-    this.iconColor = Colors.black,
-    this.activeIconColor = Colors.black,
-    this.itemDecoration,
-    this.activeItemDecoration,
-    this.itemMargin = EdgeInsets.zero,
-    this.itemPadding = EdgeInsets.zero,
-    this.itemAlignment = Alignment.center,
+    this.boxStyle = const DropDownBoxStyle(height: 50),
+    this.itemStyle = const DropDownItemStyle(),
     this.onItemTap,
     this.itemBuilder,
     this.dividerBuilder,
@@ -115,6 +48,7 @@ class _DropDownHeaderState extends State<DropDownHeader> {
   @override
   void initState() {
     super.initState();
+    assert(widget.boxStyle.height != null);
     widget.controller.headerText =
         widget.items.map((e) => e.text ?? "").toList();
     widget.controller.addListener(dropDownListener);
@@ -126,54 +60,67 @@ class _DropDownHeaderState extends State<DropDownHeader> {
 
   @override
   Widget build(BuildContext context) {
-    _width = (widget.width ?? MediaQuery.of(context).size.width) -
-        widget.margin.horizontal;
+    double screenWidth = MediaQuery.of(context).size.width;
+    _width = (widget.boxStyle.width ?? screenWidth) -
+        widget.boxStyle.margin.horizontal;
     return Container(
       width: _width,
-      height: widget.height,
-      margin: widget.margin,
-      padding: widget.padding,
-      decoration: widget.decoration ??
+      height: widget.boxStyle.height,
+      margin: widget.boxStyle.margin,
+      padding: widget.boxStyle.padding,
+      decoration: widget.boxStyle.decoration ??
           BoxDecoration(
-            color: widget.backgroundColor,
-            border: widget.border,
+            color: widget.boxStyle.backgroundColor,
+            border: widget.boxStyle.border,
           ),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: widget.items.length,
-        itemBuilder: widget.itemBuilder ?? gridItem,
+        itemBuilder: widget.itemBuilder ?? listItem,
         separatorBuilder: widget.dividerBuilder ?? divider,
       ),
     );
   }
 
-  Widget gridItem(BuildContext context, int index) {
+  Widget listItem(BuildContext context, int index) {
     bool active =
         widget.controller.isExpand && widget.controller.headerIndex == index;
     var item = widget.items[index];
     List<Widget> children = [];
     if (item.text != null) {
       var text = widget.controller.headerText.elementAt(index);
-      children.add(ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: (_width - widget.padding.horizontal) / widget.items.length -
-              widget.iconSize -
-              widget.itemMargin.horizontal -
-              widget.itemPadding.horizontal,
-        ),
-        child: Text(
-          text.isEmpty ? item.text! : text,
-          style: active ? widget.activeTextStyle : widget.textStyle,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
+      children.add(Expanded(
+        flex: widget.itemStyle.textExpand ? 1 : 0,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: (_width -
+                        widget.itemStyle.margin.horizontal -
+                        widget.itemStyle.padding.horizontal) /
+                    widget.items.length -
+                widget.itemStyle.iconSize -
+                widget.itemStyle.margin.horizontal -
+                widget.itemStyle.padding.horizontal,
+          ),
+          child: Text(
+            text.isEmpty ? item.text! : text,
+            style: active
+                ? widget.itemStyle.activeTextStyle
+                : widget.itemStyle.textStyle,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
         ),
       ));
     }
     if (item.icon != null) {
       children.add(IconTheme(
         data: IconThemeData(
-          color: active ? widget.activeIconColor : widget.iconColor,
-          size: active ? widget.activeIconSize : widget.iconSize,
+          color: active
+              ? widget.itemStyle.activeIconColor
+              : widget.itemStyle.iconColor,
+          size: active
+              ? widget.itemStyle.activeIconSize
+              : widget.itemStyle.iconSize,
         ),
         child: active ? item.activeIcon! : item.icon!,
       ));
@@ -186,24 +133,32 @@ class _DropDownHeaderState extends State<DropDownHeader> {
         children: children,
       );
     }
-    if (widget.expand) {
+    if (widget.boxStyle.expand) {
+      double width =
+          (_width - widget.boxStyle.padding.horizontal) / widget.items.length -
+              widget.itemStyle.margin.horizontal -
+              widget.itemStyle.padding.horizontal;
       child = Container(
-        width: (_width - widget.padding.horizontal) / widget.items.length -
-            widget.itemMargin.horizontal,
-        margin: widget.itemMargin,
-        padding: widget.itemPadding,
-        alignment: widget.itemAlignment,
-        decoration:
-            active ? widget.activeItemDecoration : widget.itemDecoration,
+        width: widget.itemStyle.width ?? width,
+        height: widget.itemStyle.height,
+        margin: widget.itemStyle.margin,
+        padding: widget.itemStyle.padding,
+        alignment: widget.itemStyle.alignment,
+        decoration: active
+            ? widget.itemStyle.activeDecoration
+            : widget.itemStyle.decoration,
         child: child,
       );
-    } else if (widget.activeItemDecoration != null &&
-        widget.itemDecoration != null) {
+    } else if (widget.itemStyle.activeDecoration != null &&
+        widget.itemStyle.decoration != null) {
       child = Container(
-        margin: widget.itemMargin,
-        padding: widget.itemPadding,
-        decoration:
-            active ? widget.activeItemDecoration! : widget.itemDecoration!,
+        width: widget.itemStyle.width,
+        height: widget.itemStyle.height,
+        margin: widget.itemStyle.margin,
+        padding: widget.itemStyle.padding,
+        decoration: active
+            ? widget.itemStyle.activeDecoration!
+            : widget.itemStyle.decoration!,
         child: child,
       );
     }

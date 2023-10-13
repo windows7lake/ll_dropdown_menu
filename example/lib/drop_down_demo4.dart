@@ -45,10 +45,7 @@ class _DropDownDemoState extends State<DropDownDemo4>
       (index) => DropDownItem(
         text: "Single Item $index",
         icon: const Icon(Icons.ac_unit),
-        activeIcon: const Icon(
-          Icons.ac_unit,
-          color: Colors.white,
-        ),
+        activeIcon: const Icon(Icons.ac_unit),
         data: index,
       ),
     );
@@ -124,10 +121,14 @@ class _DropDownDemoState extends State<DropDownDemo4>
                 key: dropDownMenuKey,
                 controller: dropDownController,
                 disposeController: dropDownDisposeController,
-                headerHeight: dropDownMenuHeight,
-                headerBackgroundColor: Colors.white,
-                headerActiveIconColor: Colors.blue,
-                headerActiveTextStyle: const TextStyle(color: Colors.blue),
+                boxStyle: DropDownBoxStyle(
+                  height: dropDownMenuHeight,
+                  backgroundColor: Colors.white,
+                ),
+                itemStyle: const DropDownItemStyle(
+                  activeIconColor: Colors.blue,
+                  activeTextStyle: TextStyle(color: Colors.blue),
+                ),
                 headerItems: List.generate(
                   4,
                   (index) => DropDownItem<Tab>(
@@ -150,36 +151,79 @@ class _DropDownDemoState extends State<DropDownDemo4>
                   DropDownViewBuilder(
                     height: 300,
                     widget: DropDownListView(
-                      headerIndex: 0,
                       controller: dropDownController,
-                      itemActiveBackgroundColor: Colors.blue.shade100,
-                      items: items1,
+                      items: List.generate(
+                        6,
+                            (index) => DropDownItem(
+                          text: "Single Item $index",
+                          data: index,
+                        ),
+                      ),
                     ),
                   ),
                   DropDownViewBuilder(
                     height: 300,
                     widget: DropDownListView(
                       controller: dropDownController,
-                      items: items2,
-                      multipleChoice: true,
+                      items: List.generate(
+                        8,
+                            (index) => DropDownItem(
+                          text: "Multi Item $index",
+                          data: index,
+                        ),
+                      ),
                       maxMultiChoiceSize: 2,
+                    ),
+                  ),
+                  DropDownViewBuilder(
+                    height: 262,
+                    widget: DropDownGridView(
+                      crossAxisCount: 3,
+                      boxStyle: const DropDownBoxStyle(
+                        padding: EdgeInsets.all(16),
+                      ),
+                      itemStyle: const DropDownItemStyle(
+                        activeBackgroundColor: Color(0xFFF5F5F5),
+                        activeIconColor: Colors.blue,
+                        activeTextStyle: TextStyle(color: Colors.blue),
+                        activeBorderRadius: 6,
+                      ),
+                      controller: dropDownController,
+                      items: List.generate(
+                        10,
+                            (index) => DropDownItem(
+                          text: "Single Item $index",
+                          icon: const Icon(Icons.ac_unit),
+                          activeIcon: const Icon(
+                            Icons.ac_unit,
+                            color: Colors.white,
+                          ),
+                          data: index,
+                        ),
+                      ),
                     ),
                   ),
                   DropDownViewBuilder(
                     height: 300,
                     widget: DropDownGridView(
                       crossAxisCount: 3,
+                      boxStyle: const DropDownBoxStyle(
+                        padding: EdgeInsets.all(16),
+                      ),
+                      itemStyle: const DropDownItemStyle(
+                        activeBackgroundColor: Color(0xFFF5F5F5),
+                        activeIconColor: Colors.blue,
+                        activeTextStyle: TextStyle(color: Colors.blue),
+                        activeBorderRadius: 6,
+                      ),
                       controller: dropDownController,
-                      items: items3,
-                    ),
-                  ),
-                  DropDownViewBuilder(
-                    height: 310,
-                    widget: DropDownGridView(
-                      crossAxisCount: 3,
-                      controller: dropDownController,
-                      items: items4,
-                      multipleChoice: true,
+                      items: List.generate(
+                        12,
+                            (index) => DropDownItem(
+                          text: "Multi Item $index",
+                          data: index,
+                        ),
+                      ),
                       maxMultiChoiceSize: 2,
                     ),
                   ),
@@ -227,10 +271,14 @@ class _DropDownDemoState extends State<DropDownDemo4>
                   return DropDownHeader(
                     key: dropDownMenuKey,
                     controller: dropDownController,
-                    height: dropDownMenuHeight,
-                    backgroundColor: Colors.white,
-                    activeIconColor: Colors.blue,
-                    activeTextStyle: const TextStyle(color: Colors.blue),
+                    boxStyle: DropDownBoxStyle(
+                      height: dropDownMenuHeight,
+                      backgroundColor: Colors.white,
+                    ),
+                    itemStyle: const DropDownItemStyle(
+                      activeIconColor: Colors.blue,
+                      activeTextStyle: TextStyle(color: Colors.blue),
+                    ),
                     items: List.generate(
                       4,
                       (index) => DropDownItem<Tab>(
@@ -273,7 +321,6 @@ class _DropDownDemoState extends State<DropDownDemo4>
               widget: DropDownListView(
                 headerIndex: 0,
                 controller: dropDownController,
-                itemActiveBackgroundColor: Colors.blue.shade100,
                 items: items1,
               ),
             ),
@@ -282,25 +329,41 @@ class _DropDownDemoState extends State<DropDownDemo4>
               widget: DropDownListView(
                 controller: dropDownController,
                 items: items2,
-                multipleChoice: true,
                 maxMultiChoiceSize: 2,
+              ),
+            ),
+            DropDownViewBuilder(
+              height: 262,
+              widget: DropDownGridView(
+                crossAxisCount: 3,
+                boxStyle: const DropDownBoxStyle(
+                  padding: EdgeInsets.all(16),
+                ),
+                itemStyle: const DropDownItemStyle(
+                  activeBackgroundColor: Color(0xFFF5F5F5),
+                  activeIconColor: Colors.blue,
+                  activeTextStyle: TextStyle(color: Colors.blue),
+                  activeBorderRadius: 6,
+                ),
+                controller: dropDownController,
+                items: items3,
               ),
             ),
             DropDownViewBuilder(
               height: 300,
               widget: DropDownGridView(
                 crossAxisCount: 3,
-                controller: dropDownController,
-                items: items3,
-              ),
-            ),
-            DropDownViewBuilder(
-              height: 310,
-              widget: DropDownGridView(
-                crossAxisCount: 3,
+                boxStyle: const DropDownBoxStyle(
+                  padding: EdgeInsets.all(16),
+                ),
+                itemStyle: const DropDownItemStyle(
+                  activeBackgroundColor: Color(0xFFF5F5F5),
+                  activeIconColor: Colors.blue,
+                  activeTextStyle: TextStyle(color: Colors.blue),
+                  activeBorderRadius: 6,
+                ),
                 controller: dropDownController,
                 items: items4,
-                multipleChoice: true,
                 maxMultiChoiceSize: 2,
               ),
             ),

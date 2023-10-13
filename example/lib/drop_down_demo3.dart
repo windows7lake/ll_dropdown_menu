@@ -33,22 +33,26 @@ class _DropDownDemoState extends State<DropDownDemo3>
       body: Column(children: [
         DropDownHeader(
           controller: dropDownController,
-          height: 50,
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          backgroundColor: Colors.white,
-          activeIconColor: Colors.blue,
-          activeTextStyle: const TextStyle(color: Colors.blue),
-          itemDecoration: BoxDecoration(
-            color: Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(20),
+          boxStyle: const DropDownBoxStyle(
+            height: 50,
+            backgroundColor: Colors.white,
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(horizontal: 10),
           ),
-          activeItemDecoration: BoxDecoration(
-            color: Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(20),
+          itemStyle: DropDownItemStyle(
+            activeIconColor: Colors.blue,
+            activeTextStyle: const TextStyle(color: Colors.blue),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            activeDecoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+            alignment: Alignment.center,
           ),
-          itemMargin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-          itemAlignment: Alignment.center,
           items: List.generate(
             3,
             (index) => DropDownItem<Tab>(
@@ -84,6 +88,16 @@ class _DropDownDemoState extends State<DropDownDemo3>
                     widget: DropDownCascadeList(
                       controller: dropDownController,
                       headerIndex: 0,
+                      secondFloorItemStyle: const DropDownItemStyle(
+                        backgroundColor: Colors.white,
+                        activeBackgroundColor: Color(0xFFF5F5F5),
+                        activeTextStyle:
+                            TextStyle(fontSize: 14, color: Colors.blue),
+                        activeIconColor: Colors.blue,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        alignment: Alignment.centerLeft,
+                        textExpand: true,
+                      ),
                       items: List.generate(
                         6,
                         (index) => DropDownItem<List<DropDownItem>>(
@@ -111,6 +125,16 @@ class _DropDownDemoState extends State<DropDownDemo3>
                     widget: DropDownCascadeList(
                       controller: dropDownController,
                       headerIndex: 1,
+                      secondFloorItemStyle: const DropDownItemStyle(
+                        backgroundColor: Colors.white,
+                        activeBackgroundColor: Color(0xFFF5F5F5),
+                        activeTextStyle:
+                            TextStyle(fontSize: 14, color: Colors.blue),
+                        activeIconColor: Colors.blue,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        alignment: Alignment.centerLeft,
+                        textExpand: true,
+                      ),
                       items: List.generate(
                         6,
                         (index) => DropDownItem<List<DropDownItem>>(
@@ -124,7 +148,6 @@ class _DropDownDemoState extends State<DropDownDemo3>
                           ),
                         ),
                       ),
-                      multipleChoice: true,
                       maxMultiChoiceSize: 3,
                       onDropDownHeaderUpdate:
                           (List<DropDownItem> checkedItems) {

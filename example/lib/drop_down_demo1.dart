@@ -40,10 +40,7 @@ class _DropDownDemoState extends State<DropDownDemo1>
       (index) => DropDownItem(
         text: "Single Item $index",
         icon: const Icon(Icons.ac_unit),
-        activeIcon: const Icon(
-          Icons.ac_unit,
-          color: Colors.white,
-        ),
+        activeIcon: const Icon(Icons.ac_unit),
         data: index,
       ),
     );
@@ -74,9 +71,10 @@ class _DropDownDemoState extends State<DropDownDemo1>
         DropDownMenu(
           controller: dropDownController,
           disposeController: dropDownDisposeController,
-          headerHeight: 50,
-          headerActiveIconColor: Colors.blue,
-          headerActiveTextStyle: const TextStyle(color: Colors.blue),
+          itemStyle: const DropDownItemStyle(
+            activeIconColor: Colors.blue,
+            activeTextStyle: TextStyle(color: Colors.blue),
+          ),
           headerItems: List.generate(
             4,
             (index) => DropDownItem<Tab>(
@@ -91,8 +89,14 @@ class _DropDownDemoState extends State<DropDownDemo1>
               height: 300,
               widget: DropDownListView(
                 headerIndex: 0,
+                itemStyle: const DropDownItemStyle(
+                  activeBackgroundColor: Color(0xFFF5F5F5),
+                  activeIcon: Icon(Icons.check, size: 20, color: Colors.blue),
+                  activeTextStyle: TextStyle(color: Colors.blue),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  textExpand: true,
+                ),
                 controller: dropDownController,
-                itemActiveBackgroundColor: Colors.blue.shade100,
                 items: items1,
                 onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
                   return checkedItems.map((e) => e.text).toList().join("、");
@@ -103,9 +107,15 @@ class _DropDownDemoState extends State<DropDownDemo1>
               height: 300,
               widget: DropDownListView(
                 headerIndex: 1,
+                itemStyle: const DropDownItemStyle(
+                  activeBackgroundColor: Color(0xFFF5F5F5),
+                  activeIcon: Icon(Icons.check, size: 20, color: Colors.blue),
+                  activeTextStyle: TextStyle(color: Colors.blue),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  textExpand: true,
+                ),
                 controller: dropDownController,
                 items: items2,
-                multipleChoice: true,
                 maxMultiChoiceSize: 2,
                 onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
                   return checkedItems.map((e) => e.text).toList().join("、");
@@ -113,10 +123,19 @@ class _DropDownDemoState extends State<DropDownDemo1>
               ),
             ),
             DropDownViewBuilder(
-              height: 300,
+              height: 262,
               widget: DropDownGridView(
                 headerIndex: 2,
                 crossAxisCount: 3,
+                boxStyle: const DropDownBoxStyle(
+                  padding: EdgeInsets.all(16),
+                ),
+                itemStyle: const DropDownItemStyle(
+                  activeBackgroundColor: Color(0xFFF5F5F5),
+                  activeIconColor: Colors.blue,
+                  activeTextStyle: TextStyle(color: Colors.blue),
+                  activeBorderRadius: 6,
+                ),
                 controller: dropDownController,
                 items: items3,
                 onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
@@ -125,13 +144,21 @@ class _DropDownDemoState extends State<DropDownDemo1>
               ),
             ),
             DropDownViewBuilder(
-              height: 310,
+              height: 300,
               widget: DropDownGridView(
                 headerIndex: 3,
                 crossAxisCount: 3,
+                boxStyle: const DropDownBoxStyle(
+                  padding: EdgeInsets.all(16),
+                ),
+                itemStyle: const DropDownItemStyle(
+                  activeBackgroundColor: Color(0xFFF5F5F5),
+                  activeIconColor: Colors.blue,
+                  activeTextStyle: TextStyle(color: Colors.blue),
+                  activeBorderRadius: 6,
+                ),
                 controller: dropDownController,
                 items: items4,
-                multipleChoice: true,
                 maxMultiChoiceSize: 2,
                 onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
                   return checkedItems.map((e) => e.text).toList().join("、");

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'drop_down_controller.dart';
+import 'drop_down_style.dart';
 import 'drop_down_typedef.dart' hide IndexedWidgetBuilder;
 
 /// DropDownMenu component, which internally integrates the buttons and content
@@ -19,62 +20,11 @@ class DropDownMenu extends StatefulWidget {
   /// The destruction controller of the drop-down menu, used to close the drop-down menu in advance when the page is destroyed
   final DropDownDisposeController? disposeController;
 
-  /// Width of the drop-down menu header component
-  final double? headerWidth;
+  /// Style of the drop-down menu header component
+  final DropDownBoxStyle boxStyle;
 
-  /// Height of the drop-down menu header component
-  final double headerHeight;
-
-  /// The background color of the drop-down menu header component
-  final Color headerBackgroundColor;
-
-  /// The border of the drop-down menu header component
-  final BoxBorder? headerBorder;
-
-  /// The decorator of the drop-down menu header component, used to set the background color, border, etc.
-  final Decoration? headerDecoration;
-
-  /// Margins of the drop-down menu header component
-  final EdgeInsetsGeometry headerMargin;
-
-  /// Padding of the drop-down menu header component
-  final EdgeInsetsGeometry headerPadding;
-
-  /// Whether the drop-down menu header component fills the parent component
-  final bool headerExpand;
-
-  /// Text style of the drop-down menu header component
-  final TextStyle headerTextStyle;
-
-  /// Text style when the drop-down menu header component is selected
-  final TextStyle headerActiveTextStyle;
-
-  /// The icon size of the drop-down menu header component
-  final double headerIconSize;
-
-  /// The icon size when the drop-down menu header component is selected
-  final double headerActiveIconSize;
-
-  /// The icon color of the drop-down menu header component
-  final Color headerIconColor;
-
-  /// The icon color when the drop-down menu header component is selected
-  final Color headerActiveIconColor;
-
-  /// Decorator for the sub-items of the drop-down menu header component, used to set background color, borders, etc.
-  final Decoration? headerItemDecoration;
-
-  /// The decorator of the child item when the drop-down menu header component is selected, used to set the background color, border, etc.
-  final Decoration? headerActiveItemDecoration;
-
-  /// Margins of the sub-items of the drop-down menu header component
-  final EdgeInsetsGeometry headerItemMargin;
-
-  /// Padding of the sub-items of the drop-down menu header component
-  final EdgeInsetsGeometry headerItemPadding;
-
-  /// Alignment of the sub-items of the drop-down menu header component
-  final AlignmentGeometry headerItemAlignment;
+  /// Style of the drop-down menu header item
+  final DropDownItemStyle itemStyle;
 
   /// Builder for the sub-items of the drop-down menu header component, used to customize Item
   final NullableIndexedWidgetBuilder? headerItemBuilder;
@@ -104,26 +54,8 @@ class DropDownMenu extends StatefulWidget {
     required this.viewBuilders,
     required this.viewOffsetY,
     this.disposeController,
-    this.headerWidth,
-    this.headerHeight = 50,
-    this.headerBackgroundColor = Colors.transparent,
-    this.headerBorder,
-    this.headerDecoration,
-    this.headerMargin = EdgeInsets.zero,
-    this.headerPadding = EdgeInsets.zero,
-    this.headerExpand = true,
-    this.headerTextStyle = const TextStyle(fontSize: 14, color: Colors.black),
-    this.headerActiveTextStyle =
-        const TextStyle(fontSize: 14, color: Colors.black),
-    this.headerIconSize = 20,
-    this.headerActiveIconSize = 20,
-    this.headerIconColor = Colors.black,
-    this.headerActiveIconColor = Colors.black,
-    this.headerItemDecoration,
-    this.headerActiveItemDecoration,
-    this.headerItemMargin = EdgeInsets.zero,
-    this.headerItemPadding = EdgeInsets.zero,
-    this.headerItemAlignment = Alignment.center,
+    this.boxStyle = const DropDownBoxStyle(height: 50),
+    this.itemStyle = const DropDownItemStyle(),
     this.headerItemBuilder,
     this.headerDividerBuilder,
     this.onHeaderItemTap,
@@ -199,7 +131,7 @@ class _DropDownMenuState extends State<DropDownMenu>
         overlayEntry = OverlayEntry(
           builder: (context) {
             return Positioned(
-              top: widget.headerHeight +
+              top: widget.boxStyle.height! +
                   (widget.controller.viewOffsetY > 0
                       ? widget.controller.viewOffsetY
                       : widget.viewOffsetY ?? 0),
@@ -217,7 +149,7 @@ class _DropDownMenuState extends State<DropDownMenu>
       }
       maskHeight = MediaQuery.of(context).size.height -
           (widget.viewOffsetY ?? 0) -
-          widget.headerHeight;
+          widget.boxStyle.height!;
       overlayState?.setState(() {});
       await animationController?.forward();
     } else {
@@ -238,17 +170,17 @@ class _DropDownMenuState extends State<DropDownMenu>
 
   @override
   Widget build(BuildContext context) {
-    _width = (widget.headerWidth ?? MediaQuery.of(context).size.width) -
-        widget.headerMargin.horizontal;
+    _width = (widget.boxStyle.width ?? MediaQuery.of(context).size.width) -
+        widget.boxStyle.margin.horizontal;
     return Container(
       width: _width,
-      height: widget.headerHeight,
-      margin: widget.headerMargin,
-      padding: widget.headerPadding,
-      decoration: widget.headerDecoration ??
+      height: widget.boxStyle.height,
+      margin: widget.boxStyle.margin,
+      padding: widget.boxStyle.padding,
+      decoration: widget.boxStyle.decoration ??
           BoxDecoration(
-            color: widget.headerBackgroundColor,
-            border: widget.headerBorder,
+            color: widget.boxStyle.backgroundColor,
+            border: widget.boxStyle.border,
           ),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
@@ -266,27 +198,38 @@ class _DropDownMenuState extends State<DropDownMenu>
     List<Widget> children = [];
     if (item.text != null) {
       var text = widget.controller.headerText.elementAt(index);
-      children.add(ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: (_width - widget.headerPadding.horizontal) /
-                  widget.headerItems.length -
-              widget.headerIconSize -
-              widget.headerItemMargin.horizontal -
-              widget.headerItemPadding.horizontal,
-        ),
-        child: Text(
-          text.isEmpty ? item.text! : text,
-          style: active ? widget.headerActiveTextStyle : widget.headerTextStyle,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
+      children.add(Expanded(
+        flex: widget.itemStyle.textExpand ? 1 : 0,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: (_width -
+                        widget.itemStyle.margin.horizontal -
+                        widget.itemStyle.padding.horizontal) /
+                    widget.headerItems.length -
+                widget.itemStyle.iconSize -
+                widget.itemStyle.margin.horizontal -
+                widget.itemStyle.padding.horizontal,
+          ),
+          child: Text(
+            text.isEmpty ? item.text! : text,
+            style: active
+                ? widget.itemStyle.activeTextStyle
+                : widget.itemStyle.textStyle,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
         ),
       ));
     }
     if (item.icon != null) {
       children.add(IconTheme(
         data: IconThemeData(
-          color: active ? widget.headerActiveIconColor : widget.headerIconColor,
-          size: active ? widget.headerActiveIconSize : widget.headerIconSize,
+          color: active
+              ? widget.itemStyle.activeIconColor
+              : widget.itemStyle.iconColor,
+          size: active
+              ? widget.itemStyle.activeIconSize
+              : widget.itemStyle.iconSize,
         ),
         child: active ? item.activeIcon! : item.icon!,
       ));
@@ -299,27 +242,33 @@ class _DropDownMenuState extends State<DropDownMenu>
         children: children,
       );
     }
-    if (widget.headerExpand) {
+    if (widget.boxStyle.expand) {
+      double width = (_width - widget.boxStyle.padding.horizontal) /
+              widget.headerItems.length -
+          widget.itemStyle.margin.horizontal -
+          widget.itemStyle.padding.horizontal;
       child = Container(
-        width: (_width - widget.headerPadding.horizontal) /
-                widget.headerItems.length -
-            widget.headerMargin.horizontal,
-        margin: widget.headerItemMargin,
-        padding: widget.headerItemPadding,
-        alignment: widget.headerItemAlignment,
+        width: widget.itemStyle.width ?? width,
+        height: widget.itemStyle.height,
+        margin: widget.itemStyle.margin,
+        padding: widget.itemStyle.padding,
+        alignment: widget.itemStyle.alignment,
         decoration: active
-            ? widget.headerActiveItemDecoration
-            : widget.headerItemDecoration,
+            ? widget.itemStyle.activeDecoration
+            : widget.itemStyle.decoration,
         child: child,
       );
-    } else if (widget.headerActiveItemDecoration != null &&
-        widget.headerItemDecoration != null) {
+    } else if (widget.itemStyle.activeDecoration != null &&
+        widget.itemStyle.decoration != null) {
       child = Container(
-        margin: widget.headerItemMargin,
-        padding: widget.headerItemPadding,
+        width: widget.itemStyle.width,
+        height: widget.itemStyle.height,
+        margin: widget.itemStyle.margin,
+        padding: widget.itemStyle.padding,
+        alignment: widget.itemStyle.alignment,
         decoration: active
-            ? widget.headerActiveItemDecoration
-            : widget.headerItemDecoration,
+            ? widget.itemStyle.activeDecoration
+            : widget.itemStyle.decoration,
         child: child,
       );
     }

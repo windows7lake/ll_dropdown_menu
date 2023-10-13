@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide IndexedWidgetBuilder;
 
 import '../button/text_button.dart';
 import 'drop_down_controller.dart';
+import 'drop_down_style.dart';
 import 'drop_down_typedef.dart';
 
 /// The basic implementation of the drop-down menu. It is implemented internally
@@ -16,59 +17,11 @@ class DropDownListView extends StatefulWidget {
   /// Index of the drop-down menu header component
   final int? headerIndex;
 
-  /// The height of the child items of the drop-down menu content body
-  final double itemHeight;
+  /// Style of the drop-down menu list
+  final DropDownBoxStyle boxStyle;
 
-  /// Text style of the sub-items of the drop-down menu content body
-  final TextStyle textStyle;
-
-  /// Text style when the sub-item of the drop-down menu content body is selected
-  final TextStyle activeTextStyle;
-
-  /// The icon of the child item of the drop-down menu content body
-  final Widget? icon;
-
-  /// The icon when the sub-item of the drop-down menu content body is selected
-  final Widget? activeIcon;
-
-  /// The icon size of the sub-items of the drop-down menu content body
-  final double iconSize;
-
-  /// The size of the icon when the sub-item of the drop-down menu content body is selected
-  final double activeIconSize;
-
-  /// The icon color of the sub-items of the drop-down menu content body
-  final Color iconColor;
-
-  /// The color of the icon when the sub-item of the drop-down menu content body is selected
-  final Color activeIconColor;
-
-  /// The background color of the child items of the drop-down menu content body
-  final Color itemBackgroundColor;
-
-  /// The background color of the sub-item of the drop-down menu content body when it is selected
-  final Color itemActiveBackgroundColor;
-
-  /// The border of the child item of the drop-down menu content body
-  final BoxBorder? itemBorder;
-
-  /// The border when the sub-item of the drop-down menu content body is selected
-  final BoxBorder? itemActiveBorder;
-
-  /// Decorator for the sub-items of the drop-down menu content body, used to set background color, borders, etc.
-  final Decoration? itemDecoration;
-
-  /// Decorator when the sub-item of the drop-down menu content body is selected, used to set the background color, border, etc.
-  final Decoration? activeItemDecoration;
-
-  /// The corner radius of the child items of the drop-down menu content body
-  final double itemBorderRadius;
-
-  /// Alignment of the sub-items of the drop-down menu content body
-  final AlignmentGeometry itemAlignment;
-
-  /// Padding of the sub-items of the drop-down menu content body
-  final EdgeInsetsGeometry? itemPadding;
+  /// Style of the drop-down menu list item
+  final DropDownItemStyle itemStyle;
 
   /// Builder for the sub-items of the drop-down menu content body, used to customize Item
   final IndexedWidgetBuilder? itemBuilder;
@@ -86,10 +39,7 @@ class DropDownListView extends StatefulWidget {
   final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded;
 
   /// The maximum height of the drop-down menu content body
-  final double? maxListHeight;
-
-  /// Whether the content body of the drop-down menu supports multiple selections
-  final bool multipleChoice;
+  final double maxHeight;
 
   /// Button component of the drop-down menu content body in the multi-select state
   final Widget? btnWidget;
@@ -100,29 +50,8 @@ class DropDownListView extends StatefulWidget {
   /// The confirmation button component of the drop-down menu content body in the multi-select state
   final Widget? confirmWidget;
 
-  /// The height of the reset button component of the drop-down menu content body in the multi-select state
-  final double resetHeight;
-
-  /// The height of the confirmation button component of the drop-down menu content body in the multi-select state
-  final double confirmHeight;
-
-  /// The text of the reset button component of the drop-down menu content body in the multi-select state
-  final String resetText;
-
-  /// The text of the confirmation button component of the drop-down menu content body in the multi-select state
-  final String confirmText;
-
-  /// The text style of the reset button component of the drop-down menu content body in the multi-select state
-  final TextStyle resetTextStyle;
-
-  /// The text style of the confirmation button component of the drop-down menu content body in the multi-select state
-  final TextStyle confirmTextStyle;
-
-  /// The background color of the reset button component of the drop-down menu content body in the multi-select state
-  final Color resetBackgroundColor;
-
-  /// The background color of the confirmation button component of the drop-down menu content body in the multi-select state
-  final Color confirmBackgroundColor;
+  /// The style of button component of the drop-down menu content body in the multi-select state
+  final DropDownButtonStyle buttonStyle;
 
   /// The click event of the reset button component of the drop-down menu content body in the multi-select state
   final OnDropDownItemsReset? onDropDownItemsReset;
@@ -139,42 +68,23 @@ class DropDownListView extends StatefulWidget {
     required this.controller,
     required this.items,
     this.headerIndex,
-    this.itemHeight = 50,
-    this.textStyle = const TextStyle(fontSize: 14, color: Colors.black),
-    this.activeTextStyle = const TextStyle(fontSize: 14, color: Colors.blue),
-    this.icon,
-    this.activeIcon = const Icon(Icons.check, size: 20, color: Colors.blue),
-    this.iconSize = 20,
-    this.activeIconSize = 20,
-    this.iconColor = Colors.black,
-    this.activeIconColor = Colors.blue,
-    this.itemBackgroundColor = Colors.transparent,
-    this.itemActiveBackgroundColor = Colors.transparent,
-    this.itemBorder,
-    this.itemActiveBorder,
-    this.itemDecoration,
-    this.activeItemDecoration,
-    this.itemBorderRadius = 0,
-    this.itemAlignment = Alignment.center,
-    this.itemPadding = const EdgeInsets.symmetric(horizontal: 20),
+    this.boxStyle = const DropDownBoxStyle(),
+    this.itemStyle = const DropDownItemStyle(
+      activeBackgroundColor: Color(0xFFF5F5F5),
+      activeIcon: const Icon(Icons.check, size: 20, color: Colors.blue),
+      activeTextStyle: const TextStyle(color: Colors.blue),
+      padding: EdgeInsets.symmetric(horizontal: 16),
+    ),
     this.itemBuilder,
     this.onDropDownItemTap,
     this.onDropDownItemChanged,
     this.maxMultiChoiceSize,
     this.onDropDownItemLimitExceeded,
-    this.maxListHeight,
-    this.multipleChoice = false,
+    this.maxHeight = 300,
     this.btnWidget,
     this.resetWidget,
     this.confirmWidget,
-    this.resetHeight = 50,
-    this.confirmHeight = 50,
-    this.resetText = "Reset",
-    this.confirmText = "Confirm",
-    this.resetTextStyle = const TextStyle(fontSize: 14, color: Colors.black),
-    this.confirmTextStyle = const TextStyle(fontSize: 14, color: Colors.white),
-    this.resetBackgroundColor = const Color(0xFFEEEEEE),
-    this.confirmBackgroundColor = Colors.blue,
+    this.buttonStyle = const DropDownButtonStyle(),
     this.onDropDownItemsReset,
     this.onDropDownItemsConfirm,
     this.onDropDownHeaderUpdate,
@@ -187,10 +97,13 @@ class DropDownListView extends StatefulWidget {
 class _DropDownListViewState extends State<DropDownListView> {
   List<DropDownItem> items = [];
   List<DropDownItem> confirmItems = [];
+  bool multipleChoice = false;
 
   @override
   void initState() {
     super.initState();
+    multipleChoice =
+        widget.maxMultiChoiceSize != null && widget.maxMultiChoiceSize! > 0;
     items = List.generate(
       widget.items.length,
       (index) => widget.items[index].copyWith(),
@@ -203,7 +116,7 @@ class _DropDownListViewState extends State<DropDownListView> {
   }
 
   void dropDownListener() {
-    if (!widget.multipleChoice) return;
+    if (!multipleChoice) return;
     if (widget.controller.isExpand) {
       items = List.generate(
         confirmItems.length,
@@ -216,97 +129,119 @@ class _DropDownListViewState extends State<DropDownListView> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: widget.multipleChoice ? multipleChoiceList() : singleChoiceList(),
+      child: Container(
+        width: widget.boxStyle.width,
+        height: widget.boxStyle.height,
+        margin: widget.boxStyle.margin,
+        decoration: widget.boxStyle.decoration ??
+            BoxDecoration(
+              color: widget.boxStyle.backgroundColor,
+              border: widget.boxStyle.border,
+            ),
+        child: multipleChoice ? multipleChoiceList() : singleChoiceList(),
+      ),
     );
   }
 
   Widget singleChoiceList() {
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        if (widget.itemBuilder != null) {
-          return widget.itemBuilder!(context, index, items[index].check);
-        }
-        return listItem(context, index, false);
-      },
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: widget.maxHeight,
+      ),
+      child: ListView.builder(
+        padding: widget.boxStyle.padding,
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          if (widget.itemBuilder != null) {
+            return widget.itemBuilder!(context, index, items[index].check);
+          }
+          return listItem(context, index, false);
+        },
+      ),
     );
   }
 
   Widget multipleChoiceList() {
     return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: widget.maxListHeight ?? widget.itemHeight * 5,
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                if (widget.itemBuilder != null) {
-                  return widget.itemBuilder!(
-                      context, index, items[index].check);
-                }
-                return listItem(context, index, true);
-              },
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: widget.maxHeight,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: ListView.builder(
+                padding: widget.boxStyle.padding,
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  if (widget.itemBuilder != null) {
+                    return widget.itemBuilder!(
+                        context, index, items[index].check);
+                  }
+                  return listItem(context, index, true);
+                },
+              ),
             ),
-          ),
-          widget.btnWidget ??
-              Row(children: [
-                Expanded(
-                  child: widget.resetWidget ??
-                      WrapperTextButton(
-                        height: widget.resetHeight,
-                        text: widget.resetText,
-                        textStyle: widget.resetTextStyle,
-                        backgroundColor: widget.resetBackgroundColor,
-                        onPressed: () {
-                          for (var element in items) {
-                            element.check = false;
-                          }
-                          setState(() {});
-                          if (widget.onDropDownItemsReset != null) {
-                            widget.onDropDownItemsReset!(items);
-                          }
-                        },
-                      ),
-                ),
-                Expanded(
-                  child: widget.confirmWidget ??
-                      WrapperTextButton(
-                        height: widget.confirmHeight,
-                        text: widget.confirmText,
-                        textStyle: widget.confirmTextStyle,
-                        backgroundColor: widget.confirmBackgroundColor,
-                        onPressed: () {
-                          setState(() {});
-                          confirmItems = List.generate(
-                            items.length,
-                            (index) => items[index].copyWith(),
-                          );
-                          var checkItems =
-                              items.where((element) => element.check).toList();
-                          if (widget.onDropDownItemsConfirm != null) {
-                            widget.onDropDownItemsConfirm!(checkItems);
-                          }
-                          if (widget.onDropDownHeaderUpdate != null) {
-                            String? text =
-                                widget.onDropDownHeaderUpdate!(checkItems);
-                            if (text != null) {
-                              widget.controller.hide(
-                                index: widget.headerIndex,
-                                text: text,
-                              );
-                              return;
+            widget.btnWidget ??
+                Row(children: [
+                  Expanded(
+                    child: widget.resetWidget ??
+                        WrapperTextButton(
+                          height: widget.buttonStyle.resetHeight,
+                          text: widget.buttonStyle.resetText,
+                          textStyle: widget.buttonStyle.resetTextStyle,
+                          backgroundColor:
+                              widget.buttonStyle.resetBackgroundColor,
+                          onPressed: () {
+                            for (var element in items) {
+                              element.check = false;
                             }
-                          }
-                          widget.controller.hide();
-                        },
-                      ),
-                ),
-              ]),
-        ],
+                            setState(() {});
+                            if (widget.onDropDownItemsReset != null) {
+                              widget.onDropDownItemsReset!(items);
+                            }
+                          },
+                        ),
+                  ),
+                  Expanded(
+                    child: widget.confirmWidget ??
+                        WrapperTextButton(
+                          height: widget.buttonStyle.confirmHeight,
+                          text: widget.buttonStyle.confirmText,
+                          textStyle: widget.buttonStyle.confirmTextStyle,
+                          backgroundColor:
+                              widget.buttonStyle.confirmBackgroundColor,
+                          onPressed: () {
+                            setState(() {});
+                            confirmItems = List.generate(
+                              items.length,
+                              (index) => items[index].copyWith(),
+                            );
+                            var checkItems = items
+                                .where((element) => element.check)
+                                .toList();
+                            if (widget.onDropDownItemsConfirm != null) {
+                              widget.onDropDownItemsConfirm!(checkItems);
+                            }
+                            if (widget.onDropDownHeaderUpdate != null) {
+                              String? text =
+                                  widget.onDropDownHeaderUpdate!(checkItems);
+                              if (text != null) {
+                                widget.controller.hide(
+                                  index: widget.headerIndex,
+                                  text: text,
+                                );
+                                return;
+                              }
+                            }
+                            widget.controller.hide();
+                          },
+                        ),
+                  ),
+                ]),
+          ],
+        ),
       ),
     );
   }
@@ -317,22 +252,38 @@ class _DropDownListViewState extends State<DropDownListView> {
     List<Widget> children = [];
     if (item.text != null) {
       children.add(Expanded(
-        child: Text(
-          item.text ?? "",
-          style: active ? widget.activeTextStyle : widget.textStyle,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
+        flex: widget.itemStyle.textExpand ? 1 : 0,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth:
+                (widget.itemStyle.width ?? MediaQuery.of(context).size.width) -
+                    widget.itemStyle.margin.horizontal -
+                    widget.itemStyle.padding.horizontal -
+                    widget.itemStyle.iconSize,
+          ),
+          child: Text(
+            item.text ?? "",
+            style: active
+                ? widget.itemStyle.activeTextStyle
+                : widget.itemStyle.textStyle,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
         ),
       ));
     }
-    if (item.activeIcon != null || widget.activeIcon != null) {
+    if (item.activeIcon != null || widget.itemStyle.activeIcon != null) {
       children.add(IconTheme(
         data: IconThemeData(
-          color: active ? widget.activeIconColor : widget.iconColor,
-          size: active ? widget.activeIconSize : widget.iconSize,
+          color: active
+              ? widget.itemStyle.activeIconColor
+              : widget.itemStyle.iconColor,
+          size: active
+              ? widget.itemStyle.activeIconSize
+              : widget.itemStyle.iconSize,
         ),
         child: (active ? item.activeIcon : item.icon) ??
-            (active ? widget.activeIcon! : widget.icon) ??
+            (active ? widget.itemStyle.activeIcon! : widget.itemStyle.icon) ??
             const SizedBox(),
       ));
     }
@@ -352,7 +303,7 @@ class _DropDownListViewState extends State<DropDownListView> {
           return;
         }
 
-        if (widget.multipleChoice) {
+        if (multipleChoice) {
           int checkedCount = items.where((element) => element.check).length;
           if (!item.check &&
               widget.maxMultiChoiceSize != null &&
@@ -379,18 +330,25 @@ class _DropDownListViewState extends State<DropDownListView> {
         setState(() {});
       },
       child: Container(
-        height: widget.itemHeight,
-        alignment: widget.itemAlignment,
-        padding: widget.itemPadding,
-        decoration:
-            (active ? widget.activeItemDecoration : widget.itemDecoration) ??
-                BoxDecoration(
-                  color: active
-                      ? widget.itemActiveBackgroundColor
-                      : widget.itemBackgroundColor,
-                  border: active ? widget.itemActiveBorder : widget.itemBorder,
-                  borderRadius: BorderRadius.circular(widget.itemBorderRadius),
-                ),
+        width: widget.itemStyle.width,
+        height: widget.itemStyle.height,
+        alignment: widget.itemStyle.alignment,
+        margin: widget.itemStyle.margin,
+        padding: widget.itemStyle.padding,
+        decoration: (active
+                ? widget.itemStyle.activeDecoration
+                : widget.itemStyle.decoration) ??
+            BoxDecoration(
+              color: active
+                  ? widget.itemStyle.activeBackgroundColor
+                  : widget.itemStyle.backgroundColor,
+              border: active
+                  ? widget.itemStyle.activeBorder
+                  : widget.itemStyle.border,
+              borderRadius: BorderRadius.circular(active
+                  ? widget.itemStyle.activeBorderRadius
+                  : widget.itemStyle.borderRadius),
+            ),
         child: child,
       ),
     );

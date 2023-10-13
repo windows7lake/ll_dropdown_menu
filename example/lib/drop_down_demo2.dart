@@ -22,23 +22,18 @@ class _DropDownDemoState extends State<DropDownDemo2>
       body: Column(children: [
         DropDownHeader(
           controller: dropDownController,
-          height: 50,
-          activeIconColor: Colors.blue,
-          activeTextStyle: const TextStyle(color: Colors.blue),
+          itemStyle: const DropDownItemStyle(
+            activeIconColor: Colors.blue,
+            activeTextStyle: TextStyle(color: Colors.blue),
+          ),
           items: List.generate(
             4,
-            (index) => Tab(
+            (index) => DropDownItem<Tab>(
               text: "Tab $index",
               icon: const Icon(Icons.arrow_drop_down),
+              activeIcon: const Icon(Icons.arrow_drop_up),
             ),
-          )
-              .map((e) => DropDownItem<Tab>(
-                    text: e.text,
-                    icon: e.icon,
-                    activeIcon: const Icon(Icons.arrow_drop_up),
-                    data: e,
-                  ))
-              .toList(),
+          ),
         ),
         Expanded(
           child: Stack(
@@ -52,9 +47,7 @@ class _DropDownDemoState extends State<DropDownDemo2>
                   DropDownViewBuilder(
                     height: 300,
                     widget: DropDownListView(
-                      headerIndex: 0,
                       controller: dropDownController,
-                      itemActiveBackgroundColor: Colors.blue.shade100,
                       items: List.generate(
                         6,
                         (index) => DropDownItem(
@@ -75,14 +68,22 @@ class _DropDownDemoState extends State<DropDownDemo2>
                           data: index,
                         ),
                       ),
-                      multipleChoice: true,
                       maxMultiChoiceSize: 2,
                     ),
                   ),
                   DropDownViewBuilder(
-                    height: 300,
+                    height: 262,
                     widget: DropDownGridView(
                       crossAxisCount: 3,
+                      boxStyle: const DropDownBoxStyle(
+                        padding: EdgeInsets.all(16),
+                      ),
+                      itemStyle: const DropDownItemStyle(
+                        activeBackgroundColor: Color(0xFFF5F5F5),
+                        activeIconColor: Colors.blue,
+                        activeTextStyle: TextStyle(color: Colors.blue),
+                        activeBorderRadius: 6,
+                      ),
                       controller: dropDownController,
                       items: List.generate(
                         10,
@@ -99,9 +100,18 @@ class _DropDownDemoState extends State<DropDownDemo2>
                     ),
                   ),
                   DropDownViewBuilder(
-                    height: 310,
+                    height: 300,
                     widget: DropDownGridView(
                       crossAxisCount: 3,
+                      boxStyle: const DropDownBoxStyle(
+                        padding: EdgeInsets.all(16),
+                      ),
+                      itemStyle: const DropDownItemStyle(
+                        activeBackgroundColor: Color(0xFFF5F5F5),
+                        activeIconColor: Colors.blue,
+                        activeTextStyle: TextStyle(color: Colors.blue),
+                        activeBorderRadius: 6,
+                      ),
                       controller: dropDownController,
                       items: List.generate(
                         12,
@@ -110,7 +120,6 @@ class _DropDownDemoState extends State<DropDownDemo2>
                           data: index,
                         ),
                       ),
-                      multipleChoice: true,
                       maxMultiChoiceSize: 2,
                     ),
                   ),

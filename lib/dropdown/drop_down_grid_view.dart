@@ -3,6 +3,7 @@ import 'package:flutter/material.dart' hide IndexedWidgetBuilder;
 import '../button/text_button.dart';
 import '../sliver/sliver_grid_delegate_height.dart';
 import 'drop_down_controller.dart';
+import 'drop_down_style.dart';
 import 'drop_down_typedef.dart';
 
 /// The basic implementation of the drop-down menu. It is implemented internally
@@ -17,9 +18,6 @@ class DropDownGridView extends StatefulWidget {
   /// Index of the drop-down menu header component
   final int? headerIndex;
 
-  /// Padding of the drop-down menu content body
-  final EdgeInsetsGeometry? padding;
-
   /// The number of columns of the sub-items of the drop-down menu content body
   final int crossAxisCount;
 
@@ -29,59 +27,11 @@ class DropDownGridView extends StatefulWidget {
   /// Column spacing of the sub-items of the drop-down menu content body
   final double crossAxisSpacing;
 
-  /// The height of the child items of the drop-down menu content body
-  final double itemHeight;
+  /// Style of the drop-down menu grid
+  final DropDownBoxStyle boxStyle;
 
-  /// Text style of the sub-items of the drop-down menu content body
-  final TextStyle textStyle;
-
-  /// Text style when the sub-item of the drop-down menu content body is selected
-  final TextStyle activeTextStyle;
-
-  /// The icon of the child item of the drop-down menu content body
-  final Widget? icon;
-
-  /// The icon when the sub-item of the drop-down menu content body is selected
-  final Widget? activeIcon;
-
-  /// The icon size of the sub-items of the drop-down menu content body
-  final double iconSize;
-
-  /// The size of the icon when the sub-item of the drop-down menu content body is selected
-  final double activeIconSize;
-
-  /// The icon color of the sub-items of the drop-down menu content body
-  final Color iconColor;
-
-  /// The color of the icon when the sub-item of the drop-down menu content body is selected
-  final Color activeIconColor;
-
-  /// The background color of the child items of the drop-down menu content body
-  final Color itemBackgroundColor;
-
-  /// The background color of the sub-item of the drop-down menu content body when it is selected
-  final Color itemActiveBackgroundColor;
-
-  /// The border of the child item of the drop-down menu content body
-  final BoxBorder? itemBorder;
-
-  /// The border when the sub-item of the drop-down menu content body is selected
-  final BoxBorder? itemActiveBorder;
-
-  /// Decorator for the sub-items of the drop-down menu content body, used to set background color, borders, etc.
-  final Decoration? itemDecoration;
-
-  /// Decorator when the sub-item of the drop-down menu content body is selected, used to set the background color, border, etc.
-  final Decoration? activeItemDecoration;
-
-  /// The corner radius of the child items of the drop-down menu content body
-  final double itemBorderRadius;
-
-  /// Alignment of the sub-items of the drop-down menu content body
-  final AlignmentGeometry itemAlignment;
-
-  /// Padding of the sub-items of the drop-down menu content body
-  final EdgeInsetsGeometry? itemPadding;
+  /// Style of the drop-down menu grid item
+  final DropDownItemStyle itemStyle;
 
   /// Builder for the sub-items of the drop-down menu content body, used to customize Item
   final IndexedWidgetBuilder? itemBuilder;
@@ -99,10 +49,7 @@ class DropDownGridView extends StatefulWidget {
   final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded;
 
   /// The maximum height of the drop-down menu content body
-  final double? maxListHeight;
-
-  /// Whether the content body of the drop-down menu supports multiple selections
-  final bool multipleChoice;
+  final double maxHeight;
 
   /// Button component of the drop-down menu content body in the multi-select state
   final Widget? btnWidget;
@@ -113,29 +60,8 @@ class DropDownGridView extends StatefulWidget {
   /// The confirmation button component of the drop-down menu content body in the multi-select state
   final Widget? confirmWidget;
 
-  /// The height of the reset button component of the drop-down menu content body in the multi-select state
-  final double resetHeight;
-
-  /// The height of the confirmation button component of the drop-down menu content body in the multi-select state
-  final double confirmHeight;
-
-  /// The text of the reset button component of the drop-down menu content body in the multi-select state
-  final String resetText;
-
-  /// The text of the confirmation button component of the drop-down menu content body in the multi-select state
-  final String confirmText;
-
-  /// The text style of the reset button component of the drop-down menu content body in the multi-select state
-  final TextStyle resetTextStyle;
-
-  /// The text style of the confirmation button component of the drop-down menu content body in the multi-select state
-  final TextStyle confirmTextStyle;
-
-  /// The background color of the reset button component of the drop-down menu content body in the multi-select state
-  final Color resetBackgroundColor;
-
-  /// The background color of the confirmation button component of the drop-down menu content body in the multi-select state
-  final Color confirmBackgroundColor;
+  /// The style of button component of the drop-down menu content body in the multi-select state
+  final DropDownButtonStyle buttonStyle;
 
   /// The click event of the reset button component of the drop-down menu content body in the multi-select state
   final OnDropDownItemsReset? onDropDownItemsReset;
@@ -152,46 +78,25 @@ class DropDownGridView extends StatefulWidget {
     required this.controller,
     required this.items,
     required this.crossAxisCount,
-    this.padding = const EdgeInsets.all(16),
     this.headerIndex,
     this.mainAxisSpacing = 10,
     this.crossAxisSpacing = 10,
-    this.itemHeight = 50,
-    this.textStyle = const TextStyle(fontSize: 14, color: Colors.black),
-    this.activeTextStyle = const TextStyle(fontSize: 14, color: Colors.white),
-    this.icon,
-    this.activeIcon,
-    this.iconSize = 20,
-    this.activeIconSize = 20,
-    this.iconColor = Colors.black,
-    this.activeIconColor = Colors.black,
-    this.itemBackgroundColor = const Color(0xFFF6F6F6),
-    this.itemActiveBackgroundColor = const Color(0xFF42A5F5),
-    this.itemBorder,
-    this.itemActiveBorder,
-    this.itemDecoration,
-    this.activeItemDecoration,
-    this.itemBorderRadius = 4,
-    this.itemAlignment = Alignment.center,
-    this.itemPadding,
+    this.boxStyle = const DropDownBoxStyle(),
+    this.itemStyle = const DropDownItemStyle(
+      activeBackgroundColor: Color(0xFFF5F5F5),
+      activeIconColor: Colors.blue,
+      activeTextStyle: const TextStyle(color: Colors.blue),
+    ),
     this.itemBuilder,
     this.onDropDownItemTap,
     this.onDropDownItemChanged,
     this.maxMultiChoiceSize,
     this.onDropDownItemLimitExceeded,
-    this.maxListHeight,
-    this.multipleChoice = false,
+    this.maxHeight = 300,
     this.btnWidget,
     this.resetWidget,
     this.confirmWidget,
-    this.resetHeight = 50,
-    this.confirmHeight = 50,
-    this.resetText = "Reset",
-    this.confirmText = "Confirm",
-    this.resetTextStyle = const TextStyle(fontSize: 14, color: Colors.black),
-    this.confirmTextStyle = const TextStyle(fontSize: 14, color: Colors.white),
-    this.resetBackgroundColor = const Color(0xFFEEEEEE),
-    this.confirmBackgroundColor = Colors.blue,
+    this.buttonStyle = const DropDownButtonStyle(),
     this.onDropDownItemsReset,
     this.onDropDownItemsConfirm,
     this.onDropDownHeaderUpdate,
@@ -204,10 +109,13 @@ class DropDownGridView extends StatefulWidget {
 class _DropDownGridViewState extends State<DropDownGridView> {
   List<DropDownItem> items = [];
   List<DropDownItem> confirmItems = [];
+  bool multipleChoice = false;
 
   @override
   void initState() {
     super.initState();
+    multipleChoice =
+        widget.maxMultiChoiceSize != null && widget.maxMultiChoiceSize! > 0;
     items = List.generate(
       widget.items.length,
       (index) => widget.items[index].copyWith(),
@@ -220,7 +128,7 @@ class _DropDownGridViewState extends State<DropDownGridView> {
   }
 
   void dropDownListener() {
-    if (!widget.multipleChoice) return;
+    if (!multipleChoice) return;
     if (widget.controller.isExpand) {
       items = List.generate(
         confirmItems.length,
@@ -233,18 +141,28 @@ class _DropDownGridViewState extends State<DropDownGridView> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: widget.multipleChoice ? multipleChoiceList() : singleChoiceList(),
+      child: Container(
+        width: widget.boxStyle.width,
+        height: widget.boxStyle.height,
+        margin: widget.boxStyle.margin,
+        decoration: widget.boxStyle.decoration ??
+            BoxDecoration(
+              color: widget.boxStyle.backgroundColor,
+              border: widget.boxStyle.border,
+            ),
+        child: multipleChoice ? multipleChoiceList() : singleChoiceList(),
+      ),
     );
   }
 
   Widget singleChoiceList() {
     return GridView.builder(
-      padding: widget.padding,
+      padding: widget.boxStyle.padding,
       gridDelegate: SliverGridDelegateWithFixedHeight(
         crossAxisCount: widget.crossAxisCount,
         mainAxisSpacing: widget.mainAxisSpacing,
         crossAxisSpacing: widget.crossAxisSpacing,
-        height: widget.itemHeight,
+        height: widget.itemStyle.height,
       ),
       itemCount: items.length,
       itemBuilder: (context, index) {
@@ -258,87 +176,91 @@ class _DropDownGridViewState extends State<DropDownGridView> {
 
   Widget multipleChoiceList() {
     return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: widget.maxListHeight ??
-                widget.itemHeight * 4 +
-                    widget.mainAxisSpacing * 3 +
-                    (widget.padding?.vertical ?? 0),
-            child: GridView.builder(
-              padding: widget.padding,
-              gridDelegate: SliverGridDelegateWithFixedHeight(
-                crossAxisCount: widget.crossAxisCount,
-                mainAxisSpacing: widget.mainAxisSpacing,
-                crossAxisSpacing: widget.crossAxisSpacing,
-                height: widget.itemHeight,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: widget.maxHeight,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: GridView.builder(
+                padding: widget.boxStyle.padding,
+                gridDelegate: SliverGridDelegateWithFixedHeight(
+                  crossAxisCount: widget.crossAxisCount,
+                  mainAxisSpacing: widget.mainAxisSpacing,
+                  crossAxisSpacing: widget.crossAxisSpacing,
+                  height: widget.itemStyle.height,
+                ),
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  if (widget.itemBuilder != null) {
+                    return widget.itemBuilder!(
+                        context, index, items[index].check);
+                  }
+                  return gridItem(context, index, true);
+                },
               ),
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                if (widget.itemBuilder != null) {
-                  return widget.itemBuilder!(
-                      context, index, items[index].check);
-                }
-                return gridItem(context, index, true);
-              },
             ),
-          ),
-          widget.btnWidget ??
-              Row(children: [
-                Expanded(
-                  child: widget.resetWidget ??
-                      WrapperTextButton(
-                        height: widget.resetHeight,
-                        text: widget.resetText,
-                        textStyle: widget.resetTextStyle,
-                        backgroundColor: widget.resetBackgroundColor,
-                        onPressed: () {
-                          for (var element in items) {
-                            element.check = false;
-                          }
-                          setState(() {});
-                          if (widget.onDropDownItemsReset != null) {
-                            widget.onDropDownItemsReset!(items);
-                          }
-                        },
-                      ),
-                ),
-                Expanded(
-                  child: widget.confirmWidget ??
-                      WrapperTextButton(
-                        height: widget.confirmHeight,
-                        text: widget.confirmText,
-                        textStyle: widget.confirmTextStyle,
-                        backgroundColor: widget.confirmBackgroundColor,
-                        onPressed: () {
-                          setState(() {});
-                          confirmItems = List.generate(
-                            items.length,
-                            (index) => items[index].copyWith(),
-                          );
-                          var checkItems =
-                              items.where((element) => element.check).toList();
-                          if (widget.onDropDownItemsConfirm != null) {
-                            widget.onDropDownItemsConfirm!(checkItems);
-                          }
-                          if (widget.onDropDownHeaderUpdate != null) {
-                            String? text =
-                                widget.onDropDownHeaderUpdate!(checkItems);
-                            if (text != null) {
-                              widget.controller.hide(
-                                index: widget.headerIndex,
-                                text: text,
-                              );
-                              return;
+            widget.btnWidget ??
+                Row(children: [
+                  Expanded(
+                    child: widget.resetWidget ??
+                        WrapperTextButton(
+                          height: widget.buttonStyle.resetHeight,
+                          text: widget.buttonStyle.resetText,
+                          textStyle: widget.buttonStyle.resetTextStyle,
+                          backgroundColor:
+                              widget.buttonStyle.resetBackgroundColor,
+                          onPressed: () {
+                            for (var element in items) {
+                              element.check = false;
                             }
-                          }
-                          widget.controller.hide();
-                        },
-                      ),
-                ),
-              ]),
-        ],
+                            setState(() {});
+                            if (widget.onDropDownItemsReset != null) {
+                              widget.onDropDownItemsReset!(items);
+                            }
+                          },
+                        ),
+                  ),
+                  Expanded(
+                    child: widget.confirmWidget ??
+                        WrapperTextButton(
+                          height: widget.buttonStyle.confirmHeight,
+                          text: widget.buttonStyle.confirmText,
+                          textStyle: widget.buttonStyle.confirmTextStyle,
+                          backgroundColor:
+                              widget.buttonStyle.confirmBackgroundColor,
+                          onPressed: () {
+                            setState(() {});
+                            confirmItems = List.generate(
+                              items.length,
+                              (index) => items[index].copyWith(),
+                            );
+                            var checkItems = items
+                                .where((element) => element.check)
+                                .toList();
+                            if (widget.onDropDownItemsConfirm != null) {
+                              widget.onDropDownItemsConfirm!(checkItems);
+                            }
+                            if (widget.onDropDownHeaderUpdate != null) {
+                              String? text =
+                                  widget.onDropDownHeaderUpdate!(checkItems);
+                              if (text != null) {
+                                widget.controller.hide(
+                                  index: widget.headerIndex,
+                                  text: text,
+                                );
+                                return;
+                              }
+                            }
+                            widget.controller.hide();
+                          },
+                        ),
+                  ),
+                ]),
+          ],
+        ),
       ),
     );
   }
@@ -347,29 +269,37 @@ class _DropDownGridViewState extends State<DropDownGridView> {
     var item = items[index];
     var active = item.check;
     List<Widget> children = [];
-    if (item.icon != null || widget.icon != null) {
+    if (item.icon != null || widget.itemStyle.icon != null) {
       children.add(IconTheme(
         data: IconThemeData(
-          color: active ? widget.activeIconColor : widget.iconColor,
-          size: active ? widget.activeIconSize : widget.iconSize,
+          color: active
+              ? widget.itemStyle.activeIconColor
+              : widget.itemStyle.iconColor,
+          size: active
+              ? widget.itemStyle.activeIconSize
+              : widget.itemStyle.iconSize,
         ),
         child: (active ? item.activeIcon : item.icon) ??
-            (active ? widget.activeIcon : widget.icon) ??
+            (active ? widget.itemStyle.activeIcon : widget.itemStyle.icon) ??
             const SizedBox(),
       ));
     }
     if (item.text != null) {
       children.add(ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: (MediaQuery.of(context).size.width -
-                      widget.padding!.horizontal -
-                      widget.crossAxisSpacing * (widget.crossAxisCount - 1)) /
-                  widget.crossAxisCount -
-              widget.activeIconSize,
+          maxWidth:
+              ((widget.boxStyle.width ?? MediaQuery.of(context).size.width) -
+                          widget.boxStyle.margin.horizontal -
+                          widget.boxStyle.padding.horizontal) /
+                      widget.crossAxisCount -
+                  widget.crossAxisSpacing * (widget.crossAxisCount - 1) -
+                  widget.itemStyle.iconSize,
         ),
         child: Text(
           item.text ?? "",
-          style: active ? widget.activeTextStyle : widget.textStyle,
+          style: active
+              ? widget.itemStyle.activeTextStyle
+              : widget.itemStyle.textStyle,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
         ),
@@ -394,7 +324,7 @@ class _DropDownGridViewState extends State<DropDownGridView> {
           return;
         }
 
-        if (widget.multipleChoice) {
+        if (multipleChoice) {
           int checkedCount = items.where((element) => element.check).length;
           if (!item.check &&
               widget.maxMultiChoiceSize != null &&
@@ -421,18 +351,25 @@ class _DropDownGridViewState extends State<DropDownGridView> {
         setState(() {});
       },
       child: Container(
-        height: widget.itemHeight,
-        alignment: widget.itemAlignment,
-        padding: widget.itemPadding,
-        decoration:
-            (active ? widget.activeItemDecoration : widget.itemDecoration) ??
-                BoxDecoration(
-                  color: active
-                      ? widget.itemActiveBackgroundColor
-                      : widget.itemBackgroundColor,
-                  border: active ? widget.itemActiveBorder : widget.itemBorder,
-                  borderRadius: BorderRadius.circular(widget.itemBorderRadius),
-                ),
+        width: widget.itemStyle.width,
+        height: widget.itemStyle.height,
+        alignment: widget.itemStyle.alignment,
+        margin: widget.itemStyle.margin,
+        padding: widget.itemStyle.padding,
+        decoration: (active
+                ? widget.itemStyle.activeDecoration
+                : widget.itemStyle.decoration) ??
+            BoxDecoration(
+              color: active
+                  ? widget.itemStyle.activeBackgroundColor
+                  : widget.itemStyle.backgroundColor,
+              border: active
+                  ? widget.itemStyle.activeBorder
+                  : widget.itemStyle.border,
+              borderRadius: BorderRadius.circular(active
+                  ? widget.itemStyle.activeBorderRadius
+                  : widget.itemStyle.borderRadius),
+            ),
         child: child,
       ),
     );
