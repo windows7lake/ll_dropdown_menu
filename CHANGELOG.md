@@ -1,6 +1,8 @@
-## 0.2.0 (2023-10-12)
+## 0.2.0 (2023-10-16)
 * Feature:
     + Add `OnDropDownHeaderUpdate` callback to update the text of the drop-down menu header
+    + (*breaking*) Wrapper the style of dropdown menu: DropDownBoxStyle、DropDownItemStyle、DropDownButtonStyle
+    + (*breaking*) Replace DropDownMenu item with `WrapperButton`
 
 ## 0.1.3 (2023-10-11)
 * Remove preview image

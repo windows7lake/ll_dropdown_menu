@@ -75,6 +75,206 @@ void toggle({int? index, String? text}); // 显示或隐藏下拉菜单
 `show` 方法中的 `index` 参数表示要显示的下拉菜单的索引，`offsetY` 表示下拉菜单的 Y 轴偏移量。<br>
 `hide` 方法中的 `index` 参数表示要隐藏的下拉菜单的索引，`text` 表示要隐藏时需要修改下拉按钮的文本为选中的内容。
 
+### DropDownBoxStyle
+
+`DropDownBoxStyle` 是下拉菜单边框的样式，用于自定义头部及内容列表的边框样式
+
+```dart
+/// 下拉菜单-边框样式
+class DropDownBoxStyle {
+  const DropDownBoxStyle({
+    this.width,
+    this.height,
+    this.backgroundColor = Colors.transparent,
+    this.border,
+    this.decoration,
+    this.margin = EdgeInsets.zero,
+    this.padding = EdgeInsets.zero,
+    this.expand = true,
+  });
+
+  /// 下拉菜单-边框样式-宽度
+  final double? width;
+
+  /// 下拉菜单-边框样式-高度
+  final double? height;
+
+  /// 下拉菜单-边框样式-背景色
+  final Color backgroundColor;
+
+  /// 下拉菜单-边框样式-边框
+  final BoxBorder? border;
+
+  /// 下拉菜单-边框样式-装饰器，用于设置背景颜色、边框等
+  final Decoration? decoration;
+
+  /// 下拉菜单-边框样式-外边距
+  final EdgeInsetsGeometry margin;
+
+  /// 下拉菜单-边框样式-内边距
+  final EdgeInsetsGeometry padding;
+
+  /// 下拉菜单-边框样式-是否需要铺满父组件
+  final bool expand;
+}
+```
+
+### DropDownItemStyle
+
+`DropDown Item Style` 是下拉菜单项的样式，用于自定义item的样式
+
+```dart
+/// 下拉菜单-Item样式
+class DropDownItemStyle {
+  const DropDownItemStyle({
+    this.width,
+    this.height = 50,
+    this.textStyle = const TextStyle(fontSize: 14, color: Colors.black),
+    this.activeTextStyle = const TextStyle(fontSize: 14, color: Colors.black),
+    this.icon,
+    this.activeIcon,
+    this.iconSize = 20,
+    this.activeIconSize = 20,
+    this.iconColor = Colors.black,
+    this.activeIconColor = Colors.black,
+    this.backgroundColor = Colors.transparent,
+    this.activeBackgroundColor = Colors.transparent,
+    this.borderSide = BorderSide.none,
+    this.activeBorderSide = BorderSide.none,
+    this.borderRadius = BorderRadius.zero,
+    this.activeBorderRadius = BorderRadius.zero,
+    this.decoration,
+    this.activeDecoration,
+    this.margin,
+    this.padding = EdgeInsets.zero,
+    this.alignment = Alignment.center,
+    this.textAlign,
+    this.textExpand = false,
+    this.iconPosition = IconPosition.right,
+    this.gap = 0,
+  });
+
+  /// 下拉菜单-Item样式-宽度
+  final double? width;
+
+  /// 下拉菜单-Item样式-高度
+  final double height;
+
+  /// 下拉菜单-Item样式-文本样式
+  final TextStyle textStyle;
+
+  /// 下拉菜单-Item样式-文本样式（选中时）
+  final TextStyle activeTextStyle;
+
+  /// 下拉菜单-Item样式-图标
+  final Widget? icon;
+
+  /// 下拉菜单-Item样式-图标（选中时）
+  final Widget? activeIcon;
+
+  /// 下拉菜单-Item样式-图标大小
+  final double iconSize;
+
+  /// 下拉菜单-Item样式-图标大小（选中时）
+  final double activeIconSize;
+
+  /// 下拉菜单-Item样式-图标颜色
+  final Color iconColor;
+
+  /// 下拉菜单-Item样式-图标颜色（选中时）
+  final Color activeIconColor;
+
+  /// 下拉菜单-Item样式-背景色
+  final Color backgroundColor;
+
+  /// 下拉菜单-Item样式-背景色（选中时）
+  final Color activeBackgroundColor;
+
+  /// 下拉菜单-Item样式-边框
+  final BorderSide borderSide;
+
+  /// 下拉菜单-Item样式-边框（选中时）
+  final BorderSide activeBorderSide;
+
+  /// 下拉菜单-Item样式-边框圆角
+  final BorderRadius borderRadius;
+
+  /// 下拉菜单-Item样式-边框圆角（选中时）
+  final BorderRadius activeBorderRadius;
+
+  /// 下拉菜单-Item样式-装饰器，用于设置背景颜色、边框等
+  final Decoration? decoration;
+
+  /// 下拉菜单-Item样式-装饰器，用于设置背景颜色、边框等（选中时）
+  final Decoration? activeDecoration;
+
+  /// 下拉菜单-Item样式-外边距
+  final EdgeInsetsGeometry? margin;
+
+  /// 下拉菜单-Item样式-内边距
+  final EdgeInsetsGeometry padding;
+
+  /// 下拉菜单-Item样式-对齐方式
+  final AlignmentGeometry alignment;
+
+  /// 下拉菜单-Item样式-文本对齐方式
+  final TextAlign? textAlign;
+
+  /// 下拉菜单-Item样式-文本是否填充父组件
+  final bool textExpand;
+
+  /// 下拉菜单-Item样式-图标位置
+  final IconPosition iconPosition;
+
+  /// 下拉菜单-Item样式-图标与文本之间的间距
+  final double gap;
+}
+```
+
+### DropDownButtonStyle
+
+`DropDownButtonStyle` 是多选状态下下拉菜单按钮组件的样式。
+
+```dart
+/// 多选状态下下拉菜单按钮组件的样式
+class DropDownButtonStyle {
+  const DropDownButtonStyle({
+    this.resetText = "Reset",
+    this.confirmText = "Confirm",
+    this.resetTextStyle = const TextStyle(fontSize: 14, color: Colors.black),
+    this.confirmTextStyle = const TextStyle(fontSize: 14, color: Colors.white),
+    this.resetBackgroundColor = const Color(0xFFEEEEEE),
+    this.confirmBackgroundColor = Colors.blue,
+    this.resetHeight = 50,
+    this.confirmHeight = 50,
+  });
+
+  /// 下拉菜单按钮组件-重置按钮文本
+  final String resetText;
+
+  /// 下拉菜单按钮组件-确认按钮文本
+  final String confirmText;
+
+  /// 下拉菜单按钮组件-重置按钮文本样式
+  final TextStyle resetTextStyle;
+
+  /// 下拉菜单按钮组件-确认按钮文本样式
+  final TextStyle confirmTextStyle;
+
+  /// 下拉菜单按钮组件-重置按钮背景颜色
+  final Color resetBackgroundColor;
+
+  /// 下拉菜单按钮组件-确认按钮背景颜色
+  final Color confirmBackgroundColor;
+
+  /// 下拉菜单按钮组件-重置按钮高度
+  final double resetHeight;
+
+  /// 下拉菜单按钮组件-确认按钮高度
+  final double confirmHeight;
+}
+```
+
 ### DropDownHeader
 
 `DropDownHeader` 是下拉菜单的头部组件，用于显示下拉菜单的按钮。
@@ -82,30 +282,26 @@ void toggle({int? index, String? text}); // 显示或隐藏下拉菜单
 参数说明：
 
 ```dart
-final DropDownController controller; // 下拉菜单的控制器
-final List<DropDownItem> items; // 下拉菜单头部组件的数据
-final double? width; // 下拉菜单头部组件的宽度
-final double height; // 下拉菜单头部组件的高度
-final Color backgroundColor; // 下拉菜单头部组件的背景颜色
-final BoxBorder? border; // 下拉菜单头部组件的边框
-final Decoration? decoration; // 下拉菜单头部组件的 装饰器，用于设置背景颜色、边框等
-final EdgeInsetsGeometry margin; // 下拉菜单头部组件的外边距
-final EdgeInsetsGeometry padding; // 下拉菜单头部组件的内边距
-final bool expand; // 下拉菜单头部组件是否填充父组件
-final TextStyle textStyle; // 下拉菜单头部组件的文本样式
-final TextStyle activeTextStyle; // 下拉菜单头部组件选中时的文本样式
-final double iconSize; // 下拉菜单头部组件的图标大小
-final double activeIconSize; // 下拉菜单头部组件选中时的图标大小
-final Color iconColor; // 下拉菜单头部组件的图标颜色
-final Color activeIconColor; // 下拉菜单头部组件选中时的图标颜色
-final Decoration? itemDecoration; // 下拉菜单头部组件的子项的装饰器，用于设置背景颜色、边框等
-final Decoration? activeItemDecoration; // 下拉菜单头部组件选中时的子项的装饰器，用于设置背景颜色、边框等
-final EdgeInsetsGeometry itemMargin; // 下拉菜单头部组件的子项的外边距
-final EdgeInsetsGeometry itemPadding; // 下拉菜单头部组件的子项的内边距
-final AlignmentGeometry itemAlignment; // 下拉菜单头部组件的子项的对齐方式
-final NullableIndexedWidgetBuilder? itemBuilder; // 下拉菜单头部组件的子项的构建器，用于自定义Item
-final IndexedWidgetBuilder? dividerBuilder; // 下拉菜单头部组件的子项之间分割线的构建器，用于自定义分割线
-final OnDropDownHeaderItemTap? onItemTap; // 下拉菜单头部组件的子项的点击事件
+/// 下拉菜单的控制器
+final DropDownController controller;
+
+/// 下拉菜单头部组件的数据
+final List<DropDownItem> items;
+
+/// 下拉菜单头部组件的边框样式
+final DropDownBoxStyle boxStyle;
+
+/// 下拉菜单头部组件的Item的样式
+final DropDownItemStyle itemStyle;
+
+/// 下拉菜单头部组件的子项的构建器，用于自定义Item
+final NullableIndexedWidgetBuilder? itemBuilder;
+
+/// 下拉菜单头部组件的子项之间分割线的构建器，用于自定义分割线
+final IndexedWidgetBuilder? dividerBuilder;
+
+/// 下拉菜单头部组件的子项的点击事件
+final OnDropDownHeaderItemTap? onItemTap;
 ```
 
 ### DropDownView
@@ -115,54 +311,72 @@ final OnDropDownHeaderItemTap? onItemTap; // 下拉菜单头部组件的子项�
 参数说明：
 
 ```dart
-final DropDownController controller; // 下拉菜单的控制器
-final List<DropDownViewBuilder> builders; // 下拉菜单主体组件的数据
-final Color? viewColor; // 下拉菜单主体组件的背景颜色
-final Color? maskColor; // 下拉菜单主体组件的遮罩层颜色
-final Duration animationDuration; // 下拉菜单主体组件的动画时长
-final double offsetY; // 下拉菜单主体组件的 Y 轴偏移量
+/// 下拉菜单的控制器
+final DropDownController controller;
+
+/// 下拉菜单主体组件的数据
+final List<DropDownViewBuilder> builders;
+
+/// 下拉菜单主体组件的背景颜色
+final Color? viewColor;
+
+/// 下拉菜单主体组件的遮罩层颜色
+final Color? maskColor;
+
+/// 下拉菜单主体组件的动画时长
+final Duration animationDuration;
+
+/// 下拉菜单主体组件的 Y 轴偏移量
+final double offsetY;
 ```
 
 ### DropDownMenu
 
-`DropDownMenu` 是下拉菜单组件，内部集合了下拉菜单的按钮和内容主体，通过 Overlay
-来控制内容主体的显示和隐藏。<br>
-其在布局上更加灵活，只要如同按钮等组件正常的布局即可，不需要考虑内容主体的布局。内容主体的位置是通过 `viewOffsetY`
+`DropDownMenu` 是下拉菜单组件，内部集合了下拉菜单的按钮和内容主体，通过 Overlay 来控制内容主体的显示和隐藏。<br><br>
+其在布局上更加灵活，只要和按钮等组件一样，进行正常布局即可，不需要考虑内容主体的布局。内容主体的位置是通过 `viewOffsetY`
 参数来控制的。
 
 参数说明：
 
 ```dart
-final DropDownController controller; // 下拉菜单的控制器
-final List<DropDownItem> headerItems; // 下拉菜单头部组件的数据
-final List<DropDownViewBuilder> viewBuilders; // 下拉菜单主体组件的数据
-final DropDownDisposeController? disposeController; // 下拉菜单的销毁控制器，用于在页面销毁时提前关闭下拉菜单
-final double? headerWidth; // 下拉菜单头部组件的宽度
-final double headerHeight; // 下拉菜单头部组件的高度
-final Color headerBackgroundColor; // 下拉菜单头部组件的背景颜色
-final BoxBorder? headerBorder; // 下拉菜单头部组件的边框
-final Decoration? headerDecoration; // 下拉菜单头部组件的 装饰器，用于设置背景颜色、边框等
-final EdgeInsetsGeometry headerMargin; // 下拉菜单头部组件的外边距
-final EdgeInsetsGeometry headerPadding; // 下拉菜单头部组件的内边距
-final bool headerExpand; // 下拉菜单头部组件是否填充父组件
-final TextStyle headerTextStyle; // 下拉菜单头部组件的文本样式
-final TextStyle headerActiveTextStyle; // 下拉菜单头部组件选中时的文本样式
-final double headerIconSize; // 下拉菜单头部组件的图标大小
-final double headerActiveIconSize; // 下拉菜单头部组件选中时的图标大小
-final Color headerIconColor; // 下拉菜单头部组件的图标颜色
-final Color headerActiveIconColor; // 下拉菜单头部组件选中时的图标颜色
-final Decoration? headerItemDecoration; // 下拉菜单头部组件的子项的装饰器，用于设置背景颜色、边框等
-final Decoration? headerActiveItemDecoration; // 下拉菜单头部组件选中时的子项的装饰器，用于设置背景颜色、边框等
-final EdgeInsetsGeometry headerItemMargin; // 下拉菜单头部组件的子项的外边距
-final EdgeInsetsGeometry headerItemPadding; // 下拉菜单头部组件的子项的内边距
-final AlignmentGeometry headerItemAlignment; // 下拉菜单头部组件的子项的对齐方式
-final NullableIndexedWidgetBuilder? headerItemBuilder; // 下拉菜单头部组件的子项的构建器，用于自定义Item
-final IndexedWidgetBuilder? headerDividerBuilder; // 下拉菜单头部组件的子项之间分割线的构建器，用于自定义分割线
-final OnDropDownHeaderItemTap? onHeaderItemTap; // 下拉菜单头部组件的子项的点击事件
-final Color? viewColor; // 下拉菜单主体组件的背景颜色
-final Color? maskColor; // 下拉菜单主体组件的遮罩层颜色
-final Duration animationDuration; // 下拉菜单主体组件的动画时长
-final double? viewOffsetY; // 下拉菜单主体组件的 Y 轴偏移量
+/// 下拉菜单的控制器
+final DropDownController controller;
+
+/// 下拉菜单头部组件的数据
+final List<DropDownItem> headerItems;
+
+/// 下拉菜单内容组件的数据
+final List<DropDownViewBuilder> viewBuilders;
+
+/// 下拉菜单的销毁控制器，用于在页面销毁时提前关闭下拉菜单
+final DropDownDisposeController? disposeController;
+
+/// 下拉菜单头部组件的边框样式
+final DropDownBoxStyle headerBoxStyle;
+
+/// 下拉菜单头部组件的Item样式
+final DropDownItemStyle headerItemStyle;
+
+/// 下拉菜单头部组件的子项的构建器，用于自定义Item
+final NullableIndexedWidgetBuilder? headerItemBuilder;
+
+/// 下拉菜单头部组件的子项之间分割线的构建器，用于自定义分割线
+final IndexedWidgetBuilder? headerDividerBuilder;
+
+/// 下拉菜单头部组件的子项的点击事件
+final OnDropDownHeaderItemTap? onHeaderItemTap;
+
+/// 下拉菜单内容组件的背景颜色
+final Color? viewColor;
+
+/// 下拉菜单内容组件的遮罩层颜色
+final Color? maskColor;
+
+/// 下拉菜单内容组件的动画时长
+final Duration animationDuration;
+
+/// 下拉菜单内容组件的 Y 轴偏移量
+final double? viewOffsetY;
 ```
 
 ### DropDownListView
@@ -172,49 +386,58 @@ final double? viewOffsetY; // 下拉菜单主体组件的 Y 轴偏移量
 参数说明：
 
 ```dart
-final DropDownController controller; // 下拉菜单的控制器
-final List<DropDownItem> items; // 下拉菜单内容主体的数据
-final int? headerIndex; // 下拉菜单头部组件的索引
-final double itemHeight; // 下拉菜单内容主体的子项的高度
-final TextStyle textStyle; // 下拉菜单内容主体的子项的文本样式
-final TextStyle activeTextStyle; // 下拉菜单内容主体的子项选中时的文本样式
-final Widget? icon; // 下拉菜单内容主体的子项的图标
-final Widget? activeIcon; // 下拉菜单内容主体的子项选中时的图标
-final double iconSize; // 下拉菜单内容主体的子项的图标大小
-final double activeIconSize; // 下拉菜单内容主体的子项选中时的图标大小
-final Color iconColor; // 下拉菜单内容主体的子项的图标颜色
-final Color activeIconColor; // 下拉菜单内容主体的子项选中时的图标颜色
-final Color itemBackgroundColor; // 下拉菜单内容主体的子项的背景颜色
-final Color itemActiveBackgroundColor; // 下拉菜单内容主体的子项选中时的背景颜色
-final BoxBorder? itemBorder; // 下拉菜单内容主体的子项的边框
-final BoxBorder? itemActiveBorder; // 下拉菜单内容主体的子项选中时的边框
-final Decoration? itemDecoration; // 下拉菜单内容主体的子项的装饰器，用于设置背景颜色、边框等
-final Decoration? activeItemDecoration; // 下拉菜单内容主体的子项选中时的装饰器，用于设置背景颜色、边框等
-final double itemBorderRadius; // 下拉菜单内容主体的子项的圆角半径
-final AlignmentGeometry itemAlignment; // 下拉菜单内容主体的子项的对齐方式
-final EdgeInsetsGeometry? itemPadding; // 下拉菜单内容主体的子项的内边距
-final IndexedWidgetBuilder? itemBuilder; // 下拉菜单内容主体的子项的构建器，用于自定义Item
-final OnDropDownItemTap? onDropDownItemTap; // 下拉菜单内容主体的子项的点击事件
-final OnDropDownItemChanged? onDropDownItemChanged; // 下拉菜单内容主体的子项的选中状态改变事件
-final int? maxMultiChoiceSize; // 下拉菜单内容主体的子项的最大多选数量
-final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded; // 下拉菜单内容主体的子项的多选数量超过最大值时触发的回调事件
-final double? maxListHeight; // 下拉菜单内容主体的最大高度
-final bool multipleChoice; // 下拉菜单内容主体的是否支持多选
-final Widget? btnWidget; // 下拉菜单内容主体在多选状态下的按钮组件
-final Widget? resetWidget; // 下拉菜单内容主体在多选状态下的重置按钮组件
-final Widget? confirmWidget; // 下拉菜单内容主体在多选状态下的确认按钮组件
-final double resetHeight; // 下拉菜单内容主体在多选状态下的重置按钮组件的高度
-final double confirmHeight; // 下拉菜单内容主体在多选状态下的确认按钮组件的高度
-final String resetText; // 下拉菜单内容主体在多选状态下的重置按钮组件的文本
-final String confirmText; // 下拉菜单内容主体在多选状态下的确认按钮组件的文本
-final TextStyle resetTextStyle; // 下拉菜单内容主体在多选状态下的重置按钮组件的文本样式
-final TextStyle confirmTextStyle; // 下拉菜单内容主体在多选状态下的确认按钮组件的文本样式
-final Color resetBackgroundColor; // 下拉菜单内容主体在多选状态下的重置按钮组件的背景颜色
-final Color confirmBackgroundColor; // 下拉菜单内容主体在多选状态下的确认按钮组件的背景颜色
-final OnDropDownItemsReset? onDropDownItemsReset; // 下拉菜单内容主体在多选状态下的重置按钮组件的点击事件
-final OnDropDownItemsConfirm? onDropDownItemsConfirm; // 下拉菜单内容主体在多选状态下的确认按钮组件的点击事件
-// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
-// headerIndex should not be null when using this callback
+/// 下拉菜单的控制器
+final DropDownController controller;
+
+/// 下拉菜单内容组件的数据
+final List<DropDownItem> items;
+
+/// 下拉菜单内容组件对应头部组件中的位置索引
+final int? headerIndex;
+
+/// 下拉菜单内容组件的边框样式
+final DropDownBoxStyle boxStyle;
+
+/// 下拉菜单内容组件的Item样式
+final DropDownItemStyle itemStyle;
+
+/// 下拉菜单内容组件的子项的构建器，用于自定义Item
+final IndexedWidgetBuilder? itemBuilder;
+
+/// 下拉菜单内容组件的子项的点击事件
+final OnDropDownItemTap? onDropDownItemTap;
+
+/// 下拉菜单内容组件的子项的选中状态改变时的回调监听事件
+final OnDropDownItemChanged? onDropDownItemChanged;
+
+/// 下拉菜单内容组件的子项的最大多选数量
+final int? maxMultiChoiceSize;
+
+/// 下拉菜单内容组件的子项的多选数量超过最大值时触发的回调事件
+final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded;
+
+/// 下拉菜单的最大高度
+final double maxHeight;
+
+/// 下拉菜单内容组件在多选状态下的按钮组件
+final Widget? btnWidget;
+
+/// 下拉菜单内容组件在多选状态下的重置按钮组件
+final Widget? resetWidget;
+
+/// 下拉菜单内容组件在多选状态下的确认按钮组件
+final Widget? confirmWidget;
+
+/// 下拉菜单内容组件在多选状态下的按钮组件的样式
+final DropDownButtonStyle buttonStyle;
+
+/// 下拉菜单内容组件在多选状态下的重置按钮组件的点击事件
+final OnDropDownItemsReset? onDropDownItemsReset;
+
+/// 下拉菜单内容组件在多选状态下的确认按钮组件的点击事件
+final OnDropDownItemsConfirm? onDropDownItemsConfirm;
+
+/// 下拉菜单选择确认后触发的回调事件，用于通过回调的返回值更新header组件的文本，使用该回调时headerIndex不应该为null
 final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 ```
 
@@ -225,53 +448,67 @@ final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 参数说明：
 
 ```dart
-final DropDownController controller; // 下拉菜单的控制器
-final List<DropDownItem> items; // 下拉菜单内容主体的数据
-final int? headerIndex; // 下拉菜单头部组件的索引
-final EdgeInsetsGeometry? padding; // 下拉菜单内容主体的内边距
-final int crossAxisCount; // 下拉菜单内容主体的子项的列数
-final double mainAxisSpacing; // 下拉菜单内容主体的子项的行间距
-final double crossAxisSpacing; // 下拉菜单内容主体的子项的列间距
-final double itemHeight; // 下拉菜单内容主体的子项的高度
-final TextStyle textStyle; // 下拉菜单内容主体的子项的文本样式
-final TextStyle activeTextStyle; // 下拉菜单内容主体的子项选中时的文本样式
-final Widget? icon; // 下拉菜单内容主体的子项的图标
-final Widget? activeIcon; // 下拉菜单内容主体的子项选中时的图标
-final double iconSize; // 下拉菜单内容主体的子项的图标大小
-final double activeIconSize; // 下拉菜单内容主体的子项选中时的图标大小
-final Color iconColor; // 下拉菜单内容主体的子项的图标颜色
-final Color activeIconColor; // 下拉菜单内容主体的子项选中时的图标颜色
-final Color itemBackgroundColor; // 下拉菜单内容主体的子项的背景颜色
-final Color itemActiveBackgroundColor; // 下拉菜单内容主体的子项选中时的背景颜色
-final BoxBorder? itemBorder; // 下拉菜单内容主体的子项的边框
-final BoxBorder? itemActiveBorder; // 下拉菜单内容主体的子项选中时的边框
-final Decoration? itemDecoration; // 下拉菜单内容主体的子项的装饰器，用于设置背景颜色、边框等
-final Decoration? activeItemDecoration; // 下拉菜单内容主体的子项选中时的装饰器，用于设置背景颜色、边框等
-final double itemBorderRadius; // 下拉菜单内容主体的子项的圆角半径
-final AlignmentGeometry itemAlignment; // 下拉菜单内容主体的子项的对齐方式
-final EdgeInsetsGeometry? itemPadding; // 下拉菜单内容主体的子项的内边距
-final IndexedWidgetBuilder? itemBuilder; // 下拉菜单内容主体的子项的构建器，用于自定义Item
-final OnDropDownItemTap? onDropDownItemTap; // 下拉菜单内容主体的子项的点击事件
-final OnDropDownItemChanged? onDropDownItemChanged; // 下拉菜单内容主体的子项的选中状态改变事件
-final int? maxMultiChoiceSize; // 下拉菜单内容主体的子项的最大多选数量
-final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded; // 下拉菜单内容主体的子项的多选数量超过最大值时触发的回调事件
-final double? maxListHeight; // 下拉菜单内容主体的最大高度
-final bool multipleChoice; // 下拉菜单内容主体的是否支持多选
-final Widget? btnWidget; // 下拉菜单内容主体在多选状态下的按钮组件
-final Widget? resetWidget; // 下拉菜单内容主体在多选状态下的重置按钮组件
-final Widget? confirmWidget; // 下拉菜单内容主体在多选状态下的确认按钮组件
-final double resetHeight; // 下拉菜单内容主体在多选状态下的重置按钮组件的高度
-final double confirmHeight; // 下拉菜单内容主体在多选状态下的确认按钮组件的高度
-final String resetText; // 下拉菜单内容主体在多选状态下的重置按钮组件的文本
-final String confirmText; // 下拉菜单内容主体在多选状态下的确认按钮组件的文本
-final TextStyle resetTextStyle; // 下拉菜单内容主体在多选状态下的重置按钮组件的文本样式
-final TextStyle confirmTextStyle; // 下拉菜单内容主体在多选状态下的确认按钮组件的文本样式
-final Color resetBackgroundColor; // 下拉菜单内容主体在多选状态下的重置按钮组件的背景颜色
-final Color confirmBackgroundColor; // 下拉菜单内容主体在多选状态下的确认按钮组件的背景颜色
-final OnDropDownItemsReset? onDropDownItemsReset; // 下拉菜单内容主体在多选状态下的重置按钮组件的点击事件
-final OnDropDownItemsConfirm? onDropDownItemsConfirm; // 下拉菜单内容主体在多选状态下的确认按钮组件的点击事件
-// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
-// headerIndex should not be null when using this callback
+/// 下拉菜单的控制器
+final DropDownController controller;
+
+/// 下拉菜单内容组件的数据
+final List<DropDownItem> items;
+
+/// 下拉菜单内容组件对应头部组件中的位置索引
+final int? headerIndex;
+
+/// 下拉菜单内容组件的子项的列数
+final int crossAxisCount;
+
+/// 下拉菜单内容组件的子项的行间距
+final double mainAxisSpacing;
+
+/// 下拉菜单内容组件的子项的列间距
+final double crossAxisSpacing;
+
+/// 下拉菜单内容组件的边框样式
+final DropDownBoxStyle boxStyle;
+
+/// 下拉菜单内容组件的Item样式
+final DropDownItemStyle itemStyle;
+
+/// 下拉菜单内容组件的子项的构建器，用于自定义Item
+final IndexedWidgetBuilder? itemBuilder;
+
+/// 下拉菜单内容组件的子项的点击事件
+final OnDropDownItemTap? onDropDownItemTap;
+
+/// 下拉菜单内容组件的子项的选中状态改变时的回调监听事件
+final OnDropDownItemChanged? onDropDownItemChanged;
+
+/// 下拉菜单内容组件的子项的最大多选数量
+final int? maxMultiChoiceSize;
+
+/// 下拉菜单内容组件的子项的多选数量超过最大值时触发的回调事件
+final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded;
+
+/// 下拉菜单的最大高度
+final double maxHeight;
+
+/// 下拉菜单内容组件在多选状态下的按钮组件
+final Widget? btnWidget;
+
+/// 下拉菜单内容组件在多选状态下的重置按钮组件
+final Widget? resetWidget;
+
+/// 下拉菜单内容组件在多选状态下的确认按钮组件
+final Widget? confirmWidget;
+
+/// 下拉菜单内容组件在多选状态下的按钮组件的样式
+final DropDownButtonStyle buttonStyle;
+
+/// 下拉菜单内容组件在多选状态下的重置按钮组件的点击事件
+final OnDropDownItemsReset? onDropDownItemsReset;
+
+/// 下拉菜单内容组件在多选状态下的确认按钮组件的点击事件
+final OnDropDownItemsConfirm? onDropDownItemsConfirm;
+
+/// 下拉菜单选择确认后触发的回调事件，用于通过回调的返回值更新header组件的文本，使用该回调时headerIndex不应该为null
 final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 ```
 
@@ -282,60 +519,67 @@ final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 参数说明：
 
 ```dart
-final DropDownController controller; // 下拉菜单的控制器
-final List<DropDownItem<List<DropDownItem>>> items; // 下拉菜单内容主体的数据
-final int? headerIndex; // 下拉菜单头部组件的索引
-final double firstFloorRatio; // 下拉菜单内容主体的第一层级的宽度占比
-final Color? firstFloorBackgroundColor; // 下拉菜单内容主体的第一层级的背景颜色
-final double firstFloorItemHeight; // 下拉菜单内容主体的第一层级的子项的高度
-final TextStyle firstFloorTextStyle; // 下拉菜单内容主体的第一层级的子项的文本样式
-final TextStyle firstFloorActiveTextStyle; // 下拉菜单内容主体的第一层级的子项选中时的文本样式
-final Color firstFloorItemBackgroundColor; // 下拉菜单内容主体的第一层级的子项的背景颜色
-final Color firstFloorItemActiveBackgroundColor; // 下拉菜单内容主体的第一层级的子项选中时的背景颜色
-final Decoration? firstFloorItemDecoration; // 下拉菜单内容主体的第一层级的子项的装饰器，用于设置背景颜色、边框等
-final Decoration? firstFloorActiveItemDecoration; // 下拉菜单内容主体的第一层级的子项选中时的装饰器，用于设置背景颜色、边框等
-final AlignmentGeometry firstFloorItemAlignment; // 下拉菜单内容主体的第一层级的子项的对齐方式
-final EdgeInsetsGeometry? firstFloorItemPadding; // 下拉菜单内容主体的第一层级的子项的内边距
-final IndexedWidgetBuilder? firstFloorItemBuilder; // 下拉菜单内容主体的第一层级的子项的构建器，用于自定义Item
-final OnDropDownItemTap? onFirstFloorItemTap; // 下拉菜单内容主体的第一层级的子项的点击事件
-final Color? secondFloorBackgroundColor; // 下拉菜单内容主体的第二层级的背景颜色
-final double secondFloorItemHeight; // 下拉菜单内容主体的第二层级的子项的高度
-final TextStyle secondFloorTextStyle; // 下拉菜单内容主体的第二层级的子项的文本样式
-final TextStyle secondFloorActiveTextStyle; // 下拉菜单内容主体的第二层级的子项选中时的文本样式
-final Color secondFloorItemBackgroundColor; // 下拉菜单内容主体的第二层级的子项的背景颜色
-final Color secondFloorItemActiveBackgroundColor; // 下拉菜单内容主体的第二层级的子项选中时的背景颜色
-final Decoration? secondFloorItemDecoration; // 下拉菜单内容主体的第二层级的子项的装饰器，用于设置背景颜色、边框等
-final Decoration? secondFloorActiveItemDecoration; // 下拉菜单内容主体的第二层级的子项选中时的装饰器，用于设置背景颜色、边框等
-final Widget? secondFloorItemIcon; // 下拉菜单内容主体的第二层级的子项的图标
-final Widget? secondFloorItemActiveIcon; // 下拉菜单内容主体的第二层级的子项选中时的图标
-final double secondFloorItemIconSize; // 下拉菜单内容主体的第二层级的子项的图标大小
-final double secondFloorItemActiveIconSize; // 下拉菜单内容主体的第二层级的子项选中时的图标大小
-final Color secondFloorItemIconColor; // 下拉菜单内容主体的第二层级的子项的图标颜色
-final Color secondFloorItemActiveIconColor; // 下拉菜单内容主体的第二层级的子项选中时的图标颜色
-final AlignmentGeometry secondFloorItemAlignment; // 下拉菜单内容主体的第二层级的子项的对齐方式
-final EdgeInsetsGeometry? secondFloorItemPadding; // 下拉菜单内容主体的第二层级的子项的内边距
-final IndexedWidgetBuilder? secondFloorItemBuilder; // 下拉菜单内容主体的第二层级的子项的构建器，用于自定义Item
-final OnDropDownItemTap? onSecondFloorItemTap; // 下拉菜单内容主体的第二层级的子项的点击事件
-final OnDropDownItemChanged? onSecondFloorItemChanged; // 下拉菜单内容主体的第二层级的子项的选中状态改变事件
-final int? maxMultiChoiceSize; // 下拉菜单内容主体的第二层级的子项的最大多选数量
-final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded; // 下拉菜单内容主体的第二层级的子项的多选数量超过最大值时触发的回调事件
-final double? maxListHeight; // 下拉菜单内容主体的最大高度
-final bool multipleChoice; // 下拉菜单内容主体的是否支持多选
-final Widget? btnWidget; // 下拉菜单内容主体在多选状态下的按钮组件
-final Widget? resetWidget; // 下拉菜单内容主体在多选状态下的重置按钮组件
-final Widget? confirmWidget; // 下拉菜单内容主体在多选状态下的确认按钮组件
-final double resetHeight; // 下拉菜单内容主体在多选状态下的重置按钮组件的高度
-final double confirmHeight; // 下拉菜单内容主体在多选状态下的确认按钮组件的高度
-final String resetText; // 下拉菜单内容主体在多选状态下的重置按钮组件的文本
-final String confirmText; // 下拉菜单内容主体在多选状态下的确认按钮组件的文本
-final TextStyle resetTextStyle; // 下拉菜单内容主体在多选状态下的重置按钮组件的文本样式
-final TextStyle confirmTextStyle; // 下拉菜单内容主体在多选状态下的确认按钮组件的文本样式
-final Color resetBackgroundColor; // 下拉菜单内容主体在多选状态下的重置按钮组件的背景颜色
-final Color confirmBackgroundColor; // 下拉菜单内容主体在多选状态下的确认按钮组件的背景颜色
-final OnDropDownItemsReset? onDropDownItemsReset; // 下拉菜单内容主体在多选状态下的重置按钮组件的点击事件
-final OnDropDownItemsConfirm? onDropDownItemsConfirm; // 下拉菜单内容主体在多选状态下的确认按钮组件的点击事件
-// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
-// headerIndex should not be null when using this callback
+/// 下拉菜单的控制器
+final DropDownController controller;
+
+/// 下拉菜单内容组件的数据
+final List<DropDownItem<List<DropDownItem>>> items;
+
+/// 下拉菜单内容组件对应头部组件中的位置索引
+final int? headerIndex;
+
+/// 下拉菜单内容组件的边框样式
+final DropDownBoxStyle boxStyle;
+
+/// 下拉菜单内容组件的第一层级的子项的样式
+final DropDownItemStyle firstFloorItemStyle;
+
+/// 下拉菜单内容组件的第一层级的子项的构建器，用于自定义Item
+final IndexedWidgetBuilder? firstFloorItemBuilder;
+
+/// 下拉菜单内容组件的第一层级的子项的点击事件
+final OnDropDownItemTap? onFirstFloorItemTap;
+
+/// 下拉菜单内容组件的第二层级的子项的样式
+final DropDownItemStyle secondFloorItemStyle;
+
+/// 下拉菜单内容组件的第二层级的子项的构建器，用于自定义Item
+final IndexedWidgetBuilder? secondFloorItemBuilder;
+
+/// 下拉菜单内容组件的第二层级的子项的点击事件
+final OnDropDownItemTap? onSecondFloorItemTap;
+
+/// 下拉菜单内容组件的第二层级的子项的选中状态改变时的回调监听事件
+final OnDropDownItemChanged? onSecondFloorItemChanged;
+
+/// 下拉菜单内容组件的子项的最大多选数量
+final int? maxMultiChoiceSize;
+
+/// 下拉菜单内容组件的子项的多选数量超过最大值时触发的回调事件
+final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded;
+
+/// 下拉菜单的最大高度
+final double maxHeight;
+
+/// 下拉菜单内容组件在多选状态下的按钮组件
+final Widget? btnWidget;
+
+/// 下拉菜单内容组件在多选状态下的重置按钮组件
+final Widget? resetWidget;
+
+/// 下拉菜单内容组件在多选状态下的确认按钮组件
+final Widget? confirmWidget;
+
+/// 下拉菜单内容组件在多选状态下的按钮组件的样式
+final DropDownButtonStyle buttonStyle;
+
+/// 下拉菜单内容组件在多选状态下的重置按钮组件的点击事件
+final OnDropDownItemsReset? onDropDownItemsReset;
+
+/// 下拉菜单内容组件在多选状态下的确认按钮组件的点击事件
+final OnDropDownItemsConfirm? onDropDownItemsConfirm;
+
+/// 下拉菜单选择确认后触发的回调事件，用于通过回调的返回值更新header组件的文本，使用该回调时headerIndex不应该为null
 final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 ```
 
@@ -349,11 +593,12 @@ DropDownMenu(
   controller: dropDownController,
   // 下拉菜单的销毁控制器
   disposeController: dropDownDisposeController,
-  // 下拉菜单的头部高度
-  headerHeight: 50,
-  headerActiveIconColor: Colors.blue,
-  headerActiveTextStyle: const TextStyle(color: Colors.blue),
-  // 下拉菜单的头部数据
+  // 下拉菜单的头部组件的样式
+  headerItemStyle: const DropDownItemStyle(
+    activeIconColor: Colors.blue,
+    activeTextStyle: TextStyle(color: Colors.blue),
+  ),
+  // 下拉菜单的头部组件的数据
   headerItems: List.generate(
     4,
     (index) => DropDownItem<Tab>(
@@ -362,19 +607,19 @@ DropDownMenu(
       activeIcon: const Icon(Icons.arrow_drop_up),
     ),
   ),
-  // 下拉菜单的主体内容的 Y 轴偏移量
+  // 下拉菜单的内容组件的 Y 轴偏移量
   viewOffsetY: MediaQuery.of(context).padding.top + 50,
-  // 下拉菜单的主体内容
+  // 下拉菜单的内容组件
   viewBuilders: [
     DropDownViewBuilder(
       height: 300,
       widget: DropDownListView(
         controller: dropDownController,
-        headerIndex: 0,
         itemActiveBackgroundColor: Colors.blue.shade100,
         items: items,
+        headerIndex: 0,
         // 通过回调的返回值更新 header 组件按钮的文本
-        // 使用此回调时 headerIndex 不应为 null
+        // 使用此回调时， headerIndex 不应为 null
         onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
           return checkedItems.map((e) => e.text).toList().join("、");
         },
@@ -384,10 +629,10 @@ DropDownMenu(
       height: 300,
       widget: DropDownListView(
         controller: dropDownController,
-        headerIndex: 1,
         items: items,
         multipleChoice: true,
         maxMultiChoiceSize: 2,
+        headerIndex: 1,
         onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
           return checkedItems.map((e) => e.text).toList().join("、");
         },
@@ -397,9 +642,18 @@ DropDownMenu(
       height: 300,
       widget: DropDownGridView(
         controller: dropDownController,
-        headerIndex: 2,
         crossAxisCount: 3,
+        boxStyle: const DropDownBoxStyle(
+          padding: EdgeInsets.all(16),
+        ),
+        itemStyle: DropDownItemStyle(
+          activeBackgroundColor: const Color(0xFFF5F5F5),
+          activeIconColor: Colors.blue,
+          activeTextStyle: const TextStyle(color: Colors.blue),
+          activeBorderRadius: BorderRadius.circular(6),
+        ),
         items: items,
+        headerIndex: 2,
         onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
           return checkedItems.map((e) => e.text).toList().join("、");
         },
@@ -409,11 +663,20 @@ DropDownMenu(
       height: 310,
       widget: DropDownGridView(
         controller: dropDownController,
-        headerIndex: 3,
         crossAxisCount: 3,
+        boxStyle: const DropDownBoxStyle(
+          padding: EdgeInsets.all(16),
+        ),
+        itemStyle: DropDownItemStyle(
+          activeBackgroundColor: const Color(0xFFF5F5F5),
+          activeIconColor: Colors.blue,
+          activeTextStyle: const TextStyle(color: Colors.blue),
+          activeBorderRadius: BorderRadius.circular(6),
+        ),
         items: items,
         multipleChoice: true,
         maxMultiChoiceSize: 2,
+        headerIndex: 3,
         onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
           return checkedItems.map((e) => e.text).toList().join("、");
         },
@@ -428,12 +691,11 @@ DropDownMenu(
 ```dart
 Column(children: [
   DropDownHeader(
-    // 下拉菜单的控制器
     controller: dropDownController,
-    height: 50,
-    activeIconColor: Colors.blue,
-    activeTextStyle: const TextStyle(color: Colors.blue),
-    // 下拉菜单的头部数据
+    itemStyle: const DropDownItemStyle(
+      activeIconColor: Colors.blue,
+      activeTextStyle: TextStyle(color: Colors.blue),
+    ),
     items: List.generate(
       4,
       (index) => DropDownItem<Tab>(
@@ -450,16 +712,12 @@ Column(children: [
           color: Colors.blue[200],
         ),
         DropDownView(
-          // 下拉菜单的控制器
           controller: dropDownController,
-          // 下拉菜单的主体内容
           builders: [
             DropDownViewBuilder(
               height: 300,
               widget: DropDownListView(
-                headerIndex: 0,
                 controller: dropDownController,
-                itemActiveBackgroundColor: Colors.blue.shade100,
                 items: List.generate(
                   6,
                   (index) => DropDownItem(
@@ -480,34 +738,48 @@ Column(children: [
                     data: index,
                   ),
                 ),
-                multipleChoice: true,
                 maxMultiChoiceSize: 2,
               ),
             ),
             DropDownViewBuilder(
-              height: 300,
+              height: 262,
               widget: DropDownGridView(
-                crossAxisCount: 3,
                 controller: dropDownController,
+                crossAxisCount: 3,
+                boxStyle: const DropDownBoxStyle(
+                  padding: EdgeInsets.all(16),
+                ),
+                itemStyle: DropDownItemStyle(
+                  activeBackgroundColor: const Color(0xFFF5F5F5),
+                  activeIconColor: Colors.blue,
+                  activeTextStyle: const TextStyle(color: Colors.blue),
+                  activeBorderRadius: BorderRadius.circular(6),
+                ),
                 items: List.generate(
                   10,
                   (index) => DropDownItem(
                     text: "Single Item $index",
                     icon: const Icon(Icons.ac_unit),
-                    activeIcon: const Icon(
-                      Icons.ac_unit,
-                      color: Colors.white,
-                    ),
+                    activeIcon: const Icon(Icons.ac_unit),
                     data: index,
                   ),
                 ),
               ),
             ),
             DropDownViewBuilder(
-              height: 310,
+              height: 300,
               widget: DropDownGridView(
-                crossAxisCount: 3,
                 controller: dropDownController,
+                crossAxisCount: 3,
+                boxStyle: const DropDownBoxStyle(
+                  padding: EdgeInsets.all(16),
+                ),
+                itemStyle: DropDownItemStyle(
+                  activeBackgroundColor: const Color(0xFFF5F5F5),
+                  activeIconColor: Colors.blue,
+                  activeTextStyle: const TextStyle(color: Colors.blue),
+                  activeBorderRadius: BorderRadius.circular(6),
+                ),
                 items: List.generate(
                   12,
                   (index) => DropDownItem(
@@ -515,7 +787,6 @@ Column(children: [
                     data: index,
                   ),
                 ),
-                multipleChoice: true,
                 maxMultiChoiceSize: 2,
               ),
             ),
@@ -569,10 +840,14 @@ Widget usingOverlay() {
               key: dropDownMenuKey,
               controller: dropDownController,
               disposeController: dropDownDisposeController,
-              headerHeight: dropDownMenuHeight,
-              headerBackgroundColor: Colors.white,
-              headerActiveIconColor: Colors.blue,
-              headerActiveTextStyle: const TextStyle(color: Colors.blue),
+              headerBoxStyle: DropDownBoxStyle(
+                height: dropDownMenuHeight,
+                backgroundColor: Colors.white,
+              ),
+              headerItemStyle: const DropDownItemStyle(
+                activeIconColor: Colors.blue,
+                activeTextStyle: TextStyle(color: Colors.blue),
+              ),
               headerItems: List.generate(
                 4,
                 (index) => DropDownItem<Tab>(
@@ -587,44 +862,93 @@ Widget usingOverlay() {
                   offsetY: dropDownViewOffsetY,
                 );
               },
-              viewOffsetY: MediaQuery.of(context).padding.top + // statusBar
-                  55 + // appBar
-                  100 + // blue Container
-                  dropDownMenuHeight,
+              viewOffsetY: MediaQuery
+                      .of(context)
+                      .padding
+                      .top + // statusBar
+                      55 + // appBar
+                      100 + // blue Container
+                      dropDownMenuHeight,
               viewBuilders: [
                 DropDownViewBuilder(
                   height: 300,
                   widget: DropDownListView(
-                    headerIndex: 0,
                     controller: dropDownController,
-                    itemActiveBackgroundColor: Colors.blue.shade100,
-                    items: items1,
+                    items: List.generate(
+                      6,
+                      (index) =>
+                      DropDownItem(
+                        text: "Single Item $index",
+                        data: index,
+                      ),
+                    ),
                   ),
                 ),
                 DropDownViewBuilder(
                   height: 300,
                   widget: DropDownListView(
                     controller: dropDownController,
-                    items: items2,
-                    multipleChoice: true,
+                    items: List.generate(
+                      8,
+                      (index) =>
+                      DropDownItem(
+                        text: "Multi Item $index",
+                        data: index,
+                      ),
+                    ),
                     maxMultiChoiceSize: 2,
+                  ),
+                ),
+                DropDownViewBuilder(
+                  height: 262,
+                  widget: DropDownGridView(
+                    crossAxisCount: 3,
+                    boxStyle: const DropDownBoxStyle(
+                      padding: EdgeInsets.all(16),
+                    ),
+                    itemStyle: DropDownItemStyle(
+                      activeBackgroundColor: const Color(0xFFF5F5F5),
+                      activeIconColor: Colors.blue,
+                      activeTextStyle: const TextStyle(color: Colors.blue),
+                      activeBorderRadius: BorderRadius.circular(6),
+                    ),
+                    controller: dropDownController,
+                    items: List.generate(
+                      10,
+                      (index) => DropDownItem(
+                            text: "Single Item $index",
+                            icon: const Icon(Icons.ac_unit),
+                            activeIcon: const Icon(
+                              Icons.ac_unit,
+                              color: Colors.white,
+                            ),
+                            data: index,
+                          ),
+                    ),
                   ),
                 ),
                 DropDownViewBuilder(
                   height: 300,
                   widget: DropDownGridView(
                     crossAxisCount: 3,
+                    boxStyle: const DropDownBoxStyle(
+                      padding: EdgeInsets.all(16),
+                    ),
+                    itemStyle: DropDownItemStyle(
+                      activeBackgroundColor: const Color(0xFFF5F5F5),
+                      activeIconColor: Colors.blue,
+                      activeTextStyle: const TextStyle(color: Colors.blue),
+                      activeBorderRadius: BorderRadius.circular(6),
+                    ),
                     controller: dropDownController,
-                    items: items3,
-                  ),
-                ),
-                DropDownViewBuilder(
-                  height: 310,
-                  widget: DropDownGridView(
-                    crossAxisCount: 3,
-                    controller: dropDownController,
-                    items: items4,
-                    multipleChoice: true,
+                    items: List.generate(
+                      12,
+                              (index) =>
+                              DropDownItem(
+                                text: "Multi Item $index",
+                                data: index,
+                              ),
+                    ),
                     maxMultiChoiceSize: 2,
                   ),
                 ),
@@ -638,7 +962,7 @@ Widget usingOverlay() {
           return Container(
             height: 50,
             color:
-                index % 2 == 0 ? Colors.grey.shade300 : Colors.grey.shade200,
+            index % 2 == 0 ? Colors.grey.shade300 : Colors.grey.shade200,
           );
         },
         itemCount: 20,
@@ -652,6 +976,7 @@ Stack实现：
 
 ```dart
 Widget usingStack() {
+  double statusBarHeight = MediaQuery.of(context).padding.top;
   return Stack(
     children: [
       CustomScrollView(
@@ -675,10 +1000,14 @@ Widget usingStack() {
                 return DropDownHeader(
                   key: dropDownMenuKey,
                   controller: dropDownController,
-                  height: dropDownMenuHeight,
-                  backgroundColor: Colors.white,
-                  activeIconColor: Colors.blue,
-                  activeTextStyle: const TextStyle(color: Colors.blue),
+                  boxStyle: DropDownBoxStyle(
+                    height: dropDownMenuHeight,
+                    backgroundColor: Colors.white,
+                  ),
+                  itemStyle: const DropDownItemStyle(
+                    activeIconColor: Colors.blue,
+                    activeTextStyle: TextStyle(color: Colors.blue),
+                  ),
                   items: List.generate(
                     4,
                     (index) => DropDownItem<Tab>(
@@ -690,7 +1019,10 @@ Widget usingStack() {
                   onItemTap: (index, item) {
                     dropDownController.toggle(
                       index,
-                      offsetY: dropDownViewOffsetY - 55, // appBar
+                      offsetY: dropDownViewOffsetY +
+                              dropDownMenuHeight -
+                              statusBarHeight -
+                              56, // appBar
                     );
                   },
                 );
@@ -702,8 +1034,8 @@ Widget usingStack() {
               return Container(
                 height: 50,
                 color: index % 2 == 0
-                    ? Colors.grey.shade300
-                    : Colors.grey.shade200,
+                        ? Colors.grey.shade300
+                        : Colors.grey.shade200,
               );
             },
             itemCount: 20,
@@ -711,7 +1043,6 @@ Widget usingStack() {
         ],
       ),
       DropDownView(
-        offsetY: dropDownViewOffsetY - 55, // appBar
         controller: dropDownController,
         builders: [
           DropDownViewBuilder(
@@ -719,7 +1050,6 @@ Widget usingStack() {
             widget: DropDownListView(
               headerIndex: 0,
               controller: dropDownController,
-              itemActiveBackgroundColor: Colors.blue.shade100,
               items: items1,
             ),
           ),
@@ -728,25 +1058,41 @@ Widget usingStack() {
             widget: DropDownListView(
               controller: dropDownController,
               items: items2,
-              multipleChoice: true,
               maxMultiChoiceSize: 2,
+            ),
+          ),
+          DropDownViewBuilder(
+            height: 262,
+            widget: DropDownGridView(
+              crossAxisCount: 3,
+              boxStyle: const DropDownBoxStyle(
+                padding: EdgeInsets.all(16),
+              ),
+              itemStyle: DropDownItemStyle(
+                activeBackgroundColor: const Color(0xFFF5F5F5),
+                activeIconColor: Colors.blue,
+                activeTextStyle: const TextStyle(color: Colors.blue),
+                activeBorderRadius: BorderRadius.circular(6),
+              ),
+              controller: dropDownController,
+              items: items3,
             ),
           ),
           DropDownViewBuilder(
             height: 300,
             widget: DropDownGridView(
               crossAxisCount: 3,
-              controller: dropDownController,
-              items: items3,
-            ),
-          ),
-          DropDownViewBuilder(
-            height: 310,
-            widget: DropDownGridView(
-              crossAxisCount: 3,
+              boxStyle: const DropDownBoxStyle(
+                padding: EdgeInsets.all(16),
+              ),
+              itemStyle: DropDownItemStyle(
+                activeBackgroundColor: const Color(0xFFF5F5F5),
+                activeIconColor: Colors.blue,
+                activeTextStyle: const TextStyle(color: Colors.blue),
+                activeBorderRadius: BorderRadius.circular(6),
+              ),
               controller: dropDownController,
               items: items4,
-              multipleChoice: true,
               maxMultiChoiceSize: 2,
             ),
           ),

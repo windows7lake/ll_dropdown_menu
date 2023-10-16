@@ -88,9 +88,9 @@ class _DropDownDemoState extends State<DropDownDemo1>
             DropDownViewBuilder(
               height: 300,
               widget: DropDownListView(
-                headerIndex: 0,
                 controller: dropDownController,
                 items: items1,
+                headerIndex: 0,
                 onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
                   return checkedItems.map((e) => e.text).toList().join("、");
                 },
@@ -99,10 +99,10 @@ class _DropDownDemoState extends State<DropDownDemo1>
             DropDownViewBuilder(
               height: 300,
               widget: DropDownListView(
-                headerIndex: 1,
                 controller: dropDownController,
                 items: items2,
                 maxMultiChoiceSize: 2,
+                headerIndex: 1,
                 onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
                   return checkedItems.map((e) => e.text).toList().join("、");
                 },
@@ -111,7 +111,7 @@ class _DropDownDemoState extends State<DropDownDemo1>
             DropDownViewBuilder(
               height: 262,
               widget: DropDownGridView(
-                headerIndex: 2,
+                controller: dropDownController,
                 crossAxisCount: 3,
                 boxStyle: const DropDownBoxStyle(
                   padding: EdgeInsets.all(16),
@@ -122,8 +122,8 @@ class _DropDownDemoState extends State<DropDownDemo1>
                   activeTextStyle: const TextStyle(color: Colors.blue),
                   activeBorderRadius: BorderRadius.circular(6),
                 ),
-                controller: dropDownController,
                 items: items3,
+                headerIndex: 2,
                 onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
                   return checkedItems.map((e) => e.text).toList().join("、");
                 },
@@ -132,7 +132,7 @@ class _DropDownDemoState extends State<DropDownDemo1>
             DropDownViewBuilder(
               height: 300,
               widget: DropDownGridView(
-                headerIndex: 3,
+                controller: dropDownController,
                 crossAxisCount: 3,
                 boxStyle: const DropDownBoxStyle(
                   padding: EdgeInsets.all(16),
@@ -143,9 +143,9 @@ class _DropDownDemoState extends State<DropDownDemo1>
                   activeTextStyle: const TextStyle(color: Colors.blue),
                   activeBorderRadius: BorderRadius.circular(6),
                 ),
-                controller: dropDownController,
                 items: items4,
                 maxMultiChoiceSize: 2,
+                headerIndex: 3,
                 onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
                   return checkedItems.map((e) => e.text).toList().join("、");
                 },

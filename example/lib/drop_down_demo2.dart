@@ -74,6 +74,7 @@ class _DropDownDemoState extends State<DropDownDemo2>
                   DropDownViewBuilder(
                     height: 262,
                     widget: DropDownGridView(
+                      controller: dropDownController,
                       crossAxisCount: 3,
                       boxStyle: const DropDownBoxStyle(
                         padding: EdgeInsets.all(16),
@@ -84,7 +85,6 @@ class _DropDownDemoState extends State<DropDownDemo2>
                         activeTextStyle: const TextStyle(color: Colors.blue),
                         activeBorderRadius: BorderRadius.circular(6),
                       ),
-                      controller: dropDownController,
                       items: List.generate(
                         10,
                         (index) => DropDownItem(
@@ -99,6 +99,7 @@ class _DropDownDemoState extends State<DropDownDemo2>
                   DropDownViewBuilder(
                     height: 300,
                     widget: DropDownGridView(
+                      controller: dropDownController,
                       crossAxisCount: 3,
                       boxStyle: const DropDownBoxStyle(
                         padding: EdgeInsets.all(16),
@@ -109,7 +110,6 @@ class _DropDownDemoState extends State<DropDownDemo2>
                         activeTextStyle: const TextStyle(color: Colors.blue),
                         activeBorderRadius: BorderRadius.circular(6),
                       ),
-                      controller: dropDownController,
                       items: List.generate(
                         12,
                         (index) => DropDownItem(

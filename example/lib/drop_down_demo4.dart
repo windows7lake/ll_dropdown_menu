@@ -154,7 +154,7 @@ class _DropDownDemoState extends State<DropDownDemo4>
                       controller: dropDownController,
                       items: List.generate(
                         6,
-                            (index) => DropDownItem(
+                        (index) => DropDownItem(
                           text: "Single Item $index",
                           data: index,
                         ),
@@ -167,7 +167,7 @@ class _DropDownDemoState extends State<DropDownDemo4>
                       controller: dropDownController,
                       items: List.generate(
                         8,
-                            (index) => DropDownItem(
+                        (index) => DropDownItem(
                           text: "Multi Item $index",
                           data: index,
                         ),
@@ -191,7 +191,7 @@ class _DropDownDemoState extends State<DropDownDemo4>
                       controller: dropDownController,
                       items: List.generate(
                         10,
-                            (index) => DropDownItem(
+                        (index) => DropDownItem(
                           text: "Single Item $index",
                           icon: const Icon(Icons.ac_unit),
                           activeIcon: const Icon(
@@ -219,7 +219,7 @@ class _DropDownDemoState extends State<DropDownDemo4>
                       controller: dropDownController,
                       items: List.generate(
                         12,
-                            (index) => DropDownItem(
+                        (index) => DropDownItem(
                           text: "Multi Item $index",
                           data: index,
                         ),
