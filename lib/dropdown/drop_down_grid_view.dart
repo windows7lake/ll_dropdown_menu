@@ -206,7 +206,7 @@ class _DropDownGridViewState extends State<DropDownGridView> {
                 Row(children: [
                   Expanded(
                     child: widget.resetWidget ??
-                        WrapperTextButton(
+                        WrapperButton(
                           height: widget.buttonStyle.resetHeight,
                           text: widget.buttonStyle.resetText,
                           textStyle: widget.buttonStyle.resetTextStyle,
@@ -225,7 +225,7 @@ class _DropDownGridViewState extends State<DropDownGridView> {
                   ),
                   Expanded(
                     child: widget.confirmWidget ??
-                        WrapperTextButton(
+                        WrapperButton(
                           height: widget.buttonStyle.confirmHeight,
                           text: widget.buttonStyle.confirmText,
                           textStyle: widget.buttonStyle.confirmTextStyle,
@@ -268,54 +268,9 @@ class _DropDownGridViewState extends State<DropDownGridView> {
   Widget gridItem(BuildContext context, int index, bool multipleChoice) {
     var item = items[index];
     var active = item.check;
-    List<Widget> children = [];
-    if (item.icon != null || widget.itemStyle.icon != null) {
-      children.add(IconTheme(
-        data: IconThemeData(
-          color: active
-              ? widget.itemStyle.activeIconColor
-              : widget.itemStyle.iconColor,
-          size: active
-              ? widget.itemStyle.activeIconSize
-              : widget.itemStyle.iconSize,
-        ),
-        child: (active ? item.activeIcon : item.icon) ??
-            (active ? widget.itemStyle.activeIcon : widget.itemStyle.icon) ??
-            const SizedBox(),
-      ));
-    }
-    if (item.text != null) {
-      children.add(ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth:
-              ((widget.boxStyle.width ?? MediaQuery.of(context).size.width) -
-                          widget.boxStyle.margin.horizontal -
-                          widget.boxStyle.padding.horizontal) /
-                      widget.crossAxisCount -
-                  widget.crossAxisSpacing * (widget.crossAxisCount - 1) -
-                  widget.itemStyle.iconSize,
-        ),
-        child: Text(
-          item.text ?? "",
-          style: active
-              ? widget.itemStyle.activeTextStyle
-              : widget.itemStyle.textStyle,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        ),
-      ));
-    }
 
-    Widget child = const SizedBox();
-    if (children.isNotEmpty) {
-      child = Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: children,
-      );
-    }
-
-    return GestureDetector(
-      onTap: () {
+    Widget child = WrapperButton(
+      onPressed: () {
         if (widget.onDropDownItemChanged != null) {
           widget.onDropDownItemChanged!(items);
         }
@@ -350,28 +305,66 @@ class _DropDownGridViewState extends State<DropDownGridView> {
         }
         setState(() {});
       },
-      child: Container(
-        width: widget.itemStyle.width,
-        height: widget.itemStyle.height,
-        alignment: widget.itemStyle.alignment,
-        margin: widget.itemStyle.margin,
-        padding: widget.itemStyle.padding,
-        decoration: (active
-                ? widget.itemStyle.activeDecoration
-                : widget.itemStyle.decoration) ??
-            BoxDecoration(
-              color: active
-                  ? widget.itemStyle.activeBackgroundColor
-                  : widget.itemStyle.backgroundColor,
-              border: active
-                  ? widget.itemStyle.activeBorder
-                  : widget.itemStyle.border,
-              borderRadius: BorderRadius.circular(active
-                  ? widget.itemStyle.activeBorderRadius
-                  : widget.itemStyle.borderRadius),
-            ),
-        child: child,
-      ),
+      text: item.text,
+      textStyle: active
+          ? widget.itemStyle.activeTextStyle
+          : widget.itemStyle.textStyle,
+      textAlign: widget.itemStyle.textAlign,
+      textExpand: widget.itemStyle.textExpand,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+      icon: active
+          ? (item.activeIcon ?? widget.itemStyle.activeIcon)
+          : (item.icon ?? widget.itemStyle.icon),
+      iconColor: active
+          ? widget.itemStyle.activeIconColor
+          : widget.itemStyle.iconColor,
+      iconSize:
+          active ? widget.itemStyle.activeIconSize : widget.itemStyle.iconSize,
+      iconPosition: widget.itemStyle.iconPosition,
+      gap: widget.itemStyle.gap,
+      padding: widget.itemStyle.padding,
+      width: (widget.itemStyle.width ??
+                  ((widget.boxStyle.width ??
+                          MediaQuery.of(context).size.width) -
+                      widget.boxStyle.margin.horizontal -
+                      widget.boxStyle.padding.horizontal)) /
+              widget.crossAxisCount -
+          (widget.crossAxisCount - 1) * widget.crossAxisSpacing -
+          (widget.itemStyle.margin?.horizontal ?? 0),
+      height: widget.itemStyle.height,
+      alignment: widget.itemStyle.alignment,
+      borderSide: active
+          ? widget.itemStyle.activeBorderSide
+          : widget.itemStyle.borderSide,
+      borderRadius: active
+          ? widget.itemStyle.activeBorderRadius
+          : widget.itemStyle.borderRadius,
+      backgroundColor: active
+          ? widget.itemStyle.activeBackgroundColor
+          : widget.itemStyle.backgroundColor,
     );
+
+    if (widget.itemStyle.decoration != null && !active) {
+      child = DecoratedBox(
+        decoration: widget.itemStyle.decoration!,
+        child: child,
+      );
+    }
+    if (widget.itemStyle.activeDecoration != null && active) {
+      child = DecoratedBox(
+        decoration: widget.itemStyle.activeDecoration!,
+        child: child,
+      );
+    }
+
+    if (widget.itemStyle.margin != null) {
+      child = Padding(
+        padding: widget.itemStyle.margin!,
+        child: child,
+      );
+    }
+
+    return child;
   }
 }

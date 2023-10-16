@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ll_dropdown_menu/button/text_button.dart';
 
 import 'drop_down_controller.dart';
 import 'drop_down_style.dart';
@@ -86,92 +87,76 @@ class _DropDownHeaderState extends State<DropDownHeader> {
     bool active =
         widget.controller.isExpand && widget.controller.headerIndex == index;
     var item = widget.items[index];
-    List<Widget> children = [];
-    if (item.text != null) {
-      var text = widget.controller.headerText.elementAt(index);
-      children.add(Expanded(
-        flex: widget.itemStyle.textExpand ? 1 : 0,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: (_width -
-                        widget.itemStyle.margin.horizontal -
-                        widget.itemStyle.padding.horizontal) /
-                    widget.items.length -
-                widget.itemStyle.iconSize -
-                widget.itemStyle.margin.horizontal -
-                widget.itemStyle.padding.horizontal,
-          ),
-          child: Text(
-            text.isEmpty ? item.text! : text,
-            style: active
-                ? widget.itemStyle.activeTextStyle
-                : widget.itemStyle.textStyle,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-        ),
-      ));
-    }
-    if (item.icon != null) {
-      children.add(IconTheme(
-        data: IconThemeData(
-          color: active
-              ? widget.itemStyle.activeIconColor
-              : widget.itemStyle.iconColor,
-          size: active
-              ? widget.itemStyle.activeIconSize
-              : widget.itemStyle.iconSize,
-        ),
-        child: active ? item.activeIcon! : item.icon!,
-      ));
+    String text = widget.controller.headerText.elementAt(index);
+    double width = _width;
+    if (widget.boxStyle.expand) {
+      width =
+          (_width - widget.boxStyle.padding.horizontal) / widget.items.length -
+              (widget.itemStyle.margin?.horizontal ?? 0);
     }
 
-    Widget child = const SizedBox();
-    if (children.isNotEmpty) {
-      child = Row(
-        mainAxisSize: MainAxisSize.min,
-        children: children,
-      );
-    }
-    if (widget.boxStyle.expand) {
-      double width =
-          (_width - widget.boxStyle.padding.horizontal) / widget.items.length -
-              widget.itemStyle.margin.horizontal -
-              widget.itemStyle.padding.horizontal;
-      child = Container(
-        width: widget.itemStyle.width ?? width,
-        height: widget.itemStyle.height,
-        margin: widget.itemStyle.margin,
-        padding: widget.itemStyle.padding,
-        alignment: widget.itemStyle.alignment,
-        decoration: active
-            ? widget.itemStyle.activeDecoration
-            : widget.itemStyle.decoration,
-        child: child,
-      );
-    } else if (widget.itemStyle.activeDecoration != null &&
-        widget.itemStyle.decoration != null) {
-      child = Container(
-        width: widget.itemStyle.width,
-        height: widget.itemStyle.height,
-        margin: widget.itemStyle.margin,
-        padding: widget.itemStyle.padding,
-        decoration: active
-            ? widget.itemStyle.activeDecoration!
-            : widget.itemStyle.decoration!,
-        child: child,
-      );
-    }
-    return GestureDetector(
-      onTap: () {
+    Widget child = WrapperButton(
+      onPressed: () {
         if (widget.onItemTap != null) {
           widget.onItemTap!(index, item);
           return;
         }
         widget.controller.toggle(index);
       },
-      child: child,
+      text: text.isEmpty ? item.text : text,
+      textStyle: active
+          ? widget.itemStyle.activeTextStyle
+          : widget.itemStyle.textStyle,
+      textAlign: widget.itemStyle.textAlign,
+      textExpand: widget.itemStyle.textExpand,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+      icon: active
+          ? (item.activeIcon ?? widget.itemStyle.activeIcon)
+          : (item.icon ?? widget.itemStyle.icon),
+      iconColor: active
+          ? widget.itemStyle.activeIconColor
+          : widget.itemStyle.iconColor,
+      iconSize:
+          active ? widget.itemStyle.activeIconSize : widget.itemStyle.iconSize,
+      iconPosition: widget.itemStyle.iconPosition,
+      gap: widget.itemStyle.gap,
+      padding: widget.itemStyle.padding,
+      width: width,
+      height: widget.itemStyle.height,
+      alignment: widget.itemStyle.alignment,
+      borderSide: active
+          ? widget.itemStyle.activeBorderSide
+          : widget.itemStyle.borderSide,
+      borderRadius: active
+          ? widget.itemStyle.activeBorderRadius
+          : widget.itemStyle.borderRadius,
+      backgroundColor: active
+          ? widget.itemStyle.activeBackgroundColor
+          : widget.itemStyle.backgroundColor,
     );
+
+    if (widget.itemStyle.decoration != null && !active) {
+      child = DecoratedBox(
+        decoration: widget.itemStyle.decoration!,
+        child: child,
+      );
+    }
+    if (widget.itemStyle.activeDecoration != null && active) {
+      child = DecoratedBox(
+        decoration: widget.itemStyle.activeDecoration!,
+        child: child,
+      );
+    }
+
+    if (widget.itemStyle.margin != null) {
+      child = Padding(
+        padding: widget.itemStyle.margin!,
+        child: child,
+      );
+    }
+
+    return child;
   }
 
   Widget divider(BuildContext context, int index) {

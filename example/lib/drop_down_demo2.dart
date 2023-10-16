@@ -78,11 +78,11 @@ class _DropDownDemoState extends State<DropDownDemo2>
                       boxStyle: const DropDownBoxStyle(
                         padding: EdgeInsets.all(16),
                       ),
-                      itemStyle: const DropDownItemStyle(
-                        activeBackgroundColor: Color(0xFFF5F5F5),
+                      itemStyle: DropDownItemStyle(
+                        activeBackgroundColor: const Color(0xFFF5F5F5),
                         activeIconColor: Colors.blue,
-                        activeTextStyle: TextStyle(color: Colors.blue),
-                        activeBorderRadius: 6,
+                        activeTextStyle: const TextStyle(color: Colors.blue),
+                        activeBorderRadius: BorderRadius.circular(6),
                       ),
                       controller: dropDownController,
                       items: List.generate(
@@ -90,10 +90,7 @@ class _DropDownDemoState extends State<DropDownDemo2>
                         (index) => DropDownItem(
                           text: "Single Item $index",
                           icon: const Icon(Icons.ac_unit),
-                          activeIcon: const Icon(
-                            Icons.ac_unit,
-                            color: Colors.white,
-                          ),
+                          activeIcon: const Icon(Icons.ac_unit),
                           data: index,
                         ),
                       ),
@@ -106,11 +103,11 @@ class _DropDownDemoState extends State<DropDownDemo2>
                       boxStyle: const DropDownBoxStyle(
                         padding: EdgeInsets.all(16),
                       ),
-                      itemStyle: const DropDownItemStyle(
-                        activeBackgroundColor: Color(0xFFF5F5F5),
+                      itemStyle: DropDownItemStyle(
+                        activeBackgroundColor: const Color(0xFFF5F5F5),
                         activeIconColor: Colors.blue,
-                        activeTextStyle: TextStyle(color: Colors.blue),
-                        activeBorderRadius: 6,
+                        activeTextStyle: const TextStyle(color: Colors.blue),
+                        activeBorderRadius: BorderRadius.circular(6),
                       ),
                       controller: dropDownController,
                       items: List.generate(

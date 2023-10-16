@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../button/text_button.dart';
 import 'drop_down_controller.dart';
 import 'drop_down_style.dart';
 import 'drop_down_typedef.dart' hide IndexedWidgetBuilder;
@@ -21,10 +22,10 @@ class DropDownMenu extends StatefulWidget {
   final DropDownDisposeController? disposeController;
 
   /// Style of the drop-down menu header component
-  final DropDownBoxStyle boxStyle;
+  final DropDownBoxStyle headerBoxStyle;
 
   /// Style of the drop-down menu header item
-  final DropDownItemStyle itemStyle;
+  final DropDownItemStyle headerItemStyle;
 
   /// Builder for the sub-items of the drop-down menu header component, used to customize Item
   final NullableIndexedWidgetBuilder? headerItemBuilder;
@@ -54,8 +55,8 @@ class DropDownMenu extends StatefulWidget {
     required this.viewBuilders,
     required this.viewOffsetY,
     this.disposeController,
-    this.boxStyle = const DropDownBoxStyle(height: 50),
-    this.itemStyle = const DropDownItemStyle(),
+    this.headerBoxStyle = const DropDownBoxStyle(height: 50),
+    this.headerItemStyle = const DropDownItemStyle(),
     this.headerItemBuilder,
     this.headerDividerBuilder,
     this.onHeaderItemTap,
@@ -131,7 +132,7 @@ class _DropDownMenuState extends State<DropDownMenu>
         overlayEntry = OverlayEntry(
           builder: (context) {
             return Positioned(
-              top: widget.boxStyle.height! +
+              top: widget.headerBoxStyle.height! +
                   (widget.controller.viewOffsetY > 0
                       ? widget.controller.viewOffsetY
                       : widget.viewOffsetY ?? 0),
@@ -149,7 +150,7 @@ class _DropDownMenuState extends State<DropDownMenu>
       }
       maskHeight = MediaQuery.of(context).size.height -
           (widget.viewOffsetY ?? 0) -
-          widget.boxStyle.height!;
+          widget.headerBoxStyle.height!;
       overlayState?.setState(() {});
       await animationController?.forward();
     } else {
@@ -170,17 +171,18 @@ class _DropDownMenuState extends State<DropDownMenu>
 
   @override
   Widget build(BuildContext context) {
-    _width = (widget.boxStyle.width ?? MediaQuery.of(context).size.width) -
-        widget.boxStyle.margin.horizontal;
+    _width =
+        (widget.headerBoxStyle.width ?? MediaQuery.of(context).size.width) -
+            widget.headerBoxStyle.margin.horizontal;
     return Container(
       width: _width,
-      height: widget.boxStyle.height,
-      margin: widget.boxStyle.margin,
-      padding: widget.boxStyle.padding,
-      decoration: widget.boxStyle.decoration ??
+      height: widget.headerBoxStyle.height,
+      margin: widget.headerBoxStyle.margin,
+      padding: widget.headerBoxStyle.padding,
+      decoration: widget.headerBoxStyle.decoration ??
           BoxDecoration(
-            color: widget.boxStyle.backgroundColor,
-            border: widget.boxStyle.border,
+            color: widget.headerBoxStyle.backgroundColor,
+            border: widget.headerBoxStyle.border,
           ),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
@@ -195,93 +197,77 @@ class _DropDownMenuState extends State<DropDownMenu>
     bool active =
         widget.controller.isExpand && widget.controller.headerIndex == index;
     var item = widget.headerItems[index];
-    List<Widget> children = [];
-    if (item.text != null) {
-      var text = widget.controller.headerText.elementAt(index);
-      children.add(Expanded(
-        flex: widget.itemStyle.textExpand ? 1 : 0,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: (_width -
-                        widget.itemStyle.margin.horizontal -
-                        widget.itemStyle.padding.horizontal) /
-                    widget.headerItems.length -
-                widget.itemStyle.iconSize -
-                widget.itemStyle.margin.horizontal -
-                widget.itemStyle.padding.horizontal,
-          ),
-          child: Text(
-            text.isEmpty ? item.text! : text,
-            style: active
-                ? widget.itemStyle.activeTextStyle
-                : widget.itemStyle.textStyle,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-        ),
-      ));
-    }
-    if (item.icon != null) {
-      children.add(IconTheme(
-        data: IconThemeData(
-          color: active
-              ? widget.itemStyle.activeIconColor
-              : widget.itemStyle.iconColor,
-          size: active
-              ? widget.itemStyle.activeIconSize
-              : widget.itemStyle.iconSize,
-        ),
-        child: active ? item.activeIcon! : item.icon!,
-      ));
+    String text = widget.controller.headerText.elementAt(index);
+    double? width;
+    if (widget.headerBoxStyle.expand) {
+      width = (_width - widget.headerBoxStyle.padding.horizontal) /
+              widget.headerItems.length -
+          (widget.headerItemStyle.margin?.horizontal ?? 0);
     }
 
-    Widget child = const SizedBox();
-    if (children.isNotEmpty) {
-      child = Row(
-        mainAxisSize: MainAxisSize.min,
-        children: children,
-      );
-    }
-    if (widget.boxStyle.expand) {
-      double width = (_width - widget.boxStyle.padding.horizontal) /
-              widget.headerItems.length -
-          widget.itemStyle.margin.horizontal -
-          widget.itemStyle.padding.horizontal;
-      child = Container(
-        width: widget.itemStyle.width ?? width,
-        height: widget.itemStyle.height,
-        margin: widget.itemStyle.margin,
-        padding: widget.itemStyle.padding,
-        alignment: widget.itemStyle.alignment,
-        decoration: active
-            ? widget.itemStyle.activeDecoration
-            : widget.itemStyle.decoration,
-        child: child,
-      );
-    } else if (widget.itemStyle.activeDecoration != null &&
-        widget.itemStyle.decoration != null) {
-      child = Container(
-        width: widget.itemStyle.width,
-        height: widget.itemStyle.height,
-        margin: widget.itemStyle.margin,
-        padding: widget.itemStyle.padding,
-        alignment: widget.itemStyle.alignment,
-        decoration: active
-            ? widget.itemStyle.activeDecoration
-            : widget.itemStyle.decoration,
-        child: child,
-      );
-    }
-    return GestureDetector(
-      onTap: () async {
+    Widget child = WrapperButton(
+      onPressed: () {
         if (widget.onHeaderItemTap != null) {
           widget.onHeaderItemTap!(index, item);
           return;
         }
         widget.controller.toggle(index);
       },
-      child: child,
+      text: text.isEmpty ? item.text : text,
+      textStyle: active
+          ? widget.headerItemStyle.activeTextStyle
+          : widget.headerItemStyle.textStyle,
+      textAlign: widget.headerItemStyle.textAlign,
+      textExpand: widget.headerItemStyle.textExpand,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+      icon: active
+          ? (item.activeIcon ?? widget.headerItemStyle.activeIcon)
+          : (item.icon ?? widget.headerItemStyle.icon),
+      iconColor: active
+          ? widget.headerItemStyle.activeIconColor
+          : widget.headerItemStyle.iconColor,
+      iconSize: active
+          ? widget.headerItemStyle.activeIconSize
+          : widget.headerItemStyle.iconSize,
+      iconPosition: widget.headerItemStyle.iconPosition,
+      gap: widget.headerItemStyle.gap,
+      padding: widget.headerItemStyle.padding,
+      width: width,
+      height: widget.headerItemStyle.height,
+      alignment: widget.headerItemStyle.alignment,
+      borderSide: active
+          ? widget.headerItemStyle.activeBorderSide
+          : widget.headerItemStyle.borderSide,
+      borderRadius: active
+          ? widget.headerItemStyle.activeBorderRadius
+          : widget.headerItemStyle.borderRadius,
+      backgroundColor: active
+          ? widget.headerItemStyle.activeBackgroundColor
+          : widget.headerItemStyle.backgroundColor,
     );
+
+    if (widget.headerItemStyle.decoration != null && !active) {
+      child = DecoratedBox(
+        decoration: widget.headerItemStyle.decoration!,
+        child: child,
+      );
+    }
+    if (widget.headerItemStyle.activeDecoration != null && active) {
+      child = DecoratedBox(
+        decoration: widget.headerItemStyle.activeDecoration!,
+        child: child,
+      );
+    }
+
+    if (widget.headerItemStyle.margin != null) {
+      child = Padding(
+        padding: widget.headerItemStyle.margin!,
+        child: child,
+      );
+    }
+
+    return child;
   }
 
   Widget headerDivider(BuildContext context, int index) {

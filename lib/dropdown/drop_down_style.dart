@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../button/text_button.dart';
+
 /// Drop-down menu Box style
 class DropDownBoxStyle {
   const DropDownBoxStyle({
@@ -53,16 +55,19 @@ class DropDownItemStyle {
     this.activeIconColor = Colors.black,
     this.backgroundColor = Colors.transparent,
     this.activeBackgroundColor = Colors.transparent,
-    this.border,
-    this.activeBorder,
-    this.borderRadius = 0,
-    this.activeBorderRadius = 0,
+    this.borderSide = BorderSide.none,
+    this.activeBorderSide = BorderSide.none,
+    this.borderRadius = BorderRadius.zero,
+    this.activeBorderRadius = BorderRadius.zero,
     this.decoration,
     this.activeDecoration,
-    this.margin = EdgeInsets.zero,
+    this.margin,
     this.padding = EdgeInsets.zero,
     this.alignment = Alignment.center,
+    this.textAlign,
     this.textExpand = false,
+    this.iconPosition = IconPosition.right,
+    this.gap = 0,
   });
 
   /// The width of the DropDownItem
@@ -102,16 +107,16 @@ class DropDownItemStyle {
   final Color activeBackgroundColor;
 
   /// The border of the DropDownItem
-  final BoxBorder? border;
+  final BorderSide borderSide;
 
   /// The border of the DropDownItem when it is selected
-  final BoxBorder? activeBorder;
+  final BorderSide activeBorderSide;
 
   /// The corner radius of the DropDownItem
-  final double borderRadius;
+  final BorderRadius borderRadius;
 
   /// The corner radius the DropDownItem when it is selected
-  final double activeBorderRadius;
+  final BorderRadius activeBorderRadius;
 
   /// Decorator for the DropDownItem
   final Decoration? decoration;
@@ -120,7 +125,7 @@ class DropDownItemStyle {
   final Decoration? activeDecoration;
 
   /// Margins of the DropDownItem
-  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry? margin;
 
   /// Padding of the child items of the DropDownItem
   final EdgeInsetsGeometry padding;
@@ -128,8 +133,17 @@ class DropDownItemStyle {
   /// Alignment of the DropDownItem
   final AlignmentGeometry alignment;
 
+  /// Text alignment of the DropDownItem
+  final TextAlign? textAlign;
+
   /// Whether the text fills the parent component
   final bool textExpand;
+
+  /// Position of the icon in the DropDownItem
+  final IconPosition iconPosition;
+
+  /// Gap between the icon and the text in the DropDownItem
+  final double gap;
 }
 
 /// Drop-down menu button style in the multi-select state

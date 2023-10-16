@@ -83,7 +83,7 @@ class _DropDownDemoState extends State<DropDownDemo4>
         titleText: "DropDownDemo CustomScrollView",
         backgroundColor: Colors.white,
         actions: [
-          WrapperTextButton(
+          WrapperButton(
             onPressed: () {
               dropDownController = DropDownController();
               dropDownDisposeController = DropDownDisposeController();
@@ -121,11 +121,11 @@ class _DropDownDemoState extends State<DropDownDemo4>
                 key: dropDownMenuKey,
                 controller: dropDownController,
                 disposeController: dropDownDisposeController,
-                boxStyle: DropDownBoxStyle(
+                headerBoxStyle: DropDownBoxStyle(
                   height: dropDownMenuHeight,
                   backgroundColor: Colors.white,
                 ),
-                itemStyle: const DropDownItemStyle(
+                headerItemStyle: const DropDownItemStyle(
                   activeIconColor: Colors.blue,
                   activeTextStyle: TextStyle(color: Colors.blue),
                 ),
@@ -182,11 +182,11 @@ class _DropDownDemoState extends State<DropDownDemo4>
                       boxStyle: const DropDownBoxStyle(
                         padding: EdgeInsets.all(16),
                       ),
-                      itemStyle: const DropDownItemStyle(
-                        activeBackgroundColor: Color(0xFFF5F5F5),
+                      itemStyle: DropDownItemStyle(
+                        activeBackgroundColor: const Color(0xFFF5F5F5),
                         activeIconColor: Colors.blue,
-                        activeTextStyle: TextStyle(color: Colors.blue),
-                        activeBorderRadius: 6,
+                        activeTextStyle: const TextStyle(color: Colors.blue),
+                        activeBorderRadius: BorderRadius.circular(6),
                       ),
                       controller: dropDownController,
                       items: List.generate(
@@ -210,11 +210,11 @@ class _DropDownDemoState extends State<DropDownDemo4>
                       boxStyle: const DropDownBoxStyle(
                         padding: EdgeInsets.all(16),
                       ),
-                      itemStyle: const DropDownItemStyle(
-                        activeBackgroundColor: Color(0xFFF5F5F5),
+                      itemStyle: DropDownItemStyle(
+                        activeBackgroundColor: const Color(0xFFF5F5F5),
                         activeIconColor: Colors.blue,
-                        activeTextStyle: TextStyle(color: Colors.blue),
-                        activeBorderRadius: 6,
+                        activeTextStyle: const TextStyle(color: Colors.blue),
+                        activeBorderRadius: BorderRadius.circular(6),
                       ),
                       controller: dropDownController,
                       items: List.generate(
@@ -339,11 +339,11 @@ class _DropDownDemoState extends State<DropDownDemo4>
                 boxStyle: const DropDownBoxStyle(
                   padding: EdgeInsets.all(16),
                 ),
-                itemStyle: const DropDownItemStyle(
-                  activeBackgroundColor: Color(0xFFF5F5F5),
+                itemStyle: DropDownItemStyle(
+                  activeBackgroundColor: const Color(0xFFF5F5F5),
                   activeIconColor: Colors.blue,
-                  activeTextStyle: TextStyle(color: Colors.blue),
-                  activeBorderRadius: 6,
+                  activeTextStyle: const TextStyle(color: Colors.blue),
+                  activeBorderRadius: BorderRadius.circular(6),
                 ),
                 controller: dropDownController,
                 items: items3,
@@ -356,11 +356,11 @@ class _DropDownDemoState extends State<DropDownDemo4>
                 boxStyle: const DropDownBoxStyle(
                   padding: EdgeInsets.all(16),
                 ),
-                itemStyle: const DropDownItemStyle(
-                  activeBackgroundColor: Color(0xFFF5F5F5),
+                itemStyle: DropDownItemStyle(
+                  activeBackgroundColor: const Color(0xFFF5F5F5),
                   activeIconColor: Colors.blue,
-                  activeTextStyle: TextStyle(color: Colors.blue),
-                  activeBorderRadius: 6,
+                  activeTextStyle: const TextStyle(color: Colors.blue),
+                  activeBorderRadius: BorderRadius.circular(6),
                 ),
                 controller: dropDownController,
                 items: items4,

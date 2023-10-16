@@ -81,7 +81,7 @@ class DropDownCascadeList extends StatefulWidget {
     this.firstFloorItemStyle = const DropDownItemStyle(
       backgroundColor: const Color(0xFFF5F5F5),
       activeBackgroundColor: const Color(0xFFFEFEFE),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
     ),
     this.firstFloorItemBuilder,
     this.onFirstFloorItemTap,
@@ -218,7 +218,7 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
                 Row(children: [
                   Expanded(
                     child: widget.resetWidget ??
-                        WrapperTextButton(
+                        WrapperButton(
                           height: widget.buttonStyle.resetHeight,
                           text: widget.buttonStyle.resetText,
                           textStyle: widget.buttonStyle.resetTextStyle,
@@ -240,7 +240,7 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
                   ),
                   Expanded(
                     child: widget.confirmWidget ??
-                        WrapperTextButton(
+                        WrapperButton(
                           height: widget.buttonStyle.confirmHeight,
                           text: widget.buttonStyle.confirmText,
                           textStyle: widget.buttonStyle.confirmTextStyle,
@@ -304,55 +304,8 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
           var item = items[index];
           var active = item.check;
 
-          List<Widget> children = [];
-          if (item.text != null) {
-            children.add(Expanded(
-              flex: widget.firstFloorItemStyle.textExpand ? 1 : 0,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: firstFloorItemWidth -
-                      widget.firstFloorItemStyle.padding.horizontal -
-                      widget.firstFloorItemStyle.margin.horizontal,
-                ),
-                child: Text(
-                  item.text ?? "",
-                  style: active
-                      ? widget.firstFloorItemStyle.activeTextStyle
-                      : widget.firstFloorItemStyle.textStyle,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-              ),
-            ));
-          }
-          if (item.activeIcon != null ||
-              widget.firstFloorItemStyle.activeIcon != null) {
-            children.add(IconTheme(
-              data: IconThemeData(
-                color: active
-                    ? widget.firstFloorItemStyle.activeIconColor
-                    : widget.firstFloorItemStyle.iconColor,
-                size: active
-                    ? widget.firstFloorItemStyle.activeIconSize
-                    : widget.firstFloorItemStyle.iconSize,
-              ),
-              child: (active ? item.activeIcon : item.icon) ??
-                  (active
-                      ? widget.firstFloorItemStyle.activeIcon!
-                      : widget.firstFloorItemStyle.icon) ??
-                  const SizedBox(),
-            ));
-          }
-
-          Widget child = const SizedBox();
-          if (children.isNotEmpty) {
-            child = Row(
-              mainAxisSize: MainAxisSize.min,
-              children: children,
-            );
-          }
-          return GestureDetector(
-            onTap: () {
+          Widget child = WrapperButton(
+            onPressed: () {
               if (widget.onFirstFloorItemTap != null) {
                 widget.onFirstFloorItemTap!(index, item);
                 return;
@@ -364,29 +317,62 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
               item.check = true;
               setState(() {});
             },
-            child: Container(
-              width: firstFloorItemWidth,
-              height: widget.firstFloorItemStyle.height,
-              margin: widget.firstFloorItemStyle.margin,
-              padding: widget.firstFloorItemStyle.padding,
-              alignment: widget.firstFloorItemStyle.alignment,
-              decoration: (active
-                      ? widget.firstFloorItemStyle.activeDecoration
-                      : widget.firstFloorItemStyle.decoration) ??
-                  BoxDecoration(
-                    color: active
-                        ? widget.firstFloorItemStyle.activeBackgroundColor
-                        : widget.firstFloorItemStyle.backgroundColor,
-                    border: active
-                        ? widget.firstFloorItemStyle.activeBorder
-                        : widget.firstFloorItemStyle.border,
-                    borderRadius: BorderRadius.circular(active
-                        ? widget.firstFloorItemStyle.activeBorderRadius
-                        : widget.firstFloorItemStyle.borderRadius),
-                  ),
-              child: child,
-            ),
+            text: item.text,
+            textStyle: active
+                ? widget.firstFloorItemStyle.activeTextStyle
+                : widget.firstFloorItemStyle.textStyle,
+            textAlign: widget.firstFloorItemStyle.textAlign,
+            textExpand: widget.firstFloorItemStyle.textExpand,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            icon: active
+                ? (item.activeIcon ?? widget.firstFloorItemStyle.activeIcon)
+                : (item.icon ?? widget.firstFloorItemStyle.icon),
+            iconColor: active
+                ? widget.firstFloorItemStyle.activeIconColor
+                : widget.firstFloorItemStyle.iconColor,
+            iconSize: active
+                ? widget.firstFloorItemStyle.activeIconSize
+                : widget.firstFloorItemStyle.iconSize,
+            iconPosition: widget.firstFloorItemStyle.iconPosition,
+            gap: widget.firstFloorItemStyle.gap,
+            padding: widget.firstFloorItemStyle.padding,
+            width: firstFloorItemWidth -
+                (widget.firstFloorItemStyle.margin?.horizontal ?? 0),
+            height: widget.firstFloorItemStyle.height,
+            alignment: widget.firstFloorItemStyle.alignment,
+            borderSide: active
+                ? widget.firstFloorItemStyle.activeBorderSide
+                : widget.firstFloorItemStyle.borderSide,
+            borderRadius: active
+                ? widget.firstFloorItemStyle.activeBorderRadius
+                : widget.firstFloorItemStyle.borderRadius,
+            backgroundColor: active
+                ? widget.firstFloorItemStyle.activeBackgroundColor
+                : widget.firstFloorItemStyle.backgroundColor,
           );
+
+          if (widget.firstFloorItemStyle.decoration != null && !active) {
+            child = DecoratedBox(
+              decoration: widget.firstFloorItemStyle.decoration!,
+              child: child,
+            );
+          }
+          if (widget.firstFloorItemStyle.activeDecoration != null && active) {
+            child = DecoratedBox(
+              decoration: widget.firstFloorItemStyle.activeDecoration!,
+              child: child,
+            );
+          }
+
+          if (widget.firstFloorItemStyle.margin != null) {
+            child = Padding(
+              padding: widget.firstFloorItemStyle.margin!,
+              child: child,
+            );
+          }
+
+          return child;
         },
       ),
     );
@@ -404,52 +390,9 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
         itemBuilder: (context, index) {
           var item = secondFloorItems[index];
           var active = item.check;
-          List<Widget> children = [];
-          if (item.text != null) {
-            children.add(Expanded(
-              flex: widget.secondFloorItemStyle.textExpand ? 1 : 0,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: secondFloorItemWidth -
-                      widget.secondFloorItemStyle.padding.horizontal -
-                      widget.secondFloorItemStyle.margin.horizontal,
-                ),
-                child: Text(
-                  item.text ?? "",
-                  style: active
-                      ? widget.secondFloorItemStyle.activeTextStyle
-                      : widget.secondFloorItemStyle.textStyle,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-              ),
-            ));
-          }
-          if (item.activeIcon != null ||
-              widget.secondFloorItemStyle.activeIcon != null) {
-            children.add(IconTheme(
-              data: IconThemeData(
-                color: active
-                    ? widget.secondFloorItemStyle.activeIconColor
-                    : widget.secondFloorItemStyle.iconColor,
-                size: active
-                    ? widget.secondFloorItemStyle.activeIconSize
-                    : widget.secondFloorItemStyle.iconSize,
-              ),
-              child: (active ? item.activeIcon : item.icon) ??
-                  (active
-                      ? widget.secondFloorItemStyle.activeIcon!
-                      : widget.secondFloorItemStyle.icon) ??
-                  const SizedBox(),
-            ));
-          }
 
-          Widget child = const SizedBox();
-          if (children.isNotEmpty) {
-            child = Row(children: children);
-          }
-          return GestureDetector(
-            onTap: () {
+          Widget child = WrapperButton(
+            onPressed: () {
               if (widget.onSecondFloorItemChanged != null) {
                 widget.onSecondFloorItemChanged!(items);
               }
@@ -495,28 +438,62 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
               }
               setState(() {});
             },
-            child: Container(
-              height: widget.secondFloorItemStyle.height,
-              margin: widget.secondFloorItemStyle.margin,
-              padding: widget.secondFloorItemStyle.padding,
-              alignment: widget.secondFloorItemStyle.alignment,
-              decoration: (active
-                      ? widget.secondFloorItemStyle.activeDecoration
-                      : widget.secondFloorItemStyle.decoration) ??
-                  BoxDecoration(
-                    color: active
-                        ? widget.secondFloorItemStyle.activeBackgroundColor
-                        : widget.secondFloorItemStyle.backgroundColor,
-                    border: active
-                        ? widget.secondFloorItemStyle.activeBorder
-                        : widget.secondFloorItemStyle.border,
-                    borderRadius: BorderRadius.circular(active
-                        ? widget.secondFloorItemStyle.activeBorderRadius
-                        : widget.secondFloorItemStyle.borderRadius),
-                  ),
-              child: child,
-            ),
+            text: item.text,
+            textStyle: active
+                ? widget.secondFloorItemStyle.activeTextStyle
+                : widget.secondFloorItemStyle.textStyle,
+            textAlign: widget.secondFloorItemStyle.textAlign,
+            textExpand: widget.secondFloorItemStyle.textExpand,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            icon: active
+                ? (item.activeIcon ?? widget.secondFloorItemStyle.activeIcon)
+                : (item.icon ?? widget.secondFloorItemStyle.icon),
+            iconColor: active
+                ? widget.secondFloorItemStyle.activeIconColor
+                : widget.secondFloorItemStyle.iconColor,
+            iconSize: active
+                ? widget.secondFloorItemStyle.activeIconSize
+                : widget.secondFloorItemStyle.iconSize,
+            iconPosition: widget.secondFloorItemStyle.iconPosition,
+            gap: widget.secondFloorItemStyle.gap,
+            padding: widget.secondFloorItemStyle.padding,
+            width: secondFloorItemWidth -
+                (widget.secondFloorItemStyle.margin?.horizontal ?? 0),
+            height: widget.secondFloorItemStyle.height,
+            alignment: widget.secondFloorItemStyle.alignment,
+            borderSide: active
+                ? widget.secondFloorItemStyle.activeBorderSide
+                : widget.secondFloorItemStyle.borderSide,
+            borderRadius: active
+                ? widget.secondFloorItemStyle.activeBorderRadius
+                : widget.secondFloorItemStyle.borderRadius,
+            backgroundColor: active
+                ? widget.secondFloorItemStyle.activeBackgroundColor
+                : widget.secondFloorItemStyle.backgroundColor,
           );
+
+          if (widget.secondFloorItemStyle.decoration != null && !active) {
+            child = DecoratedBox(
+              decoration: widget.secondFloorItemStyle.decoration!,
+              child: child,
+            );
+          }
+          if (widget.secondFloorItemStyle.activeDecoration != null && active) {
+            child = DecoratedBox(
+              decoration: widget.secondFloorItemStyle.activeDecoration!,
+              child: child,
+            );
+          }
+
+          if (widget.secondFloorItemStyle.margin != null) {
+            child = Padding(
+              padding: widget.secondFloorItemStyle.margin!,
+              child: child,
+            );
+          }
+
+          return child;
         },
       ),
     );

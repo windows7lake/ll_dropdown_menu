@@ -71,7 +71,7 @@ class _DropDownDemoState extends State<DropDownDemo1>
         DropDownMenu(
           controller: dropDownController,
           disposeController: dropDownDisposeController,
-          itemStyle: const DropDownItemStyle(
+          headerItemStyle: const DropDownItemStyle(
             activeIconColor: Colors.blue,
             activeTextStyle: TextStyle(color: Colors.blue),
           ),
@@ -83,19 +83,12 @@ class _DropDownDemoState extends State<DropDownDemo1>
               activeIcon: const Icon(Icons.arrow_drop_up),
             ),
           ),
-          viewOffsetY: MediaQuery.of(context).padding.top + 50,
+          viewOffsetY: MediaQuery.of(context).padding.top + 56,
           viewBuilders: [
             DropDownViewBuilder(
               height: 300,
               widget: DropDownListView(
                 headerIndex: 0,
-                itemStyle: const DropDownItemStyle(
-                  activeBackgroundColor: Color(0xFFF5F5F5),
-                  activeIcon: Icon(Icons.check, size: 20, color: Colors.blue),
-                  activeTextStyle: TextStyle(color: Colors.blue),
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  textExpand: true,
-                ),
                 controller: dropDownController,
                 items: items1,
                 onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
@@ -107,13 +100,6 @@ class _DropDownDemoState extends State<DropDownDemo1>
               height: 300,
               widget: DropDownListView(
                 headerIndex: 1,
-                itemStyle: const DropDownItemStyle(
-                  activeBackgroundColor: Color(0xFFF5F5F5),
-                  activeIcon: Icon(Icons.check, size: 20, color: Colors.blue),
-                  activeTextStyle: TextStyle(color: Colors.blue),
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  textExpand: true,
-                ),
                 controller: dropDownController,
                 items: items2,
                 maxMultiChoiceSize: 2,
@@ -130,11 +116,11 @@ class _DropDownDemoState extends State<DropDownDemo1>
                 boxStyle: const DropDownBoxStyle(
                   padding: EdgeInsets.all(16),
                 ),
-                itemStyle: const DropDownItemStyle(
-                  activeBackgroundColor: Color(0xFFF5F5F5),
+                itemStyle: DropDownItemStyle(
+                  activeBackgroundColor: const Color(0xFFF5F5F5),
                   activeIconColor: Colors.blue,
-                  activeTextStyle: TextStyle(color: Colors.blue),
-                  activeBorderRadius: 6,
+                  activeTextStyle: const TextStyle(color: Colors.blue),
+                  activeBorderRadius: BorderRadius.circular(6),
                 ),
                 controller: dropDownController,
                 items: items3,
@@ -151,11 +137,11 @@ class _DropDownDemoState extends State<DropDownDemo1>
                 boxStyle: const DropDownBoxStyle(
                   padding: EdgeInsets.all(16),
                 ),
-                itemStyle: const DropDownItemStyle(
-                  activeBackgroundColor: Color(0xFFF5F5F5),
+                itemStyle: DropDownItemStyle(
+                  activeBackgroundColor: const Color(0xFFF5F5F5),
                   activeIconColor: Colors.blue,
-                  activeTextStyle: TextStyle(color: Colors.blue),
-                  activeBorderRadius: 6,
+                  activeTextStyle: const TextStyle(color: Colors.blue),
+                  activeBorderRadius: BorderRadius.circular(6),
                 ),
                 controller: dropDownController,
                 items: items4,

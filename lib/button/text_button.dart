@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 enum IconPosition { left, right, top, bottom }
 
 /// Wrapper TextButton for customizing default values
-class WrapperTextButton extends StatelessWidget {
+class WrapperButton extends StatelessWidget {
   final VoidCallback onPressed;
   final VoidCallback? onLongPress;
   final ValueChanged<bool>? onHover;
@@ -19,13 +19,18 @@ class WrapperTextButton extends StatelessWidget {
   final TextStyle? textStyle;
   final Color textColor;
   final double textSize;
+  final FontWeight? textWeight;
+  final TextAlign? textAlign;
+  final bool textExpand;
+  final TextOverflow? overflow;
+  final int? maxLines;
   final Color? backgroundColor;
   final Color? foregroundColor;
   final Color? overlayColor;
   final Color? shadowColor;
   final Color? surfaceTintColor;
   final AlignmentGeometry? alignment;
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry padding;
   final OutlinedBorder? shape;
   final double radius;
   final BorderRadius? borderRadius;
@@ -37,13 +42,13 @@ class WrapperTextButton extends StatelessWidget {
   final IconPosition? iconPosition;
   final Widget? icon;
   final Color? iconColor;
-  final double? iconSize;
-  final double? gap;
+  final double iconSize;
+  final double gap;
   final double? width;
   final double? height;
   final Size? minimumSize;
 
-  const WrapperTextButton({
+  const WrapperButton({
     super.key,
     required this.onPressed,
     this.onLongPress,
@@ -60,13 +65,18 @@ class WrapperTextButton extends StatelessWidget {
     this.textStyle,
     this.textColor = Colors.black,
     this.textSize = 14,
+    this.textWeight = FontWeight.normal,
+    this.textAlign,
+    this.textExpand = false,
+    this.overflow,
+    this.maxLines,
     this.backgroundColor,
     this.foregroundColor,
     this.overlayColor = Colors.transparent,
     this.shadowColor,
     this.surfaceTintColor,
     this.alignment,
-    this.padding,
+    this.padding = EdgeInsets.zero,
     this.shape,
     this.radius = 0,
     this.borderRadius,
@@ -78,7 +88,7 @@ class WrapperTextButton extends StatelessWidget {
     this.iconPosition = IconPosition.left,
     this.icon,
     this.iconColor,
-    this.iconSize,
+    this.iconSize = 20,
     this.gap = 4,
     this.width,
     this.height,
@@ -87,56 +97,92 @@ class WrapperTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget child = Text(
-      text ?? "",
-      style: textStyle ?? TextStyle(color: textColor, fontSize: textSize),
-    );
-    if (this.child != null) {
-      child = this.child!;
+    Widget? child;
+    if (text != null && text!.isNotEmpty) {
+      child = Text(
+        text!,
+        style: textStyle ??
+            TextStyle(
+              color: textColor,
+              fontSize: textSize,
+              fontWeight: textWeight,
+            ),
+        overflow: overflow,
+        maxLines: maxLines,
+        textAlign: textAlign,
+      );
     }
+
     if (icon != null) {
-      if (iconPosition == IconPosition.left) {
+      IconTheme iconWidget = IconTheme(
+        data: IconThemeData(
+          color: iconColor,
+          size: iconSize,
+        ),
+        child: icon!,
+      );
+      if (child != null) {
+        if (textExpand) {
+          child = Expanded(child: child);
+        } else if (!textExpand && width != null) {
+          double iconWidth = width! - iconSize - gap - padding.horizontal;
+          child = ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: iconWidth),
+            child: child,
+          );
+        }
+      }
+      if (child == null) {
+        child = icon;
+      } else if (iconPosition == IconPosition.left) {
         child = Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            icon!,
+            iconWidget,
             SizedBox(width: gap),
-            Flexible(child: child)
+            child,
           ],
         );
       } else if (iconPosition == IconPosition.right) {
         child = Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Flexible(child: child),
+            child,
             SizedBox(width: gap),
-            icon!
+            iconWidget,
           ],
         );
       } else if (iconPosition == IconPosition.top) {
         child = Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            icon!,
+            iconWidget,
             SizedBox(height: gap),
-            Flexible(child: child)
+            child,
           ],
         );
       } else if (iconPosition == IconPosition.bottom) {
         child = Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Flexible(child: child),
+            child,
             SizedBox(height: gap),
-            icon!
+            iconWidget,
           ],
         );
       }
+    }
+    if (this.child != null) {
+      child = this.child!;
+    }
+    if (child == null) {
+      throw Exception("text, icon or child can not be null");
     }
     child = TextButton(
       onPressed: onPressed,
       style: style ??
           ButtonStyle(
+            textStyle: resolve<TextStyle?>(textStyle),
             backgroundColor: resolve<Color?>(backgroundColor),
             foregroundColor: resolve<Color?>(foregroundColor),
             overlayColor: resolve<Color?>(overlayColor),
@@ -144,8 +190,10 @@ class WrapperTextButton extends StatelessWidget {
             surfaceTintColor: resolve<Color?>(surfaceTintColor),
             shape: resolve<OutlinedBorder?>(shape ??
                 RoundedRectangleBorder(
-                  borderRadius:
-                      borderRadius ?? BorderRadius.all(Radius.circular(radius)),
+                  borderRadius: borderRadius ??
+                      BorderRadius.all(
+                        Radius.circular(radius),
+                      ),
                   side: borderSide ??
                       BorderSide(
                         color: borderColor ?? const Color(0xFF000000),
