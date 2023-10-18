@@ -50,8 +50,9 @@ class _DropDownHeaderState extends State<DropDownHeader> {
   void initState() {
     super.initState();
     assert(widget.boxStyle.height != null);
-    widget.controller.headerText =
-        widget.items.map((e) => e.text ?? "").toList();
+    widget.controller.headerStatus = widget.items
+        .map((e) => DropDownHeaderStatus(text: e.text ?? ""))
+        .toList();
     widget.controller.addListener(dropDownListener);
   }
 
@@ -86,8 +87,9 @@ class _DropDownHeaderState extends State<DropDownHeader> {
   Widget listItem(BuildContext context, int index) {
     bool active =
         widget.controller.isExpand && widget.controller.headerIndex == index;
+    DropDownHeaderStatus status = widget.controller.headerStatus[index];
+
     var item = widget.items[index];
-    String text = widget.controller.headerText.elementAt(index);
     double width = _width;
     if (widget.boxStyle.expand) {
       width =
@@ -103,22 +105,31 @@ class _DropDownHeaderState extends State<DropDownHeader> {
         }
         widget.controller.toggle(index);
       },
-      text: text.isEmpty ? item.text : text,
+      text: status.text.isEmpty ? item.text : status.text,
       textStyle: active
           ? widget.itemStyle.activeTextStyle
-          : widget.itemStyle.textStyle,
+          : (status.highlight
+              ? widget.itemStyle.highlightTextStyle
+              : widget.itemStyle.textStyle),
       textAlign: widget.itemStyle.textAlign,
       textExpand: widget.itemStyle.textExpand,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
       icon: active
           ? (item.activeIcon ?? widget.itemStyle.activeIcon)
-          : (item.icon ?? widget.itemStyle.icon),
+          : (status.highlight
+              ? widget.itemStyle.highlightIcon
+              : (item.icon ?? widget.itemStyle.icon)),
       iconColor: active
           ? widget.itemStyle.activeIconColor
-          : widget.itemStyle.iconColor,
-      iconSize:
-          active ? widget.itemStyle.activeIconSize : widget.itemStyle.iconSize,
+          : (status.highlight
+              ? widget.itemStyle.highlightIconColor
+              : widget.itemStyle.iconColor),
+      iconSize: active
+          ? widget.itemStyle.activeIconSize
+          : (status.highlight
+              ? widget.itemStyle.highlightIconSize
+              : widget.itemStyle.iconSize),
       iconPosition: widget.itemStyle.iconPosition,
       gap: widget.itemStyle.gap,
       padding: widget.itemStyle.padding,
@@ -127,18 +138,29 @@ class _DropDownHeaderState extends State<DropDownHeader> {
       alignment: widget.itemStyle.alignment,
       borderSide: active
           ? widget.itemStyle.activeBorderSide
-          : widget.itemStyle.borderSide,
+          : (status.highlight
+              ? widget.itemStyle.highlightBorderSide
+              : widget.itemStyle.borderSide),
       borderRadius: active
           ? widget.itemStyle.activeBorderRadius
-          : widget.itemStyle.borderRadius,
+          : (status.highlight
+              ? widget.itemStyle.highlightBorderRadius
+              : widget.itemStyle.borderRadius),
       backgroundColor: active
           ? widget.itemStyle.activeBackgroundColor
-          : widget.itemStyle.backgroundColor,
+          : (status.highlight
+              ? widget.itemStyle.highlightBackgroundColor
+              : widget.itemStyle.backgroundColor),
+      elevation: widget.itemStyle.elevation,
     );
 
     if (widget.itemStyle.decoration != null && !active) {
+      var decoration = widget.itemStyle.decoration!;
+      if (status.highlight && widget.itemStyle.highlightDecoration != null) {
+        decoration = widget.itemStyle.highlightDecoration!;
+      }
       child = DecoratedBox(
-        decoration: widget.itemStyle.decoration!,
+        decoration: decoration,
         child: child,
       );
     }

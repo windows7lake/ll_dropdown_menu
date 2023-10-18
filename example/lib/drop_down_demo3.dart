@@ -52,6 +52,15 @@ class _DropDownDemoState extends State<DropDownDemo3>
             ),
             margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
             alignment: Alignment.center,
+            highlightTextStyle: const TextStyle(color: Colors.white),
+            highlightDecoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            highlightIcon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.white,
+            ),
           ),
           items: List.generate(
             3,
@@ -83,84 +92,64 @@ class _DropDownDemoState extends State<DropDownDemo3>
               DropDownView(
                 controller: dropDownController,
                 builders: [
-                  DropDownViewBuilder(
-                    height: 300,
-                    widget: DropDownCascadeList(
-                      controller: dropDownController,
-                      headerIndex: 0,
-                      secondFloorItemStyle: const DropDownItemStyle(
-                        backgroundColor: Colors.white,
-                        activeBackgroundColor: Color(0xFFF5F5F5),
-                        activeTextStyle:
-                            TextStyle(fontSize: 14, color: Colors.blue),
-                        activeIconColor: Colors.blue,
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        alignment: Alignment.centerLeft,
-                        textExpand: true,
-                      ),
-                      items: List.generate(
-                        6,
-                        (index) => DropDownItem<List<DropDownItem>>(
-                          text: "Tab $index",
-                          data: List.generate(
-                            index + 2,
-                            (index) => DropDownItem(
-                              text: "Tab Second $index",
-                              activeIcon: const Icon(Icons.check),
-                            ),
+                  DropDownCascadeList(
+                    controller: dropDownController,
+                    headerIndex: 0,
+                    secondFloorItemStyle: const DropDownItemStyle(
+                      backgroundColor: Colors.white,
+                      activeBackgroundColor: Color(0xFFF5F5F5),
+                      activeTextStyle:
+                          TextStyle(fontSize: 14, color: Colors.blue),
+                      activeIconColor: Colors.blue,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      alignment: Alignment.centerLeft,
+                      textExpand: true,
+                    ),
+                    items: List.generate(
+                      6,
+                      (index) => DropDownItem<List<DropDownItem>>(
+                        text: "Tab $index",
+                        data: List.generate(
+                          index + 2,
+                          (index) => DropDownItem(
+                            text: "Tab Second $index",
+                            activeIcon: const Icon(Icons.check),
                           ),
                         ),
                       ),
-                      onDropDownHeaderUpdate:
-                          (List<DropDownItem> checkedItems) {
-                        return checkedItems
-                            .map((e) => e.text)
-                            .toList()
-                            .join("、");
-                      },
                     ),
                   ),
-                  DropDownViewBuilder(
-                    height: 300,
-                    widget: DropDownCascadeList(
-                      controller: dropDownController,
-                      headerIndex: 1,
-                      secondFloorItemStyle: const DropDownItemStyle(
-                        backgroundColor: Colors.white,
-                        activeBackgroundColor: Color(0xFFF5F5F5),
-                        activeTextStyle:
-                            TextStyle(fontSize: 14, color: Colors.blue),
-                        activeIconColor: Colors.blue,
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        alignment: Alignment.centerLeft,
-                        textExpand: true,
-                      ),
-                      items: List.generate(
-                        6,
-                        (index) => DropDownItem<List<DropDownItem>>(
-                          text: "Tab $index",
-                          data: List.generate(
-                            index + 2,
-                            (index) => DropDownItem(
-                              text: "Tab Second $index",
-                              activeIcon: const Icon(Icons.check),
-                            ),
+                  DropDownCascadeList(
+                    controller: dropDownController,
+                    headerIndex: 1,
+                    secondFloorItemStyle: const DropDownItemStyle(
+                      backgroundColor: Colors.white,
+                      activeBackgroundColor: Color(0xFFF5F5F5),
+                      activeTextStyle:
+                          TextStyle(fontSize: 14, color: Colors.blue),
+                      activeIconColor: Colors.blue,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      alignment: Alignment.centerLeft,
+                      textExpand: true,
+                    ),
+                    items: List.generate(
+                      6,
+                      (index) => DropDownItem<List<DropDownItem>>(
+                        text: "Tab $index",
+                        data: List.generate(
+                          index + 2,
+                          (index) => DropDownItem(
+                            text: "Tab Second $index",
+                            activeIcon: const Icon(Icons.check),
                           ),
                         ),
                       ),
-                      maxMultiChoiceSize: 3,
-                      onDropDownHeaderUpdate:
-                          (List<DropDownItem> checkedItems) {
-                        return checkedItems
-                            .map((e) => e.text)
-                            .toList()
-                            .join("、");
-                      },
                     ),
+                    maxMultiChoiceSize: 3,
                   ),
-                  DropDownViewBuilder(
+                  DropDownViewWrapper(
                     height: 300,
-                    widget: Container(
+                    child: Container(
                       color: Colors.yellow,
                       height: 300,
                     ),

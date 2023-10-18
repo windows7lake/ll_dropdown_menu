@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart' hide IndexedWidgetBuilder;
 
 import '../button/text_button.dart';
@@ -7,7 +9,7 @@ import 'drop_down_typedef.dart';
 
 /// The basic implementation of the drop-down menu. It is implemented internally
 /// using `ListView` and supports single-selection and multi-selection operations.
-class DropDownListView extends StatefulWidget {
+class DropDownListView extends DropDownViewStatefulWidget {
   /// Controller of the drop-down menu
   final DropDownController controller;
 
@@ -38,9 +40,6 @@ class DropDownListView extends StatefulWidget {
   /// Callback event triggered when the number of multiple selections for the sub-items of the drop-down menu content body exceeds the maximum value
   final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded;
 
-  /// The maximum height of the drop-down menu content body
-  final double maxHeight;
-
   /// Button component of the drop-down menu content body in the multi-select state
   final Widget? btnWidget;
 
@@ -59,7 +58,7 @@ class DropDownListView extends StatefulWidget {
   /// Click event of the confirmation button component of the drop-down menu content body in the multi-select state
   final OnDropDownItemsConfirm? onDropDownItemsConfirm;
 
-  /// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
+  /// Callback event triggered after the drop-down menu selection is confirmed, used to update the status of the header component by the return value of the callback
   /// headerIndex should not be null when using this callback
   final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 
@@ -82,7 +81,6 @@ class DropDownListView extends StatefulWidget {
     this.onDropDownItemChanged,
     this.maxMultiChoiceSize,
     this.onDropDownItemLimitExceeded,
-    this.maxHeight = 300,
     this.btnWidget,
     this.resetWidget,
     this.confirmWidget,
@@ -94,6 +92,17 @@ class DropDownListView extends StatefulWidget {
 
   @override
   State<DropDownListView> createState() => _DropDownListViewState();
+
+  @override
+  double get actualHeight =>
+      boxStyle.height ??
+      itemStyle.height * items.length +
+          boxStyle.margin.vertical +
+          boxStyle.padding.vertical +
+          (itemStyle.margin?.vertical ?? 0) +
+          ((maxMultiChoiceSize != null && maxMultiChoiceSize! > 0)
+              ? math.max(buttonStyle.resetHeight, buttonStyle.confirmHeight)
+              : 0);
 }
 
 class _DropDownListViewState extends State<DropDownListView> {
@@ -146,106 +155,124 @@ class _DropDownListViewState extends State<DropDownListView> {
   }
 
   Widget singleChoiceList() {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: widget.maxHeight,
-      ),
-      child: ListView.builder(
-        padding: widget.boxStyle.padding,
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          if (widget.itemBuilder != null) {
-            return widget.itemBuilder!(context, index, items[index].check);
-          }
-          return listItem(context, index, false);
-        },
-      ),
+    Widget child = ListView.builder(
+      padding: widget.boxStyle.padding,
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        if (widget.itemBuilder != null) {
+          return widget.itemBuilder!(context, index, items[index].check);
+        }
+        return listItem(context, index, false);
+      },
     );
+    if (widget.boxStyle.height != null) {
+      child = ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: widget.boxStyle.height!,
+        ),
+        child: child,
+      );
+    }
+    return child;
   }
 
   Widget multipleChoiceList() {
-    return SingleChildScrollView(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: widget.maxHeight,
+    Widget child = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          child: ListView.builder(
+            shrinkWrap: true,
+            padding: widget.boxStyle.padding,
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              if (widget.itemBuilder != null) {
+                return widget.itemBuilder!(context, index, items[index].check);
+              }
+              return listItem(context, index, true);
+            },
+          ),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: ListView.builder(
-                padding: widget.boxStyle.padding,
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  if (widget.itemBuilder != null) {
-                    return widget.itemBuilder!(
-                        context, index, items[index].check);
-                  }
-                  return listItem(context, index, true);
-                },
+        widget.btnWidget ??
+            Row(children: [
+              Expanded(
+                child: widget.resetWidget ??
+                    WrapperButton(
+                      height: widget.buttonStyle.resetHeight,
+                      text: widget.buttonStyle.resetText,
+                      textStyle: widget.buttonStyle.resetTextStyle,
+                      textWeight: widget.buttonStyle.resetTextWeight,
+                      textAlign: widget.buttonStyle.resetTextAlign,
+                      backgroundColor: widget.buttonStyle.resetBackgroundColor,
+                      elevation: widget.buttonStyle.resetElevation,
+                      borderRadius: widget.buttonStyle.resetBorderRadius,
+                      borderSide: widget.buttonStyle.resetBorderSide,
+                      onPressed: () {
+                        for (var element in items) {
+                          element.check = false;
+                        }
+                        setState(() {});
+                        if (widget.onDropDownItemsReset != null) {
+                          widget.onDropDownItemsReset!(items);
+                        }
+                      },
+                    ),
               ),
-            ),
-            widget.btnWidget ??
-                Row(children: [
-                  Expanded(
-                    child: widget.resetWidget ??
-                        WrapperButton(
-                          height: widget.buttonStyle.resetHeight,
-                          text: widget.buttonStyle.resetText,
-                          textStyle: widget.buttonStyle.resetTextStyle,
-                          backgroundColor:
-                              widget.buttonStyle.resetBackgroundColor,
-                          onPressed: () {
-                            for (var element in items) {
-                              element.check = false;
-                            }
-                            setState(() {});
-                            if (widget.onDropDownItemsReset != null) {
-                              widget.onDropDownItemsReset!(items);
-                            }
-                          },
-                        ),
-                  ),
-                  Expanded(
-                    child: widget.confirmWidget ??
-                        WrapperButton(
-                          height: widget.buttonStyle.confirmHeight,
-                          text: widget.buttonStyle.confirmText,
-                          textStyle: widget.buttonStyle.confirmTextStyle,
-                          backgroundColor:
-                              widget.buttonStyle.confirmBackgroundColor,
-                          onPressed: () {
-                            setState(() {});
-                            confirmItems = List.generate(
-                              items.length,
-                              (index) => items[index].copyWith(),
+              Expanded(
+                child: widget.confirmWidget ??
+                    WrapperButton(
+                      height: widget.buttonStyle.confirmHeight,
+                      text: widget.buttonStyle.confirmText,
+                      textStyle: widget.buttonStyle.confirmTextStyle,
+                      textWeight: widget.buttonStyle.confirmTextWeight,
+                      textAlign: widget.buttonStyle.confirmTextAlign,
+                      backgroundColor:
+                          widget.buttonStyle.confirmBackgroundColor,
+                      elevation: widget.buttonStyle.confirmElevation,
+                      borderRadius: widget.buttonStyle.confirmBorderRadius,
+                      borderSide: widget.buttonStyle.confirmBorderSide,
+                      onPressed: () {
+                        setState(() {});
+                        confirmItems = List.generate(
+                          items.length,
+                          (index) => items[index].copyWith(),
+                        );
+                        var checkItems =
+                            items.where((element) => element.check).toList();
+                        if (widget.onDropDownItemsConfirm != null) {
+                          widget.onDropDownItemsConfirm!(checkItems);
+                        }
+                        if (widget.onDropDownHeaderUpdate != null) {
+                          DropDownHeaderStatus? status =
+                              widget.onDropDownHeaderUpdate!(checkItems);
+                          if (status != null) {
+                            widget.controller.hide(
+                              index: widget.headerIndex,
+                              status: status,
                             );
-                            var checkItems = items
-                                .where((element) => element.check)
-                                .toList();
-                            if (widget.onDropDownItemsConfirm != null) {
-                              widget.onDropDownItemsConfirm!(checkItems);
-                            }
-                            if (widget.onDropDownHeaderUpdate != null) {
-                              String? text =
-                                  widget.onDropDownHeaderUpdate!(checkItems);
-                              if (text != null) {
-                                widget.controller.hide(
-                                  index: widget.headerIndex,
-                                  text: text,
-                                );
-                                return;
-                              }
-                            }
-                            widget.controller.hide();
-                          },
-                        ),
-                  ),
-                ]),
-          ],
-        ),
-      ),
+                            return;
+                          }
+                        }
+                        widget.controller.hide(
+                          index: widget.headerIndex,
+                          status: DropDownHeaderStatus(
+                              highlight: checkItems.isNotEmpty),
+                        );
+                      },
+                    ),
+              ),
+            ]),
+      ],
     );
+    if (widget.boxStyle.height != null) {
+      child = ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: widget.boxStyle.height!,
+        ),
+        child: child,
+      );
+    }
+    return SingleChildScrollView(child: child);
   }
 
   Widget listItem(BuildContext context, int index, bool multipleChoice) {
@@ -277,14 +304,21 @@ class _DropDownListViewState extends State<DropDownListView> {
           }
           item.check = true;
           if (widget.onDropDownHeaderUpdate != null) {
-            String? text = widget.onDropDownHeaderUpdate!([item]);
-            if (text != null) {
+            DropDownHeaderStatus? status =
+                widget.onDropDownHeaderUpdate!([item]);
+            if (status != null) {
               setState(() {});
-              widget.controller.hide(index: widget.headerIndex, text: text);
+              widget.controller.hide(
+                index: widget.headerIndex,
+                status: status,
+              );
               return;
             }
           }
-          widget.controller.hide(index: widget.headerIndex);
+          widget.controller.hide(
+            index: widget.headerIndex,
+            status: DropDownHeaderStatus(highlight: item.check),
+          );
         }
         setState(() {});
       },
@@ -320,6 +354,7 @@ class _DropDownListViewState extends State<DropDownListView> {
       backgroundColor: active
           ? widget.itemStyle.activeBackgroundColor
           : widget.itemStyle.backgroundColor,
+      elevation: widget.itemStyle.elevation,
     );
 
     if (widget.itemStyle.decoration != null && !active) {

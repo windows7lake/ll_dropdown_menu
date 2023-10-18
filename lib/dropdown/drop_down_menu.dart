@@ -16,7 +16,7 @@ class DropDownMenu extends StatefulWidget {
   final List<DropDownItem> headerItems;
 
   /// Data of the body component of the drop-down menu
-  final List<DropDownViewBuilder> viewBuilders;
+  final List<DropDownViewStatefulWidget> viewBuilders;
 
   /// The destruction controller of the drop-down menu, used to close the drop-down menu in advance when the page is destroyed
   final DropDownDisposeController? disposeController;
@@ -92,8 +92,9 @@ class _DropDownMenuState extends State<DropDownMenu>
       vsync: this,
       duration: widget.animationDuration,
     );
-    widget.controller.headerText =
-        widget.headerItems.map((e) => e.text ?? "").toList();
+    widget.controller.headerStatus = widget.headerItems
+        .map((e) => DropDownHeaderStatus(text: e.text ?? ""))
+        .toList();
     widget.controller.addListener(dropDownListener);
   }
 
@@ -110,7 +111,7 @@ class _DropDownMenuState extends State<DropDownMenu>
           "currentIndex >= builders.length");
     }
     if (isExpand && widget.controller.isExpand) {
-      animationViewHeight = widget.viewBuilders[currentIndex].height;
+      animationViewHeight = widget.viewBuilders[currentIndex].actualHeight;
       if (mounted) {
         setState(() {});
         if (overlayState != null && overlayState!.mounted) {
@@ -123,7 +124,7 @@ class _DropDownMenuState extends State<DropDownMenu>
     isExpand = widget.controller.isExpand;
     if (mounted) setState(() {});
     if (isExpand) {
-      viewHeight = widget.viewBuilders[currentIndex].height;
+      viewHeight = widget.viewBuilders[currentIndex].actualHeight;
       animation?.removeListener(animationListener);
       animation = Tween<double>(begin: 0, end: viewHeight)
           .animate(animationController!)
@@ -196,9 +197,10 @@ class _DropDownMenuState extends State<DropDownMenu>
   Widget headerItem(BuildContext context, int index) {
     bool active =
         widget.controller.isExpand && widget.controller.headerIndex == index;
+    DropDownHeaderStatus status = widget.controller.headerStatus[index];
+
     var item = widget.headerItems[index];
-    String text = widget.controller.headerText.elementAt(index);
-    double? width;
+    double width = _width;
     if (widget.headerBoxStyle.expand) {
       width = (_width - widget.headerBoxStyle.padding.horizontal) /
               widget.headerItems.length -
@@ -213,23 +215,31 @@ class _DropDownMenuState extends State<DropDownMenu>
         }
         widget.controller.toggle(index);
       },
-      text: text.isEmpty ? item.text : text,
+      text: status.text.isEmpty ? item.text : status.text,
       textStyle: active
           ? widget.headerItemStyle.activeTextStyle
-          : widget.headerItemStyle.textStyle,
+          : (status.highlight
+              ? widget.headerItemStyle.highlightTextStyle
+              : widget.headerItemStyle.textStyle),
       textAlign: widget.headerItemStyle.textAlign,
       textExpand: widget.headerItemStyle.textExpand,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
       icon: active
           ? (item.activeIcon ?? widget.headerItemStyle.activeIcon)
-          : (item.icon ?? widget.headerItemStyle.icon),
+          : (status.highlight
+              ? widget.headerItemStyle.highlightIcon
+              : (item.icon ?? widget.headerItemStyle.icon)),
       iconColor: active
           ? widget.headerItemStyle.activeIconColor
-          : widget.headerItemStyle.iconColor,
+          : (status.highlight
+              ? widget.headerItemStyle.highlightIconColor
+              : widget.headerItemStyle.iconColor),
       iconSize: active
           ? widget.headerItemStyle.activeIconSize
-          : widget.headerItemStyle.iconSize,
+          : (status.highlight
+              ? widget.headerItemStyle.highlightIconSize
+              : widget.headerItemStyle.iconSize),
       iconPosition: widget.headerItemStyle.iconPosition,
       gap: widget.headerItemStyle.gap,
       padding: widget.headerItemStyle.padding,
@@ -238,18 +248,30 @@ class _DropDownMenuState extends State<DropDownMenu>
       alignment: widget.headerItemStyle.alignment,
       borderSide: active
           ? widget.headerItemStyle.activeBorderSide
-          : widget.headerItemStyle.borderSide,
+          : (status.highlight
+              ? widget.headerItemStyle.highlightBorderSide
+              : widget.headerItemStyle.borderSide),
       borderRadius: active
           ? widget.headerItemStyle.activeBorderRadius
-          : widget.headerItemStyle.borderRadius,
+          : (status.highlight
+              ? widget.headerItemStyle.highlightBorderRadius
+              : widget.headerItemStyle.borderRadius),
       backgroundColor: active
           ? widget.headerItemStyle.activeBackgroundColor
-          : widget.headerItemStyle.backgroundColor,
+          : (status.highlight
+              ? widget.headerItemStyle.highlightBackgroundColor
+              : widget.headerItemStyle.backgroundColor),
+      elevation: widget.headerItemStyle.elevation,
     );
 
     if (widget.headerItemStyle.decoration != null && !active) {
+      var decoration = widget.headerItemStyle.decoration!;
+      if (status.highlight &&
+          widget.headerItemStyle.highlightDecoration != null) {
+        decoration = widget.headerItemStyle.highlightDecoration!;
+      }
       child = DecoratedBox(
-        decoration: widget.headerItemStyle.decoration!,
+        decoration: decoration,
         child: child,
       );
     }
@@ -281,7 +303,7 @@ class _DropDownMenuState extends State<DropDownMenu>
       color: widget.viewColor,
       child: IndexedStack(
         index: currentIndex,
-        children: widget.viewBuilders.map((e) => e.widget).toList(),
+        children: widget.viewBuilders,
       ),
     );
   }

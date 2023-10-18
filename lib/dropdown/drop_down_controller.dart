@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 
+import 'drop_down_typedef.dart';
+
 /// The controller of the drop-down menu, used to control the display and
 /// hiding of the drop-down menu.
 class DropDownController extends ChangeNotifier {
@@ -9,13 +11,14 @@ class DropDownController extends ChangeNotifier {
   /// The index of the currently selected header item.
   int headerIndex = 0;
 
-  /// The text that user selected.
-  List<String> headerText = [];
+  /// The status of header after the user selects the item
+  List<DropDownHeaderStatus> headerStatus = [];
 
   /// The offset of the DropDownView in DropDownMenu
   double viewOffsetY = -1;
 
   /// Used to show DropDownView.
+  /// offsetY: The Y-axis offset of the DropDownMenu in screen
   void show(int index, {double? offsetY}) {
     isExpand = true;
     headerIndex = index;
@@ -24,18 +27,19 @@ class DropDownController extends ChangeNotifier {
   }
 
   /// Used to hide DropDownView.
-  void hide({int? index, String? text}) {
-    if (index != null && text != null) {
-      headerText[index] = text;
+  /// status: The status of header after the user selects the item
+  void hide({int? index, DropDownHeaderStatus? status}) {
+    if (index != null && status != null) {
+      headerStatus[index] = status;
     }
     isExpand = false;
     notifyListeners();
   }
 
   /// Used to toggle DropDownView.
-  void toggle(int index, {String? text, double? offsetY}) {
+  void toggle(int index, {double? offsetY, DropDownHeaderStatus? status}) {
     if (isExpand && headerIndex == index) {
-      hide(index: index, text: text);
+      hide(index: index, status: status);
     } else {
       show(index, offsetY: offsetY);
     }

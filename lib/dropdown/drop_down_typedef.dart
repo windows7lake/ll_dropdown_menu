@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 typedef OnDropDownHeaderItemTap = void Function(int index, DropDownItem item);
-typedef OnDropDownHeaderUpdate = String? Function(
+typedef OnDropDownHeaderUpdate = DropDownHeaderStatus? Function(
     List<DropDownItem> checkedItems);
 typedef IndexedWidgetBuilder = Widget Function(
     BuildContext context, int index, bool check);
@@ -44,13 +44,31 @@ class DropDownItem<T> {
   }
 }
 
-/// DropDownMenu body component builder
-class DropDownViewBuilder {
-  final double height;
-  final Widget widget;
+/// DropDownMenu body component property
+abstract class DropDownViewProperty {
+  /// The height of the DropDownMenu content view
+  double get actualHeight;
+}
 
-  DropDownViewBuilder({
-    required this.height,
-    required this.widget,
+/// DropDownMenu body component StatefulWidget
+abstract class DropDownViewStatefulWidget extends StatefulWidget
+    implements DropDownViewProperty {
+  const DropDownViewStatefulWidget({Key? key}) : super(key: key);
+}
+
+/// DropDownMenu header component status
+class DropDownHeaderStatus {
+  DropDownHeaderStatus({
+    this.text = "",
+    this.highlight = false,
   });
+
+  /// The text of the header item after the user selects the item
+  String text;
+
+  /// The highlight status of the header item after the user selects the item
+  /// If the highlight is true, the text style of the header item will be changed to the highlightTextStyle of DropDownItemStyle,
+  /// and the icon will be changed to the highlightIcon of DropDownItemStyle.
+  /// etc.
+  bool highlight;
 }

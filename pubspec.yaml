@@ -1,6 +1,6 @@
 name: ll_dropdown_menu
 description: Powerful and customizable drop-down menu component for Flutter. It supports multi-level menus, and you can customize the style.
-version: 0.2.0
+version: 0.3.0
 homepage: https://github.com/windows7lake/ll_dropdown_menu
 
 environment:

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart' hide IndexedWidgetBuilder;
 
 import '../button/text_button.dart';
@@ -7,7 +9,7 @@ import 'drop_down_typedef.dart';
 
 /// The basic implementation of drop-down menu, cascading list, supporting
 /// single-selection and multi-selection operations.
-class DropDownCascadeList extends StatefulWidget {
+class DropDownCascadeList extends DropDownViewStatefulWidget {
   /// Controller of the drop-down menu
   final DropDownController controller;
 
@@ -47,9 +49,6 @@ class DropDownCascadeList extends StatefulWidget {
   /// Callback event triggered when the number of multiple selections for the second-level sub-items of the drop-down menu content body exceeds the maximum value
   final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded;
 
-  /// The maximum height of the drop-down menu content body
-  final double maxHeight;
-
   /// Button component of the drop-down menu content body in the multi-select state
   final Widget? btnWidget;
 
@@ -68,7 +67,7 @@ class DropDownCascadeList extends StatefulWidget {
   /// Click event of the confirmation button component of the drop-down menu content body in the multi-select state
   final OnDropDownItemsConfirm? onDropDownItemsConfirm;
 
-  /// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
+  /// Callback event triggered after the drop-down menu selection is confirmed, used to update the status of the header component by the return value of the callback
   /// headerIndex should not be null when using this callback
   final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 
@@ -98,7 +97,6 @@ class DropDownCascadeList extends StatefulWidget {
     this.onSecondFloorItemChanged,
     this.maxMultiChoiceSize,
     this.onDropDownItemLimitExceeded,
-    this.maxHeight = 300,
     this.btnWidget,
     this.resetWidget,
     this.confirmWidget,
@@ -110,6 +108,17 @@ class DropDownCascadeList extends StatefulWidget {
 
   @override
   State<DropDownCascadeList> createState() => _DropDownCascadeListState();
+
+  @override
+  double get actualHeight =>
+      boxStyle.height ??
+      firstFloorItemStyle.height * items.length +
+          boxStyle.margin.vertical +
+          boxStyle.padding.vertical +
+          (firstFloorItemStyle.margin?.vertical ?? 0) +
+          ((maxMultiChoiceSize != null && maxMultiChoiceSize! > 0)
+              ? math.max(buttonStyle.resetHeight, buttonStyle.confirmHeight)
+              : 0);
 }
 
 class _DropDownCascadeListState extends State<DropDownCascadeList> {
@@ -193,101 +202,124 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
   }
 
   Widget singleChoiceList() {
-    return Row(children: [
+    Widget child = Row(children: [
       firstFloor(),
       secondFloor(),
     ]);
+    if (widget.boxStyle.height != null) {
+      child = ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: widget.boxStyle.height!,
+        ),
+        child: child,
+      );
+    }
+    return child;
   }
 
   Widget multipleChoiceList() {
+    Widget child = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          child: Row(children: [
+            firstFloor(),
+            secondFloor(),
+          ]),
+        ),
+        widget.btnWidget ??
+            Row(children: [
+              Expanded(
+                child: widget.resetWidget ??
+                    WrapperButton(
+                      height: widget.buttonStyle.resetHeight,
+                      text: widget.buttonStyle.resetText,
+                      textStyle: widget.buttonStyle.resetTextStyle,
+                      textWeight: widget.buttonStyle.resetTextWeight,
+                      textAlign: widget.buttonStyle.resetTextAlign,
+                      backgroundColor: widget.buttonStyle.resetBackgroundColor,
+                      elevation: widget.buttonStyle.resetElevation,
+                      borderRadius: widget.buttonStyle.resetBorderRadius,
+                      borderSide: widget.buttonStyle.resetBorderSide,
+                      onPressed: () {
+                        for (var element in items) {
+                          if (element.data == null) continue;
+                          for (var subElement in element.data!) {
+                            subElement.check = false;
+                          }
+                        }
+                        setState(() {});
+                        if (widget.onDropDownItemsReset != null) {
+                          widget.onDropDownItemsReset!(items);
+                        }
+                      },
+                    ),
+              ),
+              Expanded(
+                child: widget.confirmWidget ??
+                    WrapperButton(
+                      height: widget.buttonStyle.confirmHeight,
+                      text: widget.buttonStyle.confirmText,
+                      textStyle: widget.buttonStyle.confirmTextStyle,
+                      textWeight: widget.buttonStyle.confirmTextWeight,
+                      textAlign: widget.buttonStyle.confirmTextAlign,
+                      backgroundColor:
+                          widget.buttonStyle.confirmBackgroundColor,
+                      elevation: widget.buttonStyle.confirmElevation,
+                      borderRadius: widget.buttonStyle.confirmBorderRadius,
+                      borderSide: widget.buttonStyle.confirmBorderSide,
+                      onPressed: () {
+                        setState(() {});
+                        confirmItems = List.generate(
+                          items.length,
+                          (index) {
+                            var item = items[index];
+                            return items[index].copyWith(
+                              data: List.generate(
+                                item.data?.length ?? 0,
+                                (subIndex) => item.data![subIndex].copyWith(),
+                              ),
+                            );
+                          },
+                        );
+                        List<DropDownItem> checkItems = [];
+                        for (var element in items) {
+                          if (element.data == null) continue;
+                          checkItems
+                              .addAll(element.data!.where((e) => e.check));
+                        }
+                        if (widget.onDropDownItemsConfirm != null) {
+                          widget.onDropDownItemsConfirm!(checkItems);
+                        }
+                        if (widget.onDropDownHeaderUpdate != null) {
+                          DropDownHeaderStatus? status =
+                              widget.onDropDownHeaderUpdate!(checkItems);
+                          if (status != null) {
+                            widget.controller.hide(
+                              index: widget.headerIndex,
+                              status: status,
+                            );
+                            return;
+                          }
+                        }
+                        widget.controller.hide(
+                          index: widget.headerIndex,
+                          status: DropDownHeaderStatus(
+                              highlight: checkItems.isNotEmpty),
+                        );
+                      },
+                    ),
+              ),
+            ]),
+      ],
+    );
+
     return SingleChildScrollView(
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: widget.maxHeight,
+          maxHeight: widget.boxStyle.height ?? widget.actualHeight,
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: Row(children: [
-                firstFloor(),
-                secondFloor(),
-              ]),
-            ),
-            widget.btnWidget ??
-                Row(children: [
-                  Expanded(
-                    child: widget.resetWidget ??
-                        WrapperButton(
-                          height: widget.buttonStyle.resetHeight,
-                          text: widget.buttonStyle.resetText,
-                          textStyle: widget.buttonStyle.resetTextStyle,
-                          backgroundColor:
-                              widget.buttonStyle.resetBackgroundColor,
-                          onPressed: () {
-                            for (var element in items) {
-                              if (element.data == null) continue;
-                              for (var subElement in element.data!) {
-                                subElement.check = false;
-                              }
-                            }
-                            setState(() {});
-                            if (widget.onDropDownItemsReset != null) {
-                              widget.onDropDownItemsReset!(items);
-                            }
-                          },
-                        ),
-                  ),
-                  Expanded(
-                    child: widget.confirmWidget ??
-                        WrapperButton(
-                          height: widget.buttonStyle.confirmHeight,
-                          text: widget.buttonStyle.confirmText,
-                          textStyle: widget.buttonStyle.confirmTextStyle,
-                          backgroundColor:
-                              widget.buttonStyle.confirmBackgroundColor,
-                          onPressed: () {
-                            setState(() {});
-                            confirmItems = List.generate(
-                              items.length,
-                              (index) {
-                                var item = items[index];
-                                return items[index].copyWith(
-                                  data: List.generate(
-                                    item.data?.length ?? 0,
-                                    (subIndex) =>
-                                        item.data![subIndex].copyWith(),
-                                  ),
-                                );
-                              },
-                            );
-                            List<DropDownItem> checkItems = [];
-                            for (var element in items) {
-                              if (element.data == null) continue;
-                              checkItems
-                                  .addAll(element.data!.where((e) => e.check));
-                            }
-                            if (widget.onDropDownItemsConfirm != null) {
-                              widget.onDropDownItemsConfirm!(checkItems);
-                            }
-                            if (widget.onDropDownHeaderUpdate != null) {
-                              String? text =
-                                  widget.onDropDownHeaderUpdate!(checkItems);
-                              if (text != null) {
-                                widget.controller.hide(
-                                  index: widget.headerIndex,
-                                  text: text,
-                                );
-                                return;
-                              }
-                            }
-                            widget.controller.hide();
-                          },
-                        ),
-                  ),
-                ]),
-          ],
-        ),
+        child: child,
       ),
     );
   }
@@ -350,6 +382,7 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
             backgroundColor: active
                 ? widget.firstFloorItemStyle.activeBackgroundColor
                 : widget.firstFloorItemStyle.backgroundColor,
+            elevation: widget.firstFloorItemStyle.elevation,
           );
 
           if (widget.firstFloorItemStyle.decoration != null && !active) {
@@ -424,17 +457,21 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
                 }
                 item.check = true;
                 if (widget.onDropDownHeaderUpdate != null) {
-                  String? text = widget.onDropDownHeaderUpdate!([item]);
-                  if (text != null) {
+                  DropDownHeaderStatus? status =
+                      widget.onDropDownHeaderUpdate!([item]);
+                  if (status != null) {
                     setState(() {});
                     widget.controller.hide(
                       index: widget.headerIndex,
-                      text: text,
+                      status: status,
                     );
                     return;
                   }
                 }
-                widget.controller.hide();
+                widget.controller.hide(
+                  index: widget.headerIndex,
+                  status: DropDownHeaderStatus(highlight: item.check),
+                );
               }
               setState(() {});
             },
@@ -471,6 +508,7 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
             backgroundColor: active
                 ? widget.secondFloorItemStyle.activeBackgroundColor
                 : widget.secondFloorItemStyle.backgroundColor,
+            elevation: widget.secondFloorItemStyle.elevation,
           );
 
           if (widget.secondFloorItemStyle.decoration != null && !active) {

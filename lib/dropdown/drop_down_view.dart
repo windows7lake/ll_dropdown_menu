@@ -9,7 +9,7 @@ class DropDownView extends StatefulWidget {
   final DropDownController controller;
 
   /// Data for the body component of the drop-down menu
-  final List<DropDownViewBuilder> builders;
+  final List<DropDownViewStatefulWidget> builders;
 
   /// Background color of the drop-down menu body component
   final Color? viewColor;
@@ -66,13 +66,13 @@ class _DropDownViewState extends State<DropDownView>
     }
 
     if (isExpand && widget.controller.isExpand) {
-      animationViewHeight = widget.builders[currentIndex].height;
+      animationViewHeight = widget.builders[currentIndex].actualHeight;
       if (mounted) setState(() {});
       return;
     }
 
     isExpand = widget.controller.isExpand;
-    viewHeight = widget.builders[currentIndex].height;
+    viewHeight = widget.builders[currentIndex].actualHeight;
     animation?.removeListener(animationListener);
     animation = Tween<double>(begin: 0, end: viewHeight)
         .animate(animationController!)
@@ -117,7 +117,7 @@ class _DropDownViewState extends State<DropDownView>
       color: widget.viewColor,
       child: IndexedStack(
         index: currentIndex,
-        children: widget.builders.map((e) => e.widget).toList(),
+        children: widget.builders,
       ),
     );
   }

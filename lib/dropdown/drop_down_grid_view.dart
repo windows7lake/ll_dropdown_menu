@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart' hide IndexedWidgetBuilder;
 
 import '../button/text_button.dart';
@@ -8,9 +10,12 @@ import 'drop_down_typedef.dart';
 
 /// The basic implementation of the drop-down menu. It is implemented internally
 /// using `GridView` and supports single-selection and multi-selection operations.
-class DropDownGridView extends StatefulWidget {
+class DropDownGridView extends DropDownViewStatefulWidget {
   /// Controller of the drop-down menu
   final DropDownController controller;
+
+  /// Data controller of the drop-down menu content body
+  final DropDownGridDataController? dataController;
 
   /// Data of the drop-down menu content body
   final List<DropDownItem> items;
@@ -48,9 +53,6 @@ class DropDownGridView extends StatefulWidget {
   /// Callback event triggered when the number of multiple selections for the sub-items of the drop-down menu content body exceeds the maximum value
   final OnDropDownItemLimitExceeded? onDropDownItemLimitExceeded;
 
-  /// The maximum height of the drop-down menu content body
-  final double maxHeight;
-
   /// Button component of the drop-down menu content body in the multi-select state
   final Widget? btnWidget;
 
@@ -69,7 +71,7 @@ class DropDownGridView extends StatefulWidget {
   /// Click event of the confirmation button component of the drop-down menu content body in the multi-select state
   final OnDropDownItemsConfirm? onDropDownItemsConfirm;
 
-  /// Callback event triggered after the drop-down menu selection is confirmed, used to update the text of the header component by the return value of the callback
+  /// Callback event triggered after the drop-down menu selection is confirmed, used to update the status of the header component by the return value of the callback
   /// headerIndex should not be null when using this callback
   final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 
@@ -78,6 +80,7 @@ class DropDownGridView extends StatefulWidget {
     required this.controller,
     required this.items,
     required this.crossAxisCount,
+    this.dataController,
     this.headerIndex,
     this.mainAxisSpacing = 10,
     this.crossAxisSpacing = 10,
@@ -92,7 +95,6 @@ class DropDownGridView extends StatefulWidget {
     this.onDropDownItemChanged,
     this.maxMultiChoiceSize,
     this.onDropDownItemLimitExceeded,
-    this.maxHeight = 300,
     this.btnWidget,
     this.resetWidget,
     this.confirmWidget,
@@ -104,6 +106,21 @@ class DropDownGridView extends StatefulWidget {
 
   @override
   State<DropDownGridView> createState() => _DropDownGridViewState();
+
+  @override
+  double get actualHeight {
+    int rowCount = items.length ~/ crossAxisCount +
+        (items.length % crossAxisCount == 0 ? 0 : 1);
+    return boxStyle.height ??
+        itemStyle.height * rowCount +
+            crossAxisSpacing * (rowCount - 1) +
+            boxStyle.margin.vertical +
+            boxStyle.padding.vertical +
+            (itemStyle.margin?.vertical ?? 0) +
+            ((maxMultiChoiceSize != null && maxMultiChoiceSize! > 0)
+                ? math.max(buttonStyle.resetHeight, buttonStyle.confirmHeight)
+                : 0);
+  }
 }
 
 class _DropDownGridViewState extends State<DropDownGridView> {
@@ -114,6 +131,7 @@ class _DropDownGridViewState extends State<DropDownGridView> {
   @override
   void initState() {
     super.initState();
+    widget.dataController?.bind(this);
     multipleChoice =
         widget.maxMultiChoiceSize != null && widget.maxMultiChoiceSize! > 0;
     items = List.generate(
@@ -125,6 +143,12 @@ class _DropDownGridViewState extends State<DropDownGridView> {
       (index) => widget.items[index].copyWith(),
     );
     widget.controller.addListener(dropDownListener);
+  }
+
+  @override
+  void didUpdateWidget(covariant DropDownGridView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    widget.dataController?.bind(this);
   }
 
   void dropDownListener() {
@@ -156,7 +180,7 @@ class _DropDownGridViewState extends State<DropDownGridView> {
   }
 
   Widget singleChoiceList() {
-    return GridView.builder(
+    Widget child = GridView.builder(
       padding: widget.boxStyle.padding,
       gridDelegate: SliverGridDelegateWithFixedHeight(
         crossAxisCount: widget.crossAxisCount,
@@ -172,97 +196,120 @@ class _DropDownGridViewState extends State<DropDownGridView> {
         return gridItem(context, index, false);
       },
     );
+    if (widget.boxStyle.height != null) {
+      child = ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: widget.boxStyle.height!,
+        ),
+        child: child,
+      );
+    }
+    return child;
   }
 
   Widget multipleChoiceList() {
-    return SingleChildScrollView(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: widget.maxHeight,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: GridView.builder(
-                padding: widget.boxStyle.padding,
-                gridDelegate: SliverGridDelegateWithFixedHeight(
-                  crossAxisCount: widget.crossAxisCount,
-                  mainAxisSpacing: widget.mainAxisSpacing,
-                  crossAxisSpacing: widget.crossAxisSpacing,
-                  height: widget.itemStyle.height,
-                ),
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  if (widget.itemBuilder != null) {
-                    return widget.itemBuilder!(
-                        context, index, items[index].check);
-                  }
-                  return gridItem(context, index, true);
-                },
-              ),
+    Widget child = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          child: GridView.builder(
+            shrinkWrap: true,
+            padding: widget.boxStyle.padding,
+            gridDelegate: SliverGridDelegateWithFixedHeight(
+              crossAxisCount: widget.crossAxisCount,
+              mainAxisSpacing: widget.mainAxisSpacing,
+              crossAxisSpacing: widget.crossAxisSpacing,
+              height: widget.itemStyle.height,
             ),
-            widget.btnWidget ??
-                Row(children: [
-                  Expanded(
-                    child: widget.resetWidget ??
-                        WrapperButton(
-                          height: widget.buttonStyle.resetHeight,
-                          text: widget.buttonStyle.resetText,
-                          textStyle: widget.buttonStyle.resetTextStyle,
-                          backgroundColor:
-                              widget.buttonStyle.resetBackgroundColor,
-                          onPressed: () {
-                            for (var element in items) {
-                              element.check = false;
-                            }
-                            setState(() {});
-                            if (widget.onDropDownItemsReset != null) {
-                              widget.onDropDownItemsReset!(items);
-                            }
-                          },
-                        ),
-                  ),
-                  Expanded(
-                    child: widget.confirmWidget ??
-                        WrapperButton(
-                          height: widget.buttonStyle.confirmHeight,
-                          text: widget.buttonStyle.confirmText,
-                          textStyle: widget.buttonStyle.confirmTextStyle,
-                          backgroundColor:
-                              widget.buttonStyle.confirmBackgroundColor,
-                          onPressed: () {
-                            setState(() {});
-                            confirmItems = List.generate(
-                              items.length,
-                              (index) => items[index].copyWith(),
-                            );
-                            var checkItems = items
-                                .where((element) => element.check)
-                                .toList();
-                            if (widget.onDropDownItemsConfirm != null) {
-                              widget.onDropDownItemsConfirm!(checkItems);
-                            }
-                            if (widget.onDropDownHeaderUpdate != null) {
-                              String? text =
-                                  widget.onDropDownHeaderUpdate!(checkItems);
-                              if (text != null) {
-                                widget.controller.hide(
-                                  index: widget.headerIndex,
-                                  text: text,
-                                );
-                                return;
-                              }
-                            }
-                            widget.controller.hide();
-                          },
-                        ),
-                  ),
-                ]),
-          ],
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              if (widget.itemBuilder != null) {
+                return widget.itemBuilder!(context, index, items[index].check);
+              }
+              return gridItem(context, index, true);
+            },
+          ),
         ),
-      ),
+        widget.btnWidget ??
+            Row(children: [
+              Expanded(
+                child: widget.resetWidget ??
+                    WrapperButton(
+                      height: widget.buttonStyle.resetHeight,
+                      text: widget.buttonStyle.resetText,
+                      textStyle: widget.buttonStyle.resetTextStyle,
+                      textWeight: widget.buttonStyle.resetTextWeight,
+                      textAlign: widget.buttonStyle.resetTextAlign,
+                      backgroundColor: widget.buttonStyle.resetBackgroundColor,
+                      elevation: widget.buttonStyle.resetElevation,
+                      borderRadius: widget.buttonStyle.resetBorderRadius,
+                      borderSide: widget.buttonStyle.resetBorderSide,
+                      onPressed: () {
+                        for (var element in items) {
+                          element.check = false;
+                        }
+                        setState(() {});
+                        if (widget.onDropDownItemsReset != null) {
+                          widget.onDropDownItemsReset!(items);
+                        }
+                      },
+                    ),
+              ),
+              Expanded(
+                child: widget.confirmWidget ??
+                    WrapperButton(
+                      height: widget.buttonStyle.confirmHeight,
+                      text: widget.buttonStyle.confirmText,
+                      textStyle: widget.buttonStyle.confirmTextStyle,
+                      textWeight: widget.buttonStyle.confirmTextWeight,
+                      textAlign: widget.buttonStyle.confirmTextAlign,
+                      backgroundColor:
+                          widget.buttonStyle.confirmBackgroundColor,
+                      elevation: widget.buttonStyle.confirmElevation,
+                      borderRadius: widget.buttonStyle.confirmBorderRadius,
+                      borderSide: widget.buttonStyle.confirmBorderSide,
+                      onPressed: () {
+                        setState(() {});
+                        confirmItems = List.generate(
+                          items.length,
+                          (index) => items[index].copyWith(),
+                        );
+                        var checkItems =
+                            items.where((element) => element.check).toList();
+                        if (widget.onDropDownItemsConfirm != null) {
+                          widget.onDropDownItemsConfirm!(checkItems);
+                        }
+                        if (widget.onDropDownHeaderUpdate != null) {
+                          DropDownHeaderStatus? status =
+                              widget.onDropDownHeaderUpdate!(checkItems);
+                          if (status != null) {
+                            widget.controller.hide(
+                              index: widget.headerIndex,
+                              status: status,
+                            );
+                            return;
+                          }
+                        }
+                        widget.controller.hide(
+                          index: widget.headerIndex,
+                          status: DropDownHeaderStatus(
+                              highlight: checkItems.isNotEmpty),
+                        );
+                      },
+                    ),
+              ),
+            ]),
+      ],
     );
+    if (widget.boxStyle.height != null) {
+      child = ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: widget.boxStyle.height!,
+        ),
+        child: child,
+      );
+    }
+    return SingleChildScrollView(child: child);
   }
 
   Widget gridItem(BuildContext context, int index, bool multipleChoice) {
@@ -294,14 +341,21 @@ class _DropDownGridViewState extends State<DropDownGridView> {
           }
           item.check = true;
           if (widget.onDropDownHeaderUpdate != null) {
-            String? text = widget.onDropDownHeaderUpdate!([item]);
-            if (text != null) {
+            DropDownHeaderStatus? status =
+                widget.onDropDownHeaderUpdate!([item]);
+            if (status != null) {
               setState(() {});
-              widget.controller.hide(index: widget.headerIndex, text: text);
+              widget.controller.hide(
+                index: widget.headerIndex,
+                status: status,
+              );
               return;
             }
           }
-          widget.controller.hide(index: widget.headerIndex);
+          widget.controller.hide(
+            index: widget.headerIndex,
+            status: DropDownHeaderStatus(highlight: item.check),
+          );
         }
         setState(() {});
       },
@@ -343,6 +397,7 @@ class _DropDownGridViewState extends State<DropDownGridView> {
       backgroundColor: active
           ? widget.itemStyle.activeBackgroundColor
           : widget.itemStyle.backgroundColor,
+      elevation: widget.itemStyle.elevation,
     );
 
     if (widget.itemStyle.decoration != null && !active) {
@@ -366,5 +421,45 @@ class _DropDownGridViewState extends State<DropDownGridView> {
     }
 
     return child;
+  }
+
+  @override
+  void dispose() {
+    widget.dataController?.dispose();
+    super.dispose();
+  }
+
+  void update() {
+    setState(() {});
+  }
+}
+
+class DropDownGridDataController {
+  _DropDownGridViewState? _state;
+
+  // ignore: library_private_types_in_public_api
+  void bind(_DropDownGridViewState state) {
+    _state = state;
+  }
+
+  void dispose() {
+    _state = null;
+  }
+
+  void resetAllItemsStatus() {
+    _state?.items.forEach((element) {
+      element.check = false;
+    });
+    _state?.update();
+  }
+
+  void changeItemStatusByIndex(int index, bool check) {
+    _state?.items[index].check = check;
+    _state?.update();
+  }
+
+  void changeItemStatusByText(String text, bool check) {
+    _state?.items.firstWhere((element) => element.text == text).check = check;
+    _state?.update();
   }
 }

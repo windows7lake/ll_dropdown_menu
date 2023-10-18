@@ -85,71 +85,71 @@ class _DropDownDemoState extends State<DropDownDemo1>
           ),
           viewOffsetY: MediaQuery.of(context).padding.top + 56,
           viewBuilders: [
-            DropDownViewBuilder(
-              height: 300,
-              widget: DropDownListView(
-                controller: dropDownController,
-                items: items1,
-                headerIndex: 0,
-                onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
-                  return checkedItems.map((e) => e.text).toList().join("、");
-                },
-              ),
+            DropDownListView(
+              controller: dropDownController,
+              items: items1,
+              headerIndex: 0,
+              onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+                return DropDownHeaderStatus(
+                  text: checkedItems.map((e) => e.text).toList().join("、"),
+                  highlight: checkedItems.isNotEmpty,
+                );
+              },
             ),
-            DropDownViewBuilder(
-              height: 300,
-              widget: DropDownListView(
-                controller: dropDownController,
-                items: items2,
-                maxMultiChoiceSize: 2,
-                headerIndex: 1,
-                onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
-                  return checkedItems.map((e) => e.text).toList().join("、");
-                },
-              ),
+            DropDownListView(
+              controller: dropDownController,
+              items: items2,
+              maxMultiChoiceSize: 2,
+              headerIndex: 1,
+              onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+                return DropDownHeaderStatus(
+                  text: checkedItems.map((e) => e.text).toList().join("、"),
+                  highlight: checkedItems.isNotEmpty,
+                );
+              },
             ),
-            DropDownViewBuilder(
-              height: 262,
-              widget: DropDownGridView(
-                controller: dropDownController,
-                crossAxisCount: 3,
-                boxStyle: const DropDownBoxStyle(
-                  padding: EdgeInsets.all(16),
-                ),
-                itemStyle: DropDownItemStyle(
-                  activeBackgroundColor: const Color(0xFFF5F5F5),
-                  activeIconColor: Colors.blue,
-                  activeTextStyle: const TextStyle(color: Colors.blue),
-                  activeBorderRadius: BorderRadius.circular(6),
-                ),
-                items: items3,
-                headerIndex: 2,
-                onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
-                  return checkedItems.map((e) => e.text).toList().join("、");
-                },
+            DropDownGridView(
+              controller: dropDownController,
+              crossAxisCount: 3,
+              boxStyle: const DropDownBoxStyle(
+                padding: EdgeInsets.all(16),
               ),
+              itemStyle: DropDownItemStyle(
+                activeBackgroundColor: const Color(0xFFF5F5F5),
+                activeIconColor: Colors.blue,
+                activeTextStyle: const TextStyle(color: Colors.blue),
+                activeBorderRadius: BorderRadius.circular(6),
+              ),
+              items: items3,
+              headerIndex: 2,
+              onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+                return DropDownHeaderStatus(
+                  text: checkedItems.map((e) => e.text).toList().join("、"),
+                  highlight: checkedItems.isNotEmpty,
+                );
+              },
             ),
-            DropDownViewBuilder(
-              height: 300,
-              widget: DropDownGridView(
-                controller: dropDownController,
-                crossAxisCount: 3,
-                boxStyle: const DropDownBoxStyle(
-                  padding: EdgeInsets.all(16),
-                ),
-                itemStyle: DropDownItemStyle(
-                  activeBackgroundColor: const Color(0xFFF5F5F5),
-                  activeIconColor: Colors.blue,
-                  activeTextStyle: const TextStyle(color: Colors.blue),
-                  activeBorderRadius: BorderRadius.circular(6),
-                ),
-                items: items4,
-                maxMultiChoiceSize: 2,
-                headerIndex: 3,
-                onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
-                  return checkedItems.map((e) => e.text).toList().join("、");
-                },
+            DropDownGridView(
+              controller: dropDownController,
+              crossAxisCount: 3,
+              boxStyle: const DropDownBoxStyle(
+                padding: EdgeInsets.all(16),
               ),
+              itemStyle: DropDownItemStyle(
+                activeBackgroundColor: const Color(0xFFF5F5F5),
+                activeIconColor: Colors.blue,
+                activeTextStyle: const TextStyle(color: Colors.blue),
+                activeBorderRadius: BorderRadius.circular(6),
+              ),
+              items: items4,
+              maxMultiChoiceSize: 2,
+              headerIndex: 3,
+              onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
+                return DropDownHeaderStatus(
+                  text: checkedItems.map((e) => e.text).toList().join("、"),
+                  highlight: checkedItems.isNotEmpty,
+                );
+              },
             ),
           ],
         ),
