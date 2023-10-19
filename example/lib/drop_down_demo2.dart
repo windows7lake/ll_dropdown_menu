@@ -11,6 +11,52 @@ class DropDownDemo2 extends StatefulWidget {
 class _DropDownDemoState extends State<DropDownDemo2>
     with SingleTickerProviderStateMixin {
   final DropDownController dropDownController = DropDownController();
+  List<DropDownItem> items1 = [];
+  List<DropDownItem> items2 = [];
+  List<DropDownItem> items3 = [];
+  List<DropDownItem> items4 = [];
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 1), () {
+      setupData();
+      setState(() {});
+    });
+  }
+
+  void setupData() {
+    items1 = List.generate(
+      6,
+      (index) => DropDownItem(
+        text: "Single Item $index",
+        data: index,
+      ),
+    );
+    items2 = List.generate(
+      8,
+      (index) => DropDownItem(
+        text: "Multi Item $index",
+        data: index,
+      ),
+    );
+    items3 = List.generate(
+      10,
+      (index) => DropDownItem(
+        text: "Single Item $index",
+        icon: const Icon(Icons.ac_unit),
+        activeIcon: const Icon(Icons.ac_unit),
+        data: index,
+      ),
+    );
+    items4 = List.generate(
+      12,
+      (index) => DropDownItem(
+        text: "Multi Item $index",
+        data: index,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,24 +92,15 @@ class _DropDownDemoState extends State<DropDownDemo2>
                 builders: [
                   DropDownListView(
                     controller: dropDownController,
-                    items: List.generate(
-                      6,
-                      (index) => DropDownItem(
-                        text: "Single Item $index",
-                        data: index,
-                      ),
-                    ),
+                    items: items1,
                   ),
                   DropDownListView(
                     controller: dropDownController,
-                    items: List.generate(
-                      8,
-                      (index) => DropDownItem(
-                        text: "Multi Item $index",
-                        data: index,
-                      ),
-                    ),
+                    items: items2,
                     maxMultiChoiceSize: 2,
+                    onDropDownItemsConfirm: (List<DropDownItem> items) {
+                      setState(() {});
+                    },
                   ),
                   DropDownGridView(
                     controller: dropDownController,
@@ -77,15 +114,7 @@ class _DropDownDemoState extends State<DropDownDemo2>
                       activeTextStyle: const TextStyle(color: Colors.blue),
                       activeBorderRadius: BorderRadius.circular(6),
                     ),
-                    items: List.generate(
-                      10,
-                      (index) => DropDownItem(
-                        text: "Single Item $index",
-                        icon: const Icon(Icons.ac_unit),
-                        activeIcon: const Icon(Icons.ac_unit),
-                        data: index,
-                      ),
-                    ),
+                    items: items3,
                   ),
                   DropDownGridView(
                     controller: dropDownController,
@@ -99,13 +128,7 @@ class _DropDownDemoState extends State<DropDownDemo2>
                       activeTextStyle: const TextStyle(color: Colors.blue),
                       activeBorderRadius: BorderRadius.circular(6),
                     ),
-                    items: List.generate(
-                      12,
-                      (index) => DropDownItem(
-                        text: "Multi Item $index",
-                        data: index,
-                      ),
-                    ),
+                    items: items4,
                     maxMultiChoiceSize: 2,
                   ),
                 ],

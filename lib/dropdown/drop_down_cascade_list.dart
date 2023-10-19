@@ -131,6 +131,19 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
   @override
   void initState() {
     super.initState();
+    initData();
+    widget.controller.addListener(dropDownListener);
+  }
+
+  @override
+  void didUpdateWidget(covariant DropDownCascadeList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.items.length != oldWidget.items.length) {
+      initData();
+    }
+  }
+
+  void initData() {
     multipleChoice =
         widget.maxMultiChoiceSize != null && widget.maxMultiChoiceSize! > 0;
     if (widget.items.isNotEmpty) {
@@ -138,29 +151,28 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
     }
     items = List.generate(
       widget.items.length,
-      (index) {
+          (index) {
         var item = widget.items[index];
         return widget.items[index].copyWith(
           data: List.generate(
             item.data?.length ?? 0,
-            (subIndex) => item.data![subIndex].copyWith(),
+                (subIndex) => item.data![subIndex].copyWith(),
           ),
         );
       },
     );
     confirmItems = List.generate(
       widget.items.length,
-      (index) {
+          (index) {
         var item = widget.items[index];
         return widget.items[index].copyWith(
           data: List.generate(
             item.data?.length ?? 0,
-            (subIndex) => item.data![subIndex].copyWith(),
+                (subIndex) => item.data![subIndex].copyWith(),
           ),
         );
       },
     );
-    widget.controller.addListener(dropDownListener);
   }
 
   void dropDownListener() {

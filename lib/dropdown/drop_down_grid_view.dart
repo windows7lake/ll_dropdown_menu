@@ -131,6 +131,19 @@ class _DropDownGridViewState extends State<DropDownGridView> {
   @override
   void initState() {
     super.initState();
+    initData();
+    widget.controller.addListener(dropDownListener);
+  }
+
+  @override
+  void didUpdateWidget(covariant DropDownGridView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.items.length != oldWidget.items.length) {
+      initData();
+    }
+  }
+
+  void initData() {
     widget.dataController?.bind(this);
     multipleChoice =
         widget.maxMultiChoiceSize != null && widget.maxMultiChoiceSize! > 0;
@@ -142,13 +155,6 @@ class _DropDownGridViewState extends State<DropDownGridView> {
       widget.items.length,
       (index) => widget.items[index].copyWith(),
     );
-    widget.controller.addListener(dropDownListener);
-  }
-
-  @override
-  void didUpdateWidget(covariant DropDownGridView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    widget.dataController?.bind(this);
   }
 
   void dropDownListener() {

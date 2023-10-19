@@ -21,6 +21,13 @@ class _DropDownDemoState extends State<DropDownDemo1>
   @override
   void initState() {
     super.initState();
+    Future.delayed(const Duration(seconds: 1), () {
+      setupData();
+      setState(() {});
+    });
+  }
+
+  void setupData() {
     items1 = List.generate(
       6,
       (index) => DropDownItem(

@@ -113,6 +113,19 @@ class _DropDownListViewState extends State<DropDownListView> {
   @override
   void initState() {
     super.initState();
+    initData();
+    widget.controller.addListener(dropDownListener);
+  }
+
+  @override
+  void didUpdateWidget(covariant DropDownListView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.items.length != oldWidget.items.length) {
+      initData();
+    }
+  }
+
+  void initData() {
     multipleChoice =
         widget.maxMultiChoiceSize != null && widget.maxMultiChoiceSize! > 0;
     items = List.generate(
@@ -123,7 +136,6 @@ class _DropDownListViewState extends State<DropDownListView> {
       widget.items.length,
       (index) => widget.items[index].copyWith(),
     );
-    widget.controller.addListener(dropDownListener);
   }
 
   void dropDownListener() {
