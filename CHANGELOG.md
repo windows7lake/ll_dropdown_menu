@@ -1,9 +1,11 @@
-## 0.3.0 (2023-10-17)
+## 0.3.0 (2023-10-19)
 * Feature:
   + Add more parameters to customize the drop-down menu.
   + (*breaking*) Replace `DropDownViewBuilder` with `DropDownViewWrapper`.
   + (*breaking*) Add highlight properties to `DropDownItemStyle` to control the highlight style of the drop-down menu header item.
   + (*breaking*) Change the return value of `OnDropDownHeaderUpdate` to support highlight style.
+* Bug fixed:
+  + DropDownListView、DropDownGridView、DropDownCascadeList did not update view after data was changed.
 
 ## 0.2.0 (2023-10-16)
 * Feature:
