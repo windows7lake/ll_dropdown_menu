@@ -7,9 +7,10 @@ typedef IndexedWidgetBuilder = Widget Function(
     BuildContext context, int index, bool check);
 typedef OnDropDownItemLimitExceeded = void Function(List<DropDownItem> items);
 typedef OnDropDownItemTap = void Function(int index, DropDownItem item);
-typedef OnDropDownItemChanged = void Function(List<DropDownItem> items);
+typedef OnDropDownItemChanged = void Function(int index, List<DropDownItem> items);
 typedef OnDropDownItemsReset = void Function(List<DropDownItem> items);
 typedef OnDropDownItemsConfirm = void Function(List<DropDownItem> checkedItems);
+typedef OnDropDownExpandStateChanged = void Function(bool expand);
 
 /// DropDownMenu data model
 class DropDownItem<T> {

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../button/text_button.dart';
@@ -36,6 +39,12 @@ class DropDownMenu extends StatefulWidget {
   /// Click event of the child item of the drop-down menu header component
   final OnDropDownHeaderItemTap? onHeaderItemTap;
 
+  /// The selected state change event of the child item of the drop-down menu header component
+  final OnDropDownItemChanged? onHeaderItemChanged;
+
+  /// The expansion state change event of the drop-down menu
+  final OnDropDownExpandStateChanged? onExpandStateChanged;
+
   /// Background color of the drop-down menu body component
   final Color? viewColor;
 
@@ -60,6 +69,8 @@ class DropDownMenu extends StatefulWidget {
     this.headerItemBuilder,
     this.headerDividerBuilder,
     this.onHeaderItemTap,
+    this.onHeaderItemChanged,
+    this.onExpandStateChanged,
     this.viewColor = Colors.white,
     this.maskColor,
     this.animationDuration = const Duration(milliseconds: 150),
@@ -81,7 +92,7 @@ class _DropDownMenuState extends State<DropDownMenu>
   double maskOpacity = 0;
   double maskHeight = 0;
   int currentIndex = 0;
-  bool isExpand = false;
+  bool expand = false;
 
   @override
   void initState() {
@@ -110,7 +121,7 @@ class _DropDownMenuState extends State<DropDownMenu>
       throw ArgumentError("DropDownView index out of range, "
           "currentIndex >= builders.length");
     }
-    if (isExpand && widget.controller.isExpand) {
+    if (expand && widget.controller.isExpand) {
       animationViewHeight = widget.viewBuilders[currentIndex].actualHeight;
       if (mounted) {
         setState(() {});
@@ -121,9 +132,12 @@ class _DropDownMenuState extends State<DropDownMenu>
       return;
     }
 
-    isExpand = widget.controller.isExpand;
+    if (expand != widget.controller.isExpand) {
+      expand = widget.controller.isExpand;
+      widget.onExpandStateChanged?.call(expand);
+    }
     if (mounted) setState(() {});
-    if (isExpand) {
+    if (expand) {
       viewHeight = widget.viewBuilders[currentIndex].actualHeight;
       animation?.removeListener(animationListener);
       animation = Tween<double>(begin: 0, end: viewHeight)
@@ -175,7 +189,7 @@ class _DropDownMenuState extends State<DropDownMenu>
     _width =
         (widget.headerBoxStyle.width ?? MediaQuery.of(context).size.width) -
             widget.headerBoxStyle.margin.horizontal;
-    return Container(
+    Widget child = Container(
       width: _width,
       height: widget.headerBoxStyle.height,
       margin: widget.headerBoxStyle.margin,
@@ -192,6 +206,18 @@ class _DropDownMenuState extends State<DropDownMenu>
         separatorBuilder: widget.headerDividerBuilder ?? headerDivider,
       ),
     );
+    if (widget.controller.isExpand) {
+      child = WillPopScope(
+        onWillPop: () async {
+          if (!kIsWeb && Platform.isAndroid) {
+            await animationController?.reverse();
+          }
+          return true;
+        },
+        child: child,
+      );
+    }
+    return child;
   }
 
   Widget headerItem(BuildContext context, int index) {
@@ -209,6 +235,9 @@ class _DropDownMenuState extends State<DropDownMenu>
 
     Widget child = WrapperButton(
       onPressed: () {
+        if (widget.onHeaderItemChanged != null) {
+          widget.onHeaderItemChanged!(index, widget.headerItems);
+        }
         if (widget.onHeaderItemTap != null) {
           widget.onHeaderItemTap!(index, item);
           return;
@@ -353,5 +382,12 @@ class DropDownDisposeController {
 
   TickerFuture? hideMenu() {
     return _state?.animationController?.reverse();
+  }
+
+  void hideMenuThenPop() {
+    if (_state == null) return;
+    _state!.animationController
+        ?.reverse()
+        .whenComplete(() => Navigator.of(_state!.context).pop());
   }
 }

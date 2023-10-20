@@ -21,7 +21,7 @@ class _DropDownDemoState extends State<DropDownDemo1>
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 0), () {
       setupData();
       setState(() {});
     });
@@ -65,11 +65,7 @@ class _DropDownDemoState extends State<DropDownDemo1>
     return Scaffold(
       appBar: WrapperAppBar(
         leading: BackButton(
-          onPressed: () async {
-            dropDownDisposeController
-                .hideMenu()
-                ?.whenComplete(() => Navigator.of(context).pop());
-          },
+          onPressed: dropDownDisposeController.hideMenuThenPop,
         ),
         titleText: "DropDownDemo Overlay",
         backgroundColor: Colors.white,

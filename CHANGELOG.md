@@ -1,3 +1,7 @@
+## 0.4.0 (2023-10-20)
+* Feature:
+  + Add listener: onExpandStateChanged and onItemChanged.
+
 ## 0.3.0 (2023-10-19)
 * Feature:
   + Add more parameters to customize the drop-down menu.

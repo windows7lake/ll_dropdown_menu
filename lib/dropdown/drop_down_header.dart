@@ -28,6 +28,12 @@ class DropDownHeader extends StatefulWidget {
   /// Click event of the child item of the drop-down menu header component
   final OnDropDownHeaderItemTap? onItemTap;
 
+  /// The selected state change event of the child item of the drop-down menu header component
+  final OnDropDownItemChanged? onItemChanged;
+
+  /// The expansion state change event of the drop-down menu
+  final OnDropDownExpandStateChanged? onExpandStateChanged;
+
   const DropDownHeader({
     super.key,
     required this.controller,
@@ -35,6 +41,8 @@ class DropDownHeader extends StatefulWidget {
     this.boxStyle = const DropDownBoxStyle(height: 50),
     this.itemStyle = const DropDownItemStyle(),
     this.onItemTap,
+    this.onItemChanged,
+    this.onExpandStateChanged,
     this.itemBuilder,
     this.dividerBuilder,
   }) : assert(items.length > 0);
@@ -45,6 +53,7 @@ class DropDownHeader extends StatefulWidget {
 
 class _DropDownHeaderState extends State<DropDownHeader> {
   double _width = 0;
+  bool expand = false;
 
   @override
   void initState() {
@@ -57,6 +66,10 @@ class _DropDownHeaderState extends State<DropDownHeader> {
   }
 
   void dropDownListener() {
+    if (expand != widget.controller.isExpand) {
+      expand = widget.controller.isExpand;
+      widget.onExpandStateChanged?.call(expand);
+    }
     if (mounted) setState(() {});
   }
 
@@ -99,6 +112,9 @@ class _DropDownHeaderState extends State<DropDownHeader> {
 
     Widget child = WrapperButton(
       onPressed: () {
+        if (widget.onItemChanged != null) {
+          widget.onItemChanged!(index, widget.items);
+        }
         if (widget.onItemTap != null) {
           widget.onItemTap!(index, item);
           return;

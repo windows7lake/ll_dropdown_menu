@@ -439,7 +439,7 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
           Widget child = WrapperButton(
             onPressed: () {
               if (widget.onSecondFloorItemChanged != null) {
-                widget.onSecondFloorItemChanged!(items);
+                widget.onSecondFloorItemChanged!(index, items);
               }
               if (widget.onSecondFloorItemTap != null) {
                 widget.onSecondFloorItemTap!(index, item);

@@ -294,7 +294,7 @@ class _DropDownListViewState extends State<DropDownListView> {
     Widget child = WrapperButton(
       onPressed: () {
         if (widget.onDropDownItemChanged != null) {
-          widget.onDropDownItemChanged!(items);
+          widget.onDropDownItemChanged!(index, items);
         }
         if (widget.onDropDownItemTap != null) {
           widget.onDropDownItemTap!(index, item);

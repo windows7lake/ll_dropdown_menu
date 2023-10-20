@@ -19,7 +19,7 @@ class _DropDownDemoState extends State<DropDownDemo2>
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 0), () {
       setupData();
       setState(() {});
     });
