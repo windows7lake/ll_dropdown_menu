@@ -58,7 +58,7 @@ class _DropDownViewState extends State<DropDownView>
     );
   }
 
-  void dropDownListener() {
+  void dropDownListener() async {
     currentIndex = widget.controller.headerIndex;
     if (currentIndex >= widget.builders.length) {
       throw ArgumentError("DropDownView index out of range, "
@@ -66,22 +66,25 @@ class _DropDownViewState extends State<DropDownView>
     }
 
     if (isExpand && widget.controller.isExpand) {
-      animationViewHeight = widget.builders[currentIndex].actualHeight;
-      if (mounted) setState(() {});
-      return;
+      // // no animation
+      // animationViewHeight = widget.builders[currentIndex].actualHeight;
+      // if (mounted) setState(() {});
+      // return;
+      await animationController?.reverse();
+      maskHeight = 0;
     }
 
     isExpand = widget.controller.isExpand;
     viewHeight = widget.builders[currentIndex].actualHeight;
     animation?.removeListener(animationListener);
-    animation = Tween<double>(begin: 0, end: viewHeight)
-        .animate(animationController!)
+    animation = Tween<double>(begin: 0, end: viewHeight).animate(
+        CurvedAnimation(parent: animationController!, curve: Curves.easeInOut))
       ..addListener(animationListener);
     if (isExpand) {
       maskHeight = MediaQuery.of(context).size.height;
-      animationController?.forward();
+      await animationController?.forward();
     } else {
-      animationController?.reverse();
+      await animationController?.reverse();
       maskHeight = 0;
     }
     if (mounted) setState(() {});

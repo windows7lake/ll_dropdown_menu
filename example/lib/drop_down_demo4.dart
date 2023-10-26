@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ll_dropdown_menu/ll_dropdown_menu.dart';
 
+import 'app_bar.dart';
+
 class DropDownDemo4 extends StatefulWidget {
   const DropDownDemo4({super.key});
 
@@ -20,7 +22,7 @@ class _DropDownDemoState extends State<DropDownDemo4>
   List<DropDownItem> items2 = [];
   List<DropDownItem> items3 = [];
   List<DropDownItem> items4 = [];
-
+  ScrollPhysics? physics;
   bool isUsingOverlay = false;
 
   @override
@@ -72,9 +74,7 @@ class _DropDownDemoState extends State<DropDownDemo4>
         leading: BackButton(
           onPressed: () async {
             if (isUsingOverlay) {
-              dropDownDisposeController
-                  .hideMenu()
-                  ?.whenComplete(() => Navigator.of(context).pop());
+              dropDownDisposeController.hideMenuThenPop();
             } else {
               Navigator.of(context).pop();
             }
@@ -100,6 +100,7 @@ class _DropDownDemoState extends State<DropDownDemo4>
 
   Widget usingOverlay() {
     return CustomScrollView(
+      physics: physics,
       slivers: [
         SliverToBoxAdapter(
           child: Container(
@@ -142,6 +143,11 @@ class _DropDownDemoState extends State<DropDownDemo4>
                     index,
                     offsetY: dropDownViewOffsetY,
                   );
+                },
+                onExpandStateChanged: (expand) {
+                  physics =
+                      expand ? const NeverScrollableScrollPhysics() : null;
+                  setState(() {});
                 },
                 viewOffsetY: MediaQuery.of(context).padding.top + // statusBar
                     55 + // appBar
@@ -239,6 +245,7 @@ class _DropDownDemoState extends State<DropDownDemo4>
     return Stack(
       children: [
         CustomScrollView(
+          physics: physics,
           slivers: [
             SliverToBoxAdapter(
               child: Container(
@@ -283,6 +290,11 @@ class _DropDownDemoState extends State<DropDownDemo4>
                             statusBarHeight -
                             56, // appBar
                       );
+                    },
+                    onExpandStateChanged: (expand) {
+                      physics =
+                          expand ? const NeverScrollableScrollPhysics() : null;
+                      setState(() {});
                     },
                   );
                 },

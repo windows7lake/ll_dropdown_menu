@@ -122,14 +122,17 @@ class _DropDownMenuState extends State<DropDownMenu>
           "currentIndex >= builders.length");
     }
     if (expand && widget.controller.isExpand) {
-      animationViewHeight = widget.viewBuilders[currentIndex].actualHeight;
-      if (mounted) {
-        setState(() {});
-        if (overlayState != null && overlayState!.mounted) {
-          overlayState?.setState(() {});
-        }
-      }
-      return;
+      // // no animation
+      // animationViewHeight = widget.viewBuilders[currentIndex].actualHeight;
+      // if (mounted) {
+      //   setState(() {});
+      //   if (overlayState != null && overlayState!.mounted) {
+      //     overlayState?.setState(() {});
+      //   }
+      // }
+      // return;
+      await animationController?.reverse();
+      animationViewHeight = 0;
     }
 
     if (expand != widget.controller.isExpand) {
@@ -140,8 +143,9 @@ class _DropDownMenuState extends State<DropDownMenu>
     if (expand) {
       viewHeight = widget.viewBuilders[currentIndex].actualHeight;
       animation?.removeListener(animationListener);
-      animation = Tween<double>(begin: 0, end: viewHeight)
-          .animate(animationController!)
+      animation = Tween<double>(begin: 0, end: viewHeight).animate(
+          CurvedAnimation(
+              parent: animationController!, curve: Curves.easeInOut))
         ..addListener(animationListener);
       if (overlayEntry == null) {
         overlayEntry = OverlayEntry(

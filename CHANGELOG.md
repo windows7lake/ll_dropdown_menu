@@ -1,6 +1,7 @@
-## 0.4.0 (2023-10-20)
+## 0.4.0 (2023-10-26)
 * Feature:
   + Add listener: onExpandStateChanged and onItemChanged.
+  + Switch Tab with animation.
 
 ## 0.3.0 (2023-10-19)
 * Feature:
