@@ -49,7 +49,7 @@
 在 `pubspec.yaml` 中添加依赖：
 
 ```yaml
-ll_dropdown_menu: ^0.3.0
+ll_dropdown_menu: ^0.5.0
 ```
 
 在终端中运行：

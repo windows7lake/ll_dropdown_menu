@@ -13,6 +13,9 @@ class DropDownListView extends DropDownViewStatefulWidget {
   /// Controller of the drop-down menu
   final DropDownController controller;
 
+  /// Data controller of the drop-down menu content body
+  final DropDownListDataController? dataController;
+
   /// The data of the drop-down menu content body
   final List<DropDownItem> items;
 
@@ -62,10 +65,19 @@ class DropDownListView extends DropDownViewStatefulWidget {
   /// headerIndex should not be null when using this callback
   final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 
+  /// Whether the drop-down menu content body is scrollable
+  final ScrollPhysics? physics;
+
+  /// GridView in the drop-down menu content body
+  /// Whether the extent of the scroll view in the [scrollDirection] should be
+  /// determined by the contents being viewed.
+  final bool? shrinkWrap;
+
   const DropDownListView({
     super.key,
     required this.controller,
     required this.items,
+    this.dataController,
     this.headerIndex,
     this.boxStyle = const DropDownBoxStyle(),
     this.itemStyle = const DropDownItemStyle(
@@ -88,6 +100,8 @@ class DropDownListView extends DropDownViewStatefulWidget {
     this.onDropDownItemsReset,
     this.onDropDownItemsConfirm,
     this.onDropDownHeaderUpdate,
+    this.physics,
+    this.shrinkWrap,
   });
 
   @override
@@ -126,6 +140,7 @@ class _DropDownListViewState extends State<DropDownListView> {
   }
 
   void initData() {
+    widget.dataController?.bind(this);
     multipleChoice =
         widget.maxMultiChoiceSize != null && widget.maxMultiChoiceSize! > 0;
     items = List.generate(
@@ -168,6 +183,8 @@ class _DropDownListViewState extends State<DropDownListView> {
 
   Widget singleChoiceList() {
     Widget child = ListView.builder(
+      shrinkWrap: widget.shrinkWrap ?? false,
+      physics: widget.physics,
       padding: widget.boxStyle.padding,
       itemCount: items.length,
       itemBuilder: (context, index) {
@@ -194,7 +211,8 @@ class _DropDownListViewState extends State<DropDownListView> {
       children: [
         Flexible(
           child: ListView.builder(
-            shrinkWrap: true,
+            shrinkWrap: widget.shrinkWrap ?? true,
+            physics: widget.physics,
             padding: widget.boxStyle.padding,
             itemCount: items.length,
             itemBuilder: (context, index) {
@@ -390,5 +408,45 @@ class _DropDownListViewState extends State<DropDownListView> {
     }
 
     return child;
+  }
+
+  @override
+  void dispose() {
+    widget.dataController?.dispose();
+    super.dispose();
+  }
+
+  void update() {
+    setState(() {});
+  }
+}
+
+class DropDownListDataController {
+  _DropDownListViewState? _state;
+
+  // ignore: library_private_types_in_public_api
+  void bind(_DropDownListViewState state) {
+    _state = state;
+  }
+
+  void dispose() {
+    _state = null;
+  }
+
+  void resetAllItemsStatus() {
+    _state?.items.forEach((element) {
+      element.check = false;
+    });
+    _state?.update();
+  }
+
+  void changeItemStatusByIndex(int index, bool check) {
+    _state?.items[index].check = check;
+    _state?.update();
+  }
+
+  void changeItemStatusByText(String text, bool check) {
+    _state?.items.firstWhere((element) => element.text == text).check = check;
+    _state?.update();
   }
 }

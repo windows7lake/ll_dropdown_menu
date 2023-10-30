@@ -7,8 +7,6 @@ import 'drop_down_controller.dart';
 import 'drop_down_style.dart';
 import 'drop_down_typedef.dart';
 
-/// The basic implementation of drop-down menu, cascading list, supporting
-/// single-selection and multi-selection operations.
 class DropDownCascadeList extends DropDownViewStatefulWidget {
   /// Controller of the drop-down menu
   final DropDownController controller;
@@ -151,24 +149,24 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
     }
     items = List.generate(
       widget.items.length,
-          (index) {
+      (index) {
         var item = widget.items[index];
         return widget.items[index].copyWith(
           data: List.generate(
             item.data?.length ?? 0,
-                (subIndex) => item.data![subIndex].copyWith(),
+            (subIndex) => item.data![subIndex].copyWith(),
           ),
         );
       },
     );
     confirmItems = List.generate(
       widget.items.length,
-          (index) {
+      (index) {
         var item = widget.items[index];
         return widget.items[index].copyWith(
           data: List.generate(
             item.data?.length ?? 0,
-                (subIndex) => item.data![subIndex].copyWith(),
+            (subIndex) => item.data![subIndex].copyWith(),
           ),
         );
       },
@@ -343,6 +341,7 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
       width: firstFloorItemWidth,
       color: widget.firstFloorItemStyle.backgroundColor,
       child: ListView.builder(
+        padding: EdgeInsets.zero,
         itemCount: items.length,
         itemBuilder: (context, index) {
           var item = items[index];
@@ -431,6 +430,7 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
       width: secondFloorItemWidth,
       color: widget.secondFloorItemStyle.backgroundColor,
       child: ListView.builder(
+        padding: EdgeInsets.zero,
         itemCount: secondFloorItems.length,
         itemBuilder: (context, index) {
           var item = secondFloorItems[index];

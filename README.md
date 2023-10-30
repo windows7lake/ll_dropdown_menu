@@ -54,7 +54,7 @@ Powerful and customizable drop-down menu component.
 Add dependencies in `pubspec.yaml`:
 
 ```yaml
-ll_dropdown_menu: ^0.3.0
+ll_dropdown_menu: ^0.5.0
 ```
 
 Run in terminal:

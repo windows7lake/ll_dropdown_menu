@@ -19,10 +19,13 @@ class DropDownMenu extends StatefulWidget {
   final List<DropDownItem> headerItems;
 
   /// Data of the body component of the drop-down menu
-  final List<DropDownViewStatefulWidget> viewBuilders;
+  final List<DropDownViewProperty> viewBuilders;
 
   /// The destruction controller of the drop-down menu, used to close the drop-down menu in advance when the page is destroyed
   final DropDownDisposeController? disposeController;
+
+  /// Whether the drop-down menu header is scrollable
+  final ScrollPhysics? headerPhysics;
 
   /// Style of the drop-down menu header component
   final DropDownBoxStyle headerBoxStyle;
@@ -64,6 +67,7 @@ class DropDownMenu extends StatefulWidget {
     required this.viewBuilders,
     required this.viewOffsetY,
     this.disposeController,
+    this.headerPhysics,
     this.headerBoxStyle = const DropDownBoxStyle(height: 50),
     this.headerItemStyle = const DropDownItemStyle(),
     this.headerItemBuilder,
@@ -167,11 +171,14 @@ class _DropDownMenuState extends State<DropDownMenu>
         );
         overlayState!.insert(overlayEntry!);
       }
-      maskHeight = MediaQuery.of(context).size.height -
+      maskHeight = MediaQuery
+          .of(context)
+          .size
+          .height -
           (widget.viewOffsetY ?? 0) -
           widget.headerBoxStyle.height!;
       overlayState?.setState(() {});
-      await animationController?.forward();
+      animationController?.forward();
     } else {
       await animationController?.reverse();
       maskHeight = 0;
@@ -191,7 +198,10 @@ class _DropDownMenuState extends State<DropDownMenu>
   @override
   Widget build(BuildContext context) {
     _width =
-        (widget.headerBoxStyle.width ?? MediaQuery.of(context).size.width) -
+        (widget.headerBoxStyle.width ?? MediaQuery
+            .of(context)
+            .size
+            .width) -
             widget.headerBoxStyle.margin.horizontal;
     Widget child = Container(
       width: _width,
@@ -204,6 +214,7 @@ class _DropDownMenuState extends State<DropDownMenu>
             border: widget.headerBoxStyle.border,
           ),
       child: ListView.separated(
+        physics: widget.headerPhysics ?? NeverScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: widget.headerItems.length,
         itemBuilder: widget.headerItemBuilder ?? headerItem,
@@ -233,7 +244,7 @@ class _DropDownMenuState extends State<DropDownMenu>
     double width = _width;
     if (widget.headerBoxStyle.expand) {
       width = (_width - widget.headerBoxStyle.padding.horizontal) /
-              widget.headerItems.length -
+          widget.headerItems.length -
           (widget.headerItemStyle.margin?.horizontal ?? 0);
     }
 
@@ -252,8 +263,8 @@ class _DropDownMenuState extends State<DropDownMenu>
       textStyle: active
           ? widget.headerItemStyle.activeTextStyle
           : (status.highlight
-              ? widget.headerItemStyle.highlightTextStyle
-              : widget.headerItemStyle.textStyle),
+          ? widget.headerItemStyle.highlightTextStyle
+          : widget.headerItemStyle.textStyle),
       textAlign: widget.headerItemStyle.textAlign,
       textExpand: widget.headerItemStyle.textExpand,
       overflow: TextOverflow.ellipsis,
@@ -261,18 +272,18 @@ class _DropDownMenuState extends State<DropDownMenu>
       icon: active
           ? (item.activeIcon ?? widget.headerItemStyle.activeIcon)
           : (status.highlight
-              ? widget.headerItemStyle.highlightIcon
-              : (item.icon ?? widget.headerItemStyle.icon)),
+          ? widget.headerItemStyle.highlightIcon
+          : (item.icon ?? widget.headerItemStyle.icon)),
       iconColor: active
           ? widget.headerItemStyle.activeIconColor
           : (status.highlight
-              ? widget.headerItemStyle.highlightIconColor
-              : widget.headerItemStyle.iconColor),
+          ? widget.headerItemStyle.highlightIconColor
+          : widget.headerItemStyle.iconColor),
       iconSize: active
           ? widget.headerItemStyle.activeIconSize
           : (status.highlight
-              ? widget.headerItemStyle.highlightIconSize
-              : widget.headerItemStyle.iconSize),
+          ? widget.headerItemStyle.highlightIconSize
+          : widget.headerItemStyle.iconSize),
       iconPosition: widget.headerItemStyle.iconPosition,
       gap: widget.headerItemStyle.gap,
       padding: widget.headerItemStyle.padding,
@@ -282,18 +293,18 @@ class _DropDownMenuState extends State<DropDownMenu>
       borderSide: active
           ? widget.headerItemStyle.activeBorderSide
           : (status.highlight
-              ? widget.headerItemStyle.highlightBorderSide
-              : widget.headerItemStyle.borderSide),
+          ? widget.headerItemStyle.highlightBorderSide
+          : widget.headerItemStyle.borderSide),
       borderRadius: active
           ? widget.headerItemStyle.activeBorderRadius
           : (status.highlight
-              ? widget.headerItemStyle.highlightBorderRadius
-              : widget.headerItemStyle.borderRadius),
+          ? widget.headerItemStyle.highlightBorderRadius
+          : widget.headerItemStyle.borderRadius),
       backgroundColor: active
           ? widget.headerItemStyle.activeBackgroundColor
           : (status.highlight
-              ? widget.headerItemStyle.highlightBackgroundColor
-              : widget.headerItemStyle.backgroundColor),
+          ? widget.headerItemStyle.highlightBackgroundColor
+          : widget.headerItemStyle.backgroundColor),
       elevation: widget.headerItemStyle.elevation,
     );
 
@@ -331,7 +342,10 @@ class _DropDownMenuState extends State<DropDownMenu>
 
   Widget view() {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
       height: animationViewHeight,
       color: widget.viewColor,
       child: IndexedStack(
@@ -350,7 +364,10 @@ class _DropDownMenuState extends State<DropDownMenu>
         widget.controller.hide();
       },
       child: Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         height: maskHeight,
         color: widget.maskColor != null
             ? widget.maskColor!.withOpacity(maskOpacity)

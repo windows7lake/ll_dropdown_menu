@@ -75,6 +75,14 @@ class DropDownGridView extends DropDownViewStatefulWidget {
   /// headerIndex should not be null when using this callback
   final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 
+  /// Whether the drop-down menu content body is scrollable
+  final ScrollPhysics? physics;
+
+  /// GridView in the drop-down menu content body
+  /// Whether the extent of the scroll view in the [scrollDirection] should be
+  /// determined by the contents being viewed.
+  final bool? shrinkWrap;
+
   const DropDownGridView({
     super.key,
     required this.controller,
@@ -102,6 +110,8 @@ class DropDownGridView extends DropDownViewStatefulWidget {
     this.onDropDownItemsReset,
     this.onDropDownItemsConfirm,
     this.onDropDownHeaderUpdate,
+    this.physics,
+    this.shrinkWrap,
   });
 
   @override
@@ -187,6 +197,8 @@ class _DropDownGridViewState extends State<DropDownGridView> {
 
   Widget singleChoiceList() {
     Widget child = GridView.builder(
+      shrinkWrap: widget.shrinkWrap ?? false,
+      physics: widget.physics,
       padding: widget.boxStyle.padding,
       gridDelegate: SliverGridDelegateWithFixedHeight(
         crossAxisCount: widget.crossAxisCount,
@@ -219,7 +231,8 @@ class _DropDownGridViewState extends State<DropDownGridView> {
       children: [
         Flexible(
           child: GridView.builder(
-            shrinkWrap: true,
+            shrinkWrap: widget.shrinkWrap ?? true,
+            physics: widget.physics,
             padding: widget.boxStyle.padding,
             gridDelegate: SliverGridDelegateWithFixedHeight(
               crossAxisCount: widget.crossAxisCount,

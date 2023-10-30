@@ -9,7 +9,7 @@ class DropDownView extends StatefulWidget {
   final DropDownController controller;
 
   /// Data for the body component of the drop-down menu
-  final List<DropDownViewStatefulWidget> builders;
+  final List<DropDownViewProperty> builders;
 
   /// Background color of the drop-down menu body component
   final Color? viewColor;

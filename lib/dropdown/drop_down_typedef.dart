@@ -7,7 +7,8 @@ typedef IndexedWidgetBuilder = Widget Function(
     BuildContext context, int index, bool check);
 typedef OnDropDownItemLimitExceeded = void Function(List<DropDownItem> items);
 typedef OnDropDownItemTap = void Function(int index, DropDownItem item);
-typedef OnDropDownItemChanged = void Function(int index, List<DropDownItem> items);
+typedef OnDropDownItemChanged = void Function(
+    int index, List<DropDownItem> items);
 typedef OnDropDownItemsReset = void Function(List<DropDownItem> items);
 typedef OnDropDownItemsConfirm = void Function(List<DropDownItem> checkedItems);
 typedef OnDropDownExpandStateChanged = void Function(bool expand);
@@ -46,7 +47,7 @@ class DropDownItem<T> {
 }
 
 /// DropDownMenu body component property
-abstract class DropDownViewProperty {
+abstract class DropDownViewProperty extends Widget {
   /// The height of the DropDownMenu content view
   double get actualHeight;
 }
@@ -56,6 +57,10 @@ abstract class DropDownViewStatefulWidget extends StatefulWidget
     implements DropDownViewProperty {
   const DropDownViewStatefulWidget({Key? key}) : super(key: key);
 }
+
+/// DropDownMenu body component StatelessWidget
+abstract class DropDownViewStatelessWidget extends StatelessWidget
+    implements DropDownViewProperty {}
 
 /// DropDownMenu header component status
 class DropDownHeaderStatus {

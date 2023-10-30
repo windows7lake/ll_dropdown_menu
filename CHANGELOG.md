@@ -1,3 +1,8 @@
+## 0.5.0 (2023-10-31)
+* Feature:
+  + DropDownCascadeList: remove default padding.
+  + DropDownListView/DropDownGridView: add `physics` and `shrinkWrap` property.
+
 ## 0.4.0 (2023-10-26)
 * Feature:
   + Add listener: onExpandStateChanged and onItemChanged.

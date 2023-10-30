@@ -34,6 +34,9 @@ class DropDownHeader extends StatefulWidget {
   /// The expansion state change event of the drop-down menu
   final OnDropDownExpandStateChanged? onExpandStateChanged;
 
+  /// Whether the drop-down menu header is scrollable
+  final ScrollPhysics? physics;
+
   const DropDownHeader({
     super.key,
     required this.controller,
@@ -45,6 +48,7 @@ class DropDownHeader extends StatefulWidget {
     this.onExpandStateChanged,
     this.itemBuilder,
     this.dividerBuilder,
+    this.physics,
   }) : assert(items.length > 0);
 
   @override
@@ -89,6 +93,7 @@ class _DropDownHeaderState extends State<DropDownHeader> {
             border: widget.boxStyle.border,
           ),
       child: ListView.separated(
+        physics: widget.physics ?? NeverScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: widget.items.length,
         itemBuilder: widget.itemBuilder ?? listItem,
