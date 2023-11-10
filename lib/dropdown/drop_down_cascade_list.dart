@@ -11,6 +11,9 @@ class DropDownCascadeList extends DropDownViewStatefulWidget {
   /// Controller of the drop-down menu
   final DropDownController controller;
 
+  /// Data controller of the drop-down menu content body
+  final DropDownCascadeListDataController? dataController;
+
   /// The data of the drop-down menu content body
   final List<DropDownItem<List<DropDownItem>>> items;
 
@@ -73,6 +76,7 @@ class DropDownCascadeList extends DropDownViewStatefulWidget {
     super.key,
     required this.controller,
     required this.items,
+    this.dataController,
     this.headerIndex,
     this.boxStyle = const DropDownBoxStyle(),
     this.firstFloorItemStyle = const DropDownItemStyle(
@@ -142,6 +146,7 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
   }
 
   void initData() {
+    widget.dataController?.bind(this);
     multipleChoice =
         widget.maxMultiChoiceSize != null && widget.maxMultiChoiceSize! > 0;
     if (widget.items.isNotEmpty) {
@@ -547,5 +552,45 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    widget.dataController?.dispose();
+    super.dispose();
+  }
+
+  void update() {
+    setState(() {});
+  }
+}
+
+class DropDownCascadeListDataController {
+  _DropDownCascadeListState? _state;
+
+  // ignore: library_private_types_in_public_api
+  void bind(_DropDownCascadeListState state) {
+    _state = state;
+  }
+
+  void dispose() {
+    _state = null;
+  }
+
+  void resetAllItemsStatus() {
+    _state?.items.forEach((element) {
+      element.check = false;
+    });
+    _state?.update();
+  }
+
+  void changeItemStatusByIndex(int index, bool check) {
+    _state?.items[index].check = check;
+    _state?.update();
+  }
+
+  void changeItemStatusByText(String text, bool check) {
+    _state?.items.firstWhere((element) => element.text == text).check = check;
+    _state?.update();
   }
 }

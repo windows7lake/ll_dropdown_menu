@@ -593,6 +593,9 @@ final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 /// 下拉菜单的控制器
 final DropDownController controller;
 
+/// 下拉菜单的数据控制器
+final DropDownCascadeListDataController? dataController;
+
 /// 下拉菜单内容组件的数据
 final List<DropDownItem<List<DropDownItem>>> items;
 
