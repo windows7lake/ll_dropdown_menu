@@ -9,6 +9,8 @@ typedef OnDropDownItemLimitExceeded = void Function(List<DropDownItem> items);
 typedef OnDropDownItemTap = void Function(int index, DropDownItem item);
 typedef OnDropDownItemChanged = void Function(
     int index, List<DropDownItem> items);
+typedef OnDropDownBlockItemChanged = void Function(
+    int blockIndex, int index, List<DropDownItem> items);
 typedef OnDropDownItemsReset = void Function(List<DropDownItem> items);
 typedef OnDropDownItemsConfirm = void Function(List<DropDownItem> checkedItems);
 typedef OnDropDownExpandStateChanged = void Function(bool expand);

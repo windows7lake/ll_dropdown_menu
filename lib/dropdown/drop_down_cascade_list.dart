@@ -42,7 +42,7 @@ class DropDownCascadeList extends DropDownViewStatefulWidget {
   final OnDropDownItemTap? onSecondFloorItemTap;
 
   /// Selected state change event of the second-level sub-item of the drop-down menu content body
-  final OnDropDownItemChanged? onSecondFloorItemChanged;
+  final OnDropDownBlockItemChanged? onSecondFloorItemChanged;
 
   /// The maximum number of multiple choices for the second-level sub-items of the drop-down menu content body
   final int? maxMultiChoiceSize;
@@ -352,6 +352,9 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
           var item = items[index];
           var active = item.check;
 
+          if (widget.firstFloorItemBuilder != null) {
+            return widget.firstFloorItemBuilder!(context, index, active);
+          }
           Widget child = WrapperButton(
             onPressed: () {
               if (widget.onFirstFloorItemTap != null) {
@@ -441,10 +444,13 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
           var item = secondFloorItems[index];
           var active = item.check;
 
+          if (widget.secondFloorItemBuilder != null) {
+            return widget.secondFloorItemBuilder!(context, index, active);
+          }
           Widget child = WrapperButton(
             onPressed: () {
               if (widget.onSecondFloorItemChanged != null) {
-                widget.onSecondFloorItemChanged!(index, items);
+                widget.onSecondFloorItemChanged!(firstFloorIndex, index, items);
               }
               if (widget.onSecondFloorItemTap != null) {
                 widget.onSecondFloorItemTap!(index, item);
@@ -577,20 +583,73 @@ class DropDownCascadeListDataController {
     _state = null;
   }
 
+  List<DropDownItem<List<DropDownItem>>> get items => _state!.items;
+
+  void updateFirstFloorIndex(int index) {
+    _state?.firstFloorIndex = index;
+    _state?.update();
+  }
+
+  void updateSecondFloorIndex(int index) {
+    _state?.secondFloorIndex = index;
+    _state?.update();
+  }
+
   void resetAllItemsStatus() {
-    _state?.items.forEach((element) {
-      element.check = false;
+    _state?.items.forEach((item) {
+      item.check = false;
+      item.data?.forEach((e) {
+        e.check = false;
+      });
     });
     _state?.update();
   }
 
-  void changeItemStatusByIndex(int index, bool check) {
-    _state?.items[index].check = check;
+  void resetAllFirstItemsStatus() {
+    _state?.items.forEach((item) {
+      item.check = false;
+    });
     _state?.update();
   }
 
-  void changeItemStatusByText(String text, bool check) {
-    _state?.items.firstWhere((element) => element.text == text).check = check;
-    _state?.update();
+  void changeFirstItemStatusByIndex(int index, bool check) {
+    if (_state == null) return;
+    if (index < 0 || index >= _state!.items.length) return;
+    _state!.items[index].check = check;
+    _state!.update();
+  }
+
+  void changeFirstItemStatusByText(String text, bool check) {
+    if (_state == null) return;
+    _state!.items.firstWhere((element) => element.text == text).check = check;
+    _state!.update();
+  }
+
+  void resetAllSecondItemsStatusByIndex(int index) {
+    if (_state == null) return;
+    if (index < 0 || index >= _state!.items.length) return;
+    _state!.items[index].data?.forEach((e) {
+      e.check = false;
+    });
+    _state!.update();
+  }
+
+  void changeSecondItemStatusByIndex(
+      int firstIndex, int secondIndex, bool check) {
+    if (_state == null) return;
+    if (firstIndex < 0 || firstIndex >= _state!.items.length) return;
+    List<DropDownItem> dataList = _state!.items[firstIndex].data ?? [];
+    if (secondIndex < 0 || secondIndex >= dataList.length) return;
+    dataList[secondIndex].check = check;
+    _state!.update();
+  }
+
+  void changeSecondItemStatusByText(int firstIndex, String text, bool check) {
+    if (_state == null) return;
+    if (firstIndex < 0 || firstIndex >= _state!.items.length) return;
+    _state!.items[firstIndex].data
+        ?.firstWhere((element) => element.text == text)
+        .check = check;
+    _state!.update();
   }
 }

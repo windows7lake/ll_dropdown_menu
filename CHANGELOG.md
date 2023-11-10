@@ -1,3 +1,6 @@
+## 0.6.1 (2023-11-10)
+* Fixed: change the method of dataController
+
 ## 0.6.0 (2023-11-10)
 * Feature:
   + DropDownCascadeList: add dataController to control the data of the list.
