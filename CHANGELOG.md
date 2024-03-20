@@ -1,3 +1,6 @@
+## 0.6.2 (2024-3-20)
+* Fixed: index out of range in drop_down_cascade_list
+
 ## 0.6.1 (2023-11-10)
 * Fixed: change the method of dataController
 
