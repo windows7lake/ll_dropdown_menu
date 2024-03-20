@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ll_dropdown_menu/ll_dropdown_menu.dart';
 
 import 'app_bar.dart';
@@ -19,6 +20,8 @@ class _DropDownDemoState extends State<DropDownDemo1>
   List<DropDownItem> items2 = [];
   List<DropDownItem> items3 = [];
   List<DropDownItem> items4 = [];
+
+  bool _landscape = false;
 
   @override
   void initState() {
@@ -159,7 +162,31 @@ class _DropDownDemoState extends State<DropDownDemo1>
           ],
         ),
         Expanded(
-          child: Container(color: Colors.blue),
+          child: Container(
+            color: Colors.blue,
+            alignment: Alignment.center,
+            child: TextButton(
+              onPressed: () {
+                _landscape = !_landscape;
+                if (_landscape) {
+                  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.landscapeLeft,
+                    DeviceOrientation.landscapeRight,
+                  ]);
+                } else {
+                  SystemChrome.setEnabledSystemUIMode(
+                    SystemUiMode.manual,
+                    overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+                  );
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp,
+                  ]);
+                }
+              },
+              child: const Text("TextButton"),
+            ),
+          ),
         ),
       ]),
     );

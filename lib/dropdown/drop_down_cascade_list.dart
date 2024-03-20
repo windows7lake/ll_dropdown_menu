@@ -431,9 +431,10 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
   }
 
   Widget secondFloor() {
-    List<DropDownItem> secondFloorItems = items[firstFloorIndex].data ?? [];
     double secondFloorItemWidth = widget.secondFloorItemStyle.width ??
         MediaQuery.of(context).size.width * 0.65;
+    if (items.isEmpty) return SizedBox(width: secondFloorItemWidth);
+    List<DropDownItem> secondFloorItems = items[firstFloorIndex].data ?? [];
     return Container(
       width: secondFloorItemWidth,
       color: widget.secondFloorItemStyle.backgroundColor,
