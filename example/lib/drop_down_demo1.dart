@@ -14,6 +14,12 @@ class DropDownDemo1 extends StatefulWidget {
 class _DropDownDemoState extends State<DropDownDemo1>
     with SingleTickerProviderStateMixin {
   final DropDownController dropDownController = DropDownController();
+  final DropDownListDataController dropDownListDataController1 =
+      DropDownListDataController();
+  final DropDownListDataController dropDownListDataController2 =
+      DropDownListDataController();
+  final DropDownGridDataController dropDownGridDataController =
+      DropDownGridDataController();
   final DropDownDisposeController dropDownDisposeController =
       DropDownDisposeController();
   List<DropDownItem> items1 = [];
@@ -95,6 +101,7 @@ class _DropDownDemoState extends State<DropDownDemo1>
           viewBuilders: [
             DropDownListView(
               controller: dropDownController,
+              dataController: dropDownListDataController1,
               items: items1,
               headerIndex: 0,
               onDropDownHeaderUpdate: (List<DropDownItem> checkedItems) {
@@ -106,6 +113,7 @@ class _DropDownDemoState extends State<DropDownDemo1>
             ),
             DropDownListView(
               controller: dropDownController,
+              dataController: dropDownListDataController2,
               items: items2,
               maxMultiChoiceSize: 2,
               headerIndex: 1,
@@ -118,6 +126,7 @@ class _DropDownDemoState extends State<DropDownDemo1>
             ),
             DropDownGridView(
               controller: dropDownController,
+              dataController: dropDownGridDataController,
               crossAxisCount: 3,
               boxStyle: const DropDownBoxStyle(
                 padding: EdgeInsets.all(16),
@@ -165,26 +174,46 @@ class _DropDownDemoState extends State<DropDownDemo1>
           child: Container(
             color: Colors.blue,
             alignment: Alignment.center,
-            child: TextButton(
-              onPressed: () {
-                _landscape = !_landscape;
-                if (_landscape) {
-                  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-                  SystemChrome.setPreferredOrientations([
-                    DeviceOrientation.landscapeLeft,
-                    DeviceOrientation.landscapeRight,
-                  ]);
-                } else {
-                  SystemChrome.setEnabledSystemUIMode(
-                    SystemUiMode.manual,
-                    overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
-                  );
-                  SystemChrome.setPreferredOrientations([
-                    DeviceOrientation.portraitUp,
-                  ]);
-                }
-              },
-              child: const Text("TextButton"),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    dropDownListDataController1.resetAllItemsStatus();
+                    dropDownListDataController2.resetAllItemsStatus();
+                    dropDownGridDataController.resetAllItemsStatus();
+                    for (int i = 0; i < 3; i++) {
+                      dropDownController.hide(
+                        index: i,
+                        status: DropDownHeaderStatus(text: "Tab$i"),
+                      );
+                    }
+                  },
+                  child: const Text("Reset"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    _landscape = !_landscape;
+                    if (_landscape) {
+                      SystemChrome.setEnabledSystemUIMode(
+                          SystemUiMode.immersive);
+                      SystemChrome.setPreferredOrientations([
+                        DeviceOrientation.landscapeLeft,
+                        DeviceOrientation.landscapeRight,
+                      ]);
+                    } else {
+                      SystemChrome.setEnabledSystemUIMode(
+                        SystemUiMode.manual,
+                        overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+                      );
+                      SystemChrome.setPreferredOrientations([
+                        DeviceOrientation.portraitUp,
+                      ]);
+                    }
+                  },
+                  child: const Text("TextButton"),
+                ),
+              ],
             ),
           ),
         ),

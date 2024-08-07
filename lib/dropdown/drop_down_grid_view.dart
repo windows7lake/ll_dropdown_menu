@@ -469,16 +469,27 @@ class DropDownGridDataController {
     _state?.items.forEach((element) {
       element.check = false;
     });
+    if (_state?.multipleChoice == true) {
+      _state?.confirmItems.forEach((element) {
+        element.check = false;
+      });
+    }
     _state?.update();
   }
 
   void changeItemStatusByIndex(int index, bool check) {
     _state?.items[index].check = check;
+    if (_state?.multipleChoice == true) {
+      _state?.confirmItems[index].check = check;
+    }
     _state?.update();
   }
 
   void changeItemStatusByText(String text, bool check) {
     _state?.items.firstWhere((element) => element.text == text).check = check;
+    if (_state?.multipleChoice == true) {
+      _state?.confirmItems.firstWhere((element) => element.text == text).check = check;
+    }
     _state?.update();
   }
 }

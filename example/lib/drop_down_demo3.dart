@@ -13,7 +13,38 @@ class DropDownDemo3 extends StatefulWidget {
 class _DropDownDemoState extends State<DropDownDemo3>
     with SingleTickerProviderStateMixin {
   final DropDownController dropDownController = DropDownController();
+  final DropDownCascadeListDataController dataController1 =
+      DropDownCascadeListDataController();
+  final DropDownCascadeListDataController dataController2 =
+      DropDownCascadeListDataController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+  List<DropDownItem<List<DropDownItem>>> data1 = List.generate(
+    6,
+    (index) => DropDownItem<List<DropDownItem>>(
+      text: "Tab $index",
+      data: List.generate(
+        index + 2,
+        (index) => DropDownItem(
+          text: "Tab Second $index",
+          activeIcon: const Icon(Icons.check),
+        ),
+      ),
+    ),
+  );
+  List<DropDownItem<List<DropDownItem>>> data2 = List.generate(
+    6,
+    (index) => DropDownItem<List<DropDownItem>>(
+      text: "Tab $index",
+      data: List.generate(
+        index + 2,
+        (index) => DropDownItem(
+          text: "Tab Second $index",
+          activeIcon: const Icon(Icons.check),
+        ),
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -90,12 +121,28 @@ class _DropDownDemoState extends State<DropDownDemo3>
             children: [
               Container(
                 color: Colors.blue[200],
+                child: Center(
+                  child: TextButton(
+                    onPressed: () {
+                      dataController1.resetAllItemsStatus();
+                      dataController2.resetAllItemsStatus();
+                      for (int i = 0; i < 2; i++) {
+                        dropDownController.hide(
+                          index: i,
+                          status: DropDownHeaderStatus(text: "Tab$i"),
+                        );
+                      }
+                    },
+                    child: const Text("Reset"),
+                  ),
+                ),
               ),
               DropDownView(
                 controller: dropDownController,
                 builders: [
                   DropDownCascadeList(
                     controller: dropDownController,
+                    dataController: dataController1,
                     headerIndex: 0,
                     secondFloorItemStyle: const DropDownItemStyle(
                       backgroundColor: Colors.white,
@@ -107,22 +154,11 @@ class _DropDownDemoState extends State<DropDownDemo3>
                       alignment: Alignment.centerLeft,
                       textExpand: true,
                     ),
-                    items: List.generate(
-                      6,
-                      (index) => DropDownItem<List<DropDownItem>>(
-                        text: "Tab $index",
-                        data: List.generate(
-                          index + 2,
-                          (index) => DropDownItem(
-                            text: "Tab Second $index",
-                            activeIcon: const Icon(Icons.check),
-                          ),
-                        ),
-                      ),
-                    ),
+                    items: data1,
                   ),
                   DropDownCascadeList(
                     controller: dropDownController,
+                    dataController: dataController2,
                     headerIndex: 1,
                     secondFloorItemStyle: const DropDownItemStyle(
                       backgroundColor: Colors.white,
@@ -134,19 +170,7 @@ class _DropDownDemoState extends State<DropDownDemo3>
                       alignment: Alignment.centerLeft,
                       textExpand: true,
                     ),
-                    items: List.generate(
-                      6,
-                      (index) => DropDownItem<List<DropDownItem>>(
-                        text: "Tab $index",
-                        data: List.generate(
-                          index + 2,
-                          (index) => DropDownItem(
-                            text: "Tab Second $index",
-                            activeIcon: const Icon(Icons.check),
-                          ),
-                        ),
-                      ),
-                    ),
+                    items: data2,
                     maxMultiChoiceSize: 3,
                   ),
                   DropDownViewWrapper(

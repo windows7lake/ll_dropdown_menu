@@ -1,3 +1,6 @@
+## 0.6.3 (2024-8-7)
+* Fixed: support to reset data by using dataController in multiple choose mode.
+
 ## 0.6.2 (2024-3-20)
 * Fixed: index out of range in drop_down_cascade_list
 

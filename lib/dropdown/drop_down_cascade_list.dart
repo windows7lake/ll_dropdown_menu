@@ -603,6 +603,14 @@ class DropDownCascadeListDataController {
         e.check = false;
       });
     });
+    if (_state?.multipleChoice == true) {
+      _state?.confirmItems.forEach((item) {
+        item.check = false;
+        item.data?.forEach((e) {
+          e.check = false;
+        });
+      });
+    }
     _state?.update();
   }
 
@@ -610,6 +618,11 @@ class DropDownCascadeListDataController {
     _state?.items.forEach((item) {
       item.check = false;
     });
+    if (_state?.multipleChoice == true) {
+      _state?.confirmItems.forEach((item) {
+        item.check = false;
+      });
+    }
     _state?.update();
   }
 
@@ -617,12 +630,18 @@ class DropDownCascadeListDataController {
     if (_state == null) return;
     if (index < 0 || index >= _state!.items.length) return;
     _state!.items[index].check = check;
+    if (_state!.multipleChoice == true) {
+      _state!.confirmItems[index].check = check;
+    }
     _state!.update();
   }
 
   void changeFirstItemStatusByText(String text, bool check) {
     if (_state == null) return;
     _state!.items.firstWhere((element) => element.text == text).check = check;
+    if (_state!.multipleChoice == true) {
+      _state!.confirmItems.firstWhere((element) => element.text == text).check = check;
+    }
     _state!.update();
   }
 
@@ -632,6 +651,11 @@ class DropDownCascadeListDataController {
     _state!.items[index].data?.forEach((e) {
       e.check = false;
     });
+    if (_state!.multipleChoice == true) {
+      _state!.confirmItems[index].data?.forEach((e) {
+        e.check = false;
+      });
+    }
     _state!.update();
   }
 
@@ -642,6 +666,12 @@ class DropDownCascadeListDataController {
     List<DropDownItem> dataList = _state!.items[firstIndex].data ?? [];
     if (secondIndex < 0 || secondIndex >= dataList.length) return;
     dataList[secondIndex].check = check;
+    if (_state!.multipleChoice == true) {
+      if (firstIndex < 0 || firstIndex >= _state!.confirmItems.length) return;
+      List<DropDownItem> dataList = _state!.confirmItems[firstIndex].data ?? [];
+      if (secondIndex < 0 || secondIndex >= dataList.length) return;
+      dataList[secondIndex].check = check;
+    }
     _state!.update();
   }
 
@@ -651,6 +681,11 @@ class DropDownCascadeListDataController {
     _state!.items[firstIndex].data
         ?.firstWhere((element) => element.text == text)
         .check = check;
+    if (_state!.multipleChoice == true) {
+      _state!.confirmItems[firstIndex].data
+          ?.firstWhere((element) => element.text == text)
+          .check = check;
+    }
     _state!.update();
   }
 }
