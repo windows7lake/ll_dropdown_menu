@@ -1,3 +1,7 @@
+## 0.6.4 (2024-11-20)
+* Feature: 
+  + add example for customize dropdown view
+
 ## 0.6.3 (2024-8-7)
 * Fixed: support to reset data by using dataController in multiple choose mode.
 

@@ -51,8 +51,8 @@ Powerful and customizable drop-down menu component.
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo4.gif">
 <img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo4.gif" width="250" height="500" align="center" style="max-width:100%;">
 </a>
-<a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo5.gif">
-<img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo5.gif" width="250" height="500" align="center" style="max-width:100%;">
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo5.png">
+<img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo5.png" width="250" height="500" align="center" style="max-width:100%;">
 </a>
 
 ## Install
