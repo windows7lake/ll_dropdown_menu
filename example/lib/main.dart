@@ -31,7 +31,7 @@ Map<String, Widget> routes = {
   "DropDownDemo List & Grid": const DropDownDemo2(),
   "DropDownDemo Custom": const DropDownDemo3(),
   "DropDownDemo CustomScrollView": const DropDownDemo4(),
-  "DropDownDemo DropDownButton": const DropDownDemo5(),
+  "DropDownDemo Custom DropDownView": const DropDownDemo5(),
 };
 
 class DemoPage extends StatelessWidget {
