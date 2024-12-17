@@ -48,6 +48,9 @@
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo5.png">
 <img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo5.png" width="250" height="500" align="center" style="max-width:100%;">
 </a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo6.gif">
+<img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo6.gif" width="250" height="500" align="center" style="max-width:100%;">
+</a>
 
 ## 安装
 
@@ -61,6 +64,16 @@ ll_dropdown_menu: ^0.5.0
 
 ```bash
 $ flutter packages get
+```
+
+DropDownController 需要在使用后回收，避免内存泄露:
+```dart
+DropDownController dropDownController = DropDownController();
+
+@override
+vid dispose() {
+  dropDownController.dispose();
+}
 ```
 
 ## 基础介绍
@@ -270,6 +283,12 @@ class DropDownItemStyle {
 
   /// 下拉菜单-Item样式-阴影高度
   final double elevation;
+
+  /// 下拉菜单-Item样式-自定义绘制背景
+  final CustomPainter? painter;
+
+  /// 下拉菜单-Item样式-自定义绘制背景（选中时）
+  final CustomPainter? activePainter;
 }
 ```
 
@@ -453,6 +472,9 @@ final Color? viewColor;
 
 /// 下拉菜单内容组件的遮罩层颜色
 final Color? maskColor;
+
+/// 下拉菜单内容组件的遮罩层是否需要全屏
+final bool maskFullScreen;
 
 /// 下拉菜单内容组件的动画时长
 final Duration animationDuration;

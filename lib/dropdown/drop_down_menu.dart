@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -54,6 +52,9 @@ class DropDownMenu extends StatefulWidget {
   /// Color of the mask layer in body component of the drop-down menu
   final Color? maskColor;
 
+  /// Whether the mask layer cover full screen
+  final bool maskFullScreen;
+
   /// Animation duration of the drop-down menu body component
   final Duration animationDuration;
 
@@ -77,6 +78,7 @@ class DropDownMenu extends StatefulWidget {
     this.onExpandStateChanged,
     this.viewColor = Colors.white,
     this.maskColor,
+    this.maskFullScreen = false,
     this.animationDuration = const Duration(milliseconds: 150),
   }) : assert(headerItems.length > 0);
 
@@ -85,7 +87,7 @@ class DropDownMenu extends StatefulWidget {
 }
 
 class _DropDownMenuState extends State<DropDownMenu>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   double _width = 0;
   Animation<double>? animation;
   AnimationController? animationController;
@@ -101,6 +103,10 @@ class _DropDownMenuState extends State<DropDownMenu>
   @override
   void initState() {
     super.initState();
+    intiController();
+  }
+
+  void intiController() {
     widget.disposeController?.bind(this);
     overlayState = Overlay.of(context);
     animationController = AnimationController(
@@ -111,12 +117,6 @@ class _DropDownMenuState extends State<DropDownMenu>
         .map((e) => DropDownHeaderStatus(text: e.text ?? ""))
         .toList();
     widget.controller.addListener(dropDownListener);
-  }
-
-  @override
-  void didUpdateWidget(covariant DropDownMenu oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    widget.disposeController?.bind(this);
   }
 
   void dropDownListener() async {
@@ -154,6 +154,25 @@ class _DropDownMenuState extends State<DropDownMenu>
       if (overlayEntry == null) {
         overlayEntry = OverlayEntry(
           builder: (context) {
+            if (widget.maskFullScreen) {
+              if (maskHeight == 0) {
+                return const SizedBox();
+              }
+              return Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  mask(
+                    height: widget.controller.viewOffsetY > 0
+                        ? widget.controller.viewOffsetY
+                        : widget.viewOffsetY ?? 0,
+                    color: Colors.transparent,
+                  ),
+                  SizedBox(height: widget.headerBoxStyle.height!),
+                  view(),
+                  Expanded(child: mask()),
+                ],
+              );
+            }
             return Positioned(
               top: widget.headerBoxStyle.height! +
                   (widget.controller.viewOffsetY > 0
@@ -216,12 +235,11 @@ class _DropDownMenuState extends State<DropDownMenu>
       ),
     );
     if (widget.controller.isExpand) {
-      child = WillPopScope(
-        onWillPop: () async {
-          if (!kIsWeb && Platform.isAndroid) {
+      child = PopScope(
+        onPopInvoked: (didPop) async {
+          if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
             await animationController?.reverse();
           }
-          return true;
         },
         child: child,
       );
@@ -327,6 +345,21 @@ class _DropDownMenuState extends State<DropDownMenu>
       );
     }
 
+    if (widget.headerItemStyle.painter != null && !active) {
+      child = CustomPaint(
+        size: Size(width, widget.headerItemStyle.height),
+        painter: widget.headerItemStyle.painter!,
+        child: child,
+      );
+    }
+    if (widget.headerItemStyle.activePainter != null && active) {
+      child = CustomPaint(
+        size: Size(width, widget.headerItemStyle.height),
+        painter: widget.headerItemStyle.activePainter!,
+        child: child,
+      );
+    }
+
     return child;
   }
 
@@ -346,7 +379,7 @@ class _DropDownMenuState extends State<DropDownMenu>
     );
   }
 
-  Widget mask() {
+  Widget mask({double? height, Color? color}) {
     if (maskOpacity.isNaN) {
       return const SizedBox();
     }
@@ -356,10 +389,11 @@ class _DropDownMenuState extends State<DropDownMenu>
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: maskHeight,
-        color: widget.maskColor != null
-            ? widget.maskColor!.withOpacity(maskOpacity)
-            : Colors.black.withOpacity(maskOpacity),
+        height: height ?? maskHeight,
+        color: color ??
+            (widget.maskColor != null
+                ? widget.maskColor!.withOpacity(maskOpacity)
+                : Colors.black.withOpacity(maskOpacity)),
       ),
     );
   }
@@ -369,10 +403,8 @@ class _DropDownMenuState extends State<DropDownMenu>
     widget.controller.removeListener(dropDownListener);
     animation?.removeListener(animationListener);
     animationController?.dispose();
-    widget.controller.dispose();
     overlayEntry?.remove();
     overlayEntry?.dispose();
-    widget.disposeController?.dispose();
     super.dispose();
   }
 }

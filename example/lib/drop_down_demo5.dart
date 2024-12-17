@@ -34,6 +34,13 @@ class _DropDownDemoState extends State<DropDownDemo5>
     });
   }
 
+  @override
+  void dispose() {
+    dropDownDisposeController.dispose();
+    dropDownController.dispose();
+    super.dispose();
+  }
+
   void setupData() {
     items1 = List.generate(
       6,

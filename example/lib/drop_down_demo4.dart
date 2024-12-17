@@ -60,6 +60,13 @@ class _DropDownDemoState extends State<DropDownDemo4>
     );
   }
 
+  @override
+  void dispose() {
+    dropDownDisposeController.dispose();
+    dropDownController.dispose();
+    super.dispose();
+  }
+
   double get dropDownViewOffsetY {
     RenderBox? renderBox = dropDownMenuKey.renderObject as RenderBox?;
     if (renderBox == null) return 0;

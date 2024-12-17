@@ -63,6 +63,19 @@ class _DropDownHeaderState extends State<DropDownHeader> {
   void initState() {
     super.initState();
     assert(widget.boxStyle.height != null);
+    intiController();
+  }
+
+  @override
+  void didUpdateWidget(covariant DropDownHeader oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(dropDownListener);
+      intiController();
+    }
+  }
+
+  void intiController() {
     widget.controller.headerStatus = widget.items
         .map((e) => DropDownHeaderStatus(text: e.text ?? ""))
         .toList();
@@ -195,6 +208,21 @@ class _DropDownHeaderState extends State<DropDownHeader> {
     if (widget.itemStyle.margin != null) {
       child = Padding(
         padding: widget.itemStyle.margin!,
+        child: child,
+      );
+    }
+
+    if (widget.itemStyle.painter != null && !active) {
+      child = CustomPaint(
+        size: Size(width, widget.itemStyle.height),
+        painter: widget.itemStyle.painter!,
+        child: child,
+      );
+    }
+    if (widget.itemStyle.activePainter != null && active) {
+      child = CustomPaint(
+        size: Size(width, widget.itemStyle.height),
+        painter: widget.itemStyle.activePainter!,
         child: child,
       );
     }

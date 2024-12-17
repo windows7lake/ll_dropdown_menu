@@ -5,6 +5,7 @@ import 'drop_down_demo2.dart';
 import 'drop_down_demo3.dart';
 import 'drop_down_demo4.dart';
 import 'drop_down_demo5.dart';
+import 'drop_down_demo_taobao.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,6 +33,7 @@ Map<String, Widget> routes = {
   "DropDownDemo Custom": const DropDownDemo3(),
   "DropDownDemo CustomScrollView": const DropDownDemo4(),
   "DropDownDemo Custom DropDownView": const DropDownDemo5(),
+  "DropDownDemo Taobao": const DropDownDemoTaobao(),
 };
 
 class DemoPage extends StatelessWidget {

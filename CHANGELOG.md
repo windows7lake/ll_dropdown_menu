@@ -1,31 +1,38 @@
-## 0.6.4 (2024-11-20)
-* Feature: 
+## 0.7.0
+* Feature:
+  + add custom painter for DropDownButton
+  + add maskFullScreen property for DropDownMenu
+  + dispose DropDownController by user
+  + add example for above features
+
+## 0.6.4
+* Feature:
   + add example for customize dropdown view
 
-## 0.6.3 (2024-8-7)
+## 0.6.3
 * Fixed: support to reset data by using dataController in multiple choose mode.
 
-## 0.6.2 (2024-3-20)
+## 0.6.2
 * Fixed: index out of range in drop_down_cascade_list
 
-## 0.6.1 (2023-11-10)
+## 0.6.1
 * Fixed: change the method of dataController
 
-## 0.6.0 (2023-11-10)
+## 0.6.0
 * Feature:
   + DropDownCascadeList: add dataController to control the data of the list.
 
-## 0.5.0 (2023-10-31)
+## 0.5.0
 * Feature:0.5.
   + DropDownCascadeList: remove default padding.
   + DropDownListView/DropDownGridView: add `physics` and `shrinkWrap` property.
 
-## 0.4.0 (2023-10-26)
+## 0.4.0
 * Feature:
   + Add listener: onExpandStateChanged and onItemChanged.
   + Switch Tab with animation.
 
-## 0.3.0 (2023-10-19)
+## 0.3.0
 * Feature:
   + Add more parameters to customize the drop-down menu.
   + (*breaking*) Replace `DropDownViewBuilder` with `DropDownViewWrapper`.
@@ -34,24 +41,24 @@
 * Bug fixed:
   + DropDownListView、DropDownGridView、DropDownCascadeList did not update view after data was changed.
 
-## 0.2.0 (2023-10-16)
+## 0.2.0
 * Feature:
     + Add `OnDropDownHeaderUpdate` callback to update the text of the drop-down menu header.
     + (*breaking*) Wrapper the style of dropdown menu: DropDownBoxStyle、DropDownItemStyle、DropDownButtonStyle.
     + (*breaking*) Replace DropDownMenu item with `WrapperButton`.
 
-## 0.1.3 (2023-10-11)
+## 0.1.3
 * Remove preview image
 
-## 0.1.2 (2023-10-11)
+## 0.1.2
 * Refactor code
 * Update README
 
-## 0.1.1 (2023-10-11)
+## 0.1.1
 * Refactor code
 * Update README
 
-## 0.1.0 (2023-10-11)
+## 0.1.0
 
 * Support using `Stack` or `Overlay` to implement drop-down menu.
 * Customize the drop-down menu bar header.

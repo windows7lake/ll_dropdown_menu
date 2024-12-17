@@ -12,7 +12,7 @@ class WrapperButton extends StatelessWidget {
   final Clip clipBehavior;
   final FocusNode? focusNode;
   final bool autofocus;
-  final MaterialStatesController? statesController;
+  final WidgetStatesController? statesController;
   final bool? isSemanticButton;
   final Widget? child;
   final String? text;
@@ -226,7 +226,7 @@ class WrapperButton extends StatelessWidget {
     return child;
   }
 
-  MaterialStateProperty<T>? resolve<T>(T value) {
-    return value == null ? null : MaterialStateProperty.all<T>(value);
+  WidgetStateProperty<T>? resolve<T>(T value) {
+    return value == null ? null : WidgetStateProperty.all<T>(value);
   }
 }

@@ -188,4 +188,10 @@ class _DropDownDemoState extends State<DropDownDemo3>
       ]),
     );
   }
+
+  @override
+  void dispose() {
+    dropDownController.dispose();
+    super.dispose();
+  }
 }

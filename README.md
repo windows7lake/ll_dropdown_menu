@@ -54,6 +54,9 @@ Powerful and customizable drop-down menu component.
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo5.png">
 <img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo5.png" width="250" height="500" align="center" style="max-width:100%;">
 </a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo6.gif">
+<img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo6.gif" width="250" height="500" align="center" style="max-width:100%;">
+</a>
 
 ## Install
 
@@ -67,6 +70,16 @@ Run in terminal:
 
 ```bash
 $ flutter packages get
+```
+
+DropDownController should be dispose after using it:
+```dart
+DropDownController dropDownController = DropDownController();
+
+@override
+vid dispose() {
+  dropDownController.dispose();
+}
 ```
 
 ## Introduction
@@ -281,6 +294,12 @@ class DropDownItemStyle {
 
   /// The elevation of the DropDownItem
   final double elevation;
+
+  /// CustomPainter is used for custom drawing of the background of DropDownItem
+  final CustomPainter? painter;
+
+  /// CustomPainter is used for custom drawing of the background of DropDownItem when it is selected
+  final CustomPainter? activePainter;
 }
 ```
 
@@ -469,6 +488,9 @@ final Color? viewColor;
 
 /// Color of the mask layer in body component of the drop-down menu
 final Color? maskColor;
+
+/// Whether the mask layer cover full screen
+final bool maskFullScreen;
 
 /// Animation duration of the drop-down menu body component
 final Duration animationDuration;

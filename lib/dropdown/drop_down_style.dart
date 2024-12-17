@@ -78,6 +78,8 @@ class DropDownItemStyle {
     this.iconPosition = IconPosition.right,
     this.gap = 0,
     this.elevation = 0,
+    this.painter,
+    this.activePainter,
   });
 
   /// The width of the DropDownItem
@@ -181,6 +183,12 @@ class DropDownItemStyle {
 
   /// The elevation of the DropDownItem
   final double elevation;
+
+  /// The painter of the DropDownItem
+  final CustomPainter? painter;
+
+  /// The painter of the DropDownItem when it is selected
+  final CustomPainter? activePainter;
 }
 
 /// Drop-down menu button style in the multi-select state
