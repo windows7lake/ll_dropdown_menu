@@ -80,18 +80,18 @@ class DropDownCascadeList extends DropDownViewStatefulWidget {
     this.headerIndex,
     this.boxStyle = const DropDownBoxStyle(),
     this.firstFloorItemStyle = const DropDownItemStyle(
-      backgroundColor: const Color(0xFFF5F5F5),
-      activeBackgroundColor: const Color(0xFFFEFEFE),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      backgroundColor: Color(0xFFF5F5F5),
+      activeBackgroundColor: Color(0xFFFEFEFE),
+      padding: EdgeInsets.symmetric(horizontal: 16),
     ),
     this.firstFloorItemBuilder,
     this.onFirstFloorItemTap,
     this.secondFloorItemStyle = const DropDownItemStyle(
       backgroundColor: Colors.white,
-      activeBackgroundColor: const Color(0xFFF5F5F5),
-      activeTextStyle: const TextStyle(fontSize: 14, color: Colors.blue),
+      activeBackgroundColor: Color(0xFFF5F5F5),
+      activeTextStyle: TextStyle(fontSize: 14, color: Colors.blue),
       activeIconColor: Colors.blue,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: 20),
       alignment: Alignment.centerLeft,
     ),
     this.secondFloorItemBuilder,
@@ -640,7 +640,8 @@ class DropDownCascadeListDataController {
     if (_state == null) return;
     _state!.items.firstWhere((element) => element.text == text).check = check;
     if (_state!.multipleChoice == true) {
-      _state!.confirmItems.firstWhere((element) => element.text == text).check = check;
+      _state!.confirmItems.firstWhere((element) => element.text == text).check =
+          check;
     }
     _state!.update();
   }

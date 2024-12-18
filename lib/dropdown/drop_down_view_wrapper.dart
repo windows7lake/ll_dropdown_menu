@@ -6,7 +6,8 @@ class DropDownViewWrapper extends DropDownViewStatelessWidget {
   final double height;
   final Widget child;
 
-  DropDownViewWrapper({
+  const DropDownViewWrapper({
+    super.key,
     required this.height,
     required this.child,
   });

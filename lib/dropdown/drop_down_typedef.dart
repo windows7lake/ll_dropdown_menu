@@ -50,6 +50,8 @@ class DropDownItem<T> {
 
 /// DropDownMenu body component property
 abstract class DropDownViewProperty extends Widget {
+  const DropDownViewProperty({super.key});
+
   /// The height of the DropDownMenu content view
   double get actualHeight;
 }
@@ -57,12 +59,14 @@ abstract class DropDownViewProperty extends Widget {
 /// DropDownMenu body component StatefulWidget
 abstract class DropDownViewStatefulWidget extends StatefulWidget
     implements DropDownViewProperty {
-  const DropDownViewStatefulWidget({Key? key}) : super(key: key);
+  const DropDownViewStatefulWidget({super.key});
 }
 
 /// DropDownMenu body component StatelessWidget
 abstract class DropDownViewStatelessWidget extends StatelessWidget
-    implements DropDownViewProperty {}
+    implements DropDownViewProperty {
+  const DropDownViewStatelessWidget({super.key});
+}
 
 /// DropDownMenu header component status
 class DropDownHeaderStatus {

@@ -66,7 +66,7 @@ class DropDownMenu extends StatefulWidget {
     required this.controller,
     required this.headerItems,
     required this.viewBuilders,
-    required this.viewOffsetY,
+    this.viewOffsetY,
     this.disposeController,
     this.headerPhysics,
     this.headerBoxStyle = const DropDownBoxStyle(height: 50),
@@ -78,7 +78,7 @@ class DropDownMenu extends StatefulWidget {
     this.onExpandStateChanged,
     this.viewColor = Colors.white,
     this.maskColor,
-    this.maskFullScreen = false,
+    this.maskFullScreen = true,
     this.animationDuration = const Duration(milliseconds: 150),
   }) : assert(headerItems.length > 0);
 
@@ -88,7 +88,7 @@ class DropDownMenu extends StatefulWidget {
 
 class _DropDownMenuState extends State<DropDownMenu>
     with TickerProviderStateMixin {
-  double _width = 0;
+  final GlobalKey headerKey = GlobalKey();
   Animation<double>? animation;
   AnimationController? animationController;
   OverlayEntry? overlayEntry;
@@ -99,6 +99,15 @@ class _DropDownMenuState extends State<DropDownMenu>
   double maskHeight = 0;
   int currentIndex = 0;
   bool expand = false;
+
+  double get width =>
+      (widget.headerBoxStyle.width ?? MediaQuery.of(context).size.width) -
+      widget.headerBoxStyle.margin.horizontal;
+
+  double get headerOffset =>
+      (headerKey.currentContext?.findRenderObject() as RenderBox)
+          .localToGlobal(Offset.zero)
+          .dy;
 
   @override
   void initState() {
@@ -126,15 +135,6 @@ class _DropDownMenuState extends State<DropDownMenu>
           "currentIndex >= builders.length");
     }
     if (expand && widget.controller.isExpand) {
-      // // no animation
-      // animationViewHeight = widget.viewBuilders[currentIndex].actualHeight;
-      // if (mounted) {
-      //   setState(() {});
-      //   if (overlayState != null && overlayState!.mounted) {
-      //     overlayState?.setState(() {});
-      //   }
-      // }
-      // return;
       await animationController?.reverse();
       animationViewHeight = 0;
     }
@@ -164,7 +164,7 @@ class _DropDownMenuState extends State<DropDownMenu>
                   mask(
                     height: widget.controller.viewOffsetY > 0
                         ? widget.controller.viewOffsetY
-                        : widget.viewOffsetY ?? 0,
+                        : widget.viewOffsetY ?? headerOffset,
                     color: Colors.transparent,
                   ),
                   SizedBox(height: widget.headerBoxStyle.height!),
@@ -177,7 +177,7 @@ class _DropDownMenuState extends State<DropDownMenu>
               top: widget.headerBoxStyle.height! +
                   (widget.controller.viewOffsetY > 0
                       ? widget.controller.viewOffsetY
-                      : widget.viewOffsetY ?? 0),
+                      : widget.viewOffsetY ?? headerOffset),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -190,8 +190,9 @@ class _DropDownMenuState extends State<DropDownMenu>
         );
         overlayState!.insert(overlayEntry!);
       }
+      if (!mounted) return;
       maskHeight = MediaQuery.of(context).size.height -
-          (widget.viewOffsetY ?? 0) -
+          (widget.viewOffsetY ?? headerOffset) -
           widget.headerBoxStyle.height!;
       overlayState?.setState(() {});
       animationController?.forward();
@@ -213,11 +214,9 @@ class _DropDownMenuState extends State<DropDownMenu>
 
   @override
   Widget build(BuildContext context) {
-    _width =
-        (widget.headerBoxStyle.width ?? MediaQuery.of(context).size.width) -
-            widget.headerBoxStyle.margin.horizontal;
     Widget child = Container(
-      width: _width,
+      key: headerKey,
+      width: width,
       height: widget.headerBoxStyle.height,
       margin: widget.headerBoxStyle.margin,
       padding: widget.headerBoxStyle.padding,
@@ -236,7 +235,7 @@ class _DropDownMenuState extends State<DropDownMenu>
     );
     if (widget.controller.isExpand) {
       child = PopScope(
-        onPopInvoked: (didPop) async {
+        onPopInvokedWithResult: (didPop, result) async {
           if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
             await animationController?.reverse();
           }
@@ -253,9 +252,9 @@ class _DropDownMenuState extends State<DropDownMenu>
     DropDownHeaderStatus status = widget.controller.headerStatus[index];
 
     var item = widget.headerItems[index];
-    double width = _width;
+    double itemWidth = width;
     if (widget.headerBoxStyle.expand) {
-      width = (_width - widget.headerBoxStyle.padding.horizontal) /
+      itemWidth = (width - widget.headerBoxStyle.padding.horizontal) /
               widget.headerItems.length -
           (widget.headerItemStyle.margin?.horizontal ?? 0);
     }
@@ -299,7 +298,7 @@ class _DropDownMenuState extends State<DropDownMenu>
       iconPosition: widget.headerItemStyle.iconPosition,
       gap: widget.headerItemStyle.gap,
       padding: widget.headerItemStyle.padding,
-      width: width,
+      width: itemWidth,
       height: widget.headerItemStyle.height,
       alignment: widget.headerItemStyle.alignment,
       borderSide: active
@@ -356,6 +355,14 @@ class _DropDownMenuState extends State<DropDownMenu>
       child = CustomPaint(
         size: Size(width, widget.headerItemStyle.height),
         painter: widget.headerItemStyle.activePainter!,
+        child: child,
+      );
+    }
+
+    if (widget.controller.isExpand) {
+      child = GestureDetector(
+        onVerticalDragDown: (details) {},
+        onHorizontalDragDown: (details) {},
         child: child,
       );
     }

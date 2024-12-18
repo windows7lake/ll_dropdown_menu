@@ -24,7 +24,6 @@ class _DropDownDemoTaobaoState extends State<DropDownDemoTaobao>
   List<DropDownItem> items1 = [];
   List<DropDownItem> items2 = [];
   double offsetY = 0;
-  ScrollPhysics? physics;
   double cardHeight = 250;
 
   @override
@@ -32,7 +31,6 @@ class _DropDownDemoTaobaoState extends State<DropDownDemoTaobao>
     super.initState();
     _scrollController.addListener(() {
       offsetY = _scrollController.offset;
-      print("offset: ${offsetY}");
       setState(() {});
     });
     _tabController = TabController(length: tabs.length, vsync: this);
@@ -82,7 +80,7 @@ class _DropDownDemoTaobaoState extends State<DropDownDemoTaobao>
                 nestedScrollView,
               ]);
             }
-            return Center(child: Text("$e"));
+            return Center(child: Text(e));
           }).toList(),
         ),
         Padding(
@@ -105,7 +103,6 @@ class _DropDownDemoTaobaoState extends State<DropDownDemoTaobao>
 
   Widget get nestedScrollView {
     return NestedScrollView(
-      physics: physics,
       controller: _scrollController,
       headerSliverBuilder: (context, innerBoxIsScrolled) {
         return [
@@ -135,7 +132,6 @@ class _DropDownDemoTaobaoState extends State<DropDownDemoTaobao>
         ];
       },
       body: ListView.builder(
-        physics: physics,
         padding: EdgeInsets.zero,
         itemCount: 20,
         itemBuilder: (context, index) {
@@ -279,10 +275,6 @@ class _DropDownDemoTaobaoState extends State<DropDownDemoTaobao>
           items: items1,
         ),
       ],
-      onExpandStateChanged: (isExpand) {
-        physics = isExpand ? const NeverScrollableScrollPhysics() : null;
-        setState(() {});
-      },
       maskFullScreen: true,
     );
   }
@@ -316,10 +308,6 @@ class _DropDownDemoTaobaoState extends State<DropDownDemoTaobao>
         ),
       ),
       viewColor: Colors.white,
-      viewOffsetY: 50 +
-          (offsetY > (cardHeight + 76)
-              ? topHeight
-              : ((cardHeight + 76) + topHeight - offsetY)),
       viewBuilders: [
         DropDownListView(
           controller: _dropDown2Controller,
@@ -354,10 +342,6 @@ class _DropDownDemoTaobaoState extends State<DropDownDemoTaobao>
           ),
         ),
       ],
-      onExpandStateChanged: (isExpand) {
-        physics = isExpand ? const NeverScrollableScrollPhysics() : null;
-        setState(() {});
-      },
       maskFullScreen: true,
     );
   }

@@ -22,7 +22,6 @@ class _DropDownDemoState extends State<DropDownDemo4>
   List<DropDownItem> items2 = [];
   List<DropDownItem> items3 = [];
   List<DropDownItem> items4 = [];
-  ScrollPhysics? physics;
   bool isUsingOverlay = false;
 
   @override
@@ -107,7 +106,6 @@ class _DropDownDemoState extends State<DropDownDemo4>
 
   Widget usingOverlay() {
     return CustomScrollView(
-      physics: physics,
       slivers: [
         SliverToBoxAdapter(
           child: Container(
@@ -146,20 +144,8 @@ class _DropDownDemoState extends State<DropDownDemo4>
                   ),
                 ),
                 onHeaderItemTap: (index, item) {
-                  dropDownController.toggle(
-                    index,
-                    offsetY: dropDownViewOffsetY,
-                  );
+                  dropDownController.toggle(index);
                 },
-                onExpandStateChanged: (expand) {
-                  physics =
-                      expand ? const NeverScrollableScrollPhysics() : null;
-                  setState(() {});
-                },
-                viewOffsetY: MediaQuery.of(context).padding.top + // statusBar
-                    55 + // appBar
-                    100 + // blue Container
-                    dropDownMenuHeight,
                 viewBuilders: [
                   DropDownListView(
                     controller: dropDownController,
@@ -252,7 +238,6 @@ class _DropDownDemoState extends State<DropDownDemo4>
     return Stack(
       children: [
         CustomScrollView(
-          physics: physics,
           slivers: [
             SliverToBoxAdapter(
               child: Container(
@@ -297,11 +282,6 @@ class _DropDownDemoState extends State<DropDownDemo4>
                             statusBarHeight -
                             56, // appBar
                       );
-                    },
-                    onExpandStateChanged: (expand) {
-                      physics =
-                          expand ? const NeverScrollableScrollPhysics() : null;
-                      setState(() {});
                     },
                   );
                 },

@@ -80,6 +80,7 @@ class _DropDownViewState extends State<DropDownView>
     animation = Tween<double>(begin: 0, end: viewHeight).animate(
         CurvedAnimation(parent: animationController!, curve: Curves.easeInOut))
       ..addListener(animationListener);
+    if (!mounted) return;
     if (isExpand) {
       maskHeight = MediaQuery.of(context).size.height;
       await animationController?.forward();
@@ -87,7 +88,7 @@ class _DropDownViewState extends State<DropDownView>
       await animationController?.reverse();
       maskHeight = 0;
     }
-    if (mounted) setState(() {});
+    setState(() {});
   }
 
   void animationListener() {

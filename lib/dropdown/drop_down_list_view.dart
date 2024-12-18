@@ -82,8 +82,8 @@ class DropDownListView extends DropDownViewStatefulWidget {
     this.boxStyle = const DropDownBoxStyle(),
     this.itemStyle = const DropDownItemStyle(
       activeBackgroundColor: Color(0xFFF5F5F5),
-      activeIcon: const Icon(Icons.check, size: 20, color: Colors.blue),
-      activeTextStyle: const TextStyle(color: Colors.blue),
+      activeIcon: Icon(Icons.check, size: 20, color: Colors.blue),
+      activeTextStyle: TextStyle(color: Colors.blue),
       padding: EdgeInsets.symmetric(horizontal: 16),
       textExpand: true,
       alignment: Alignment.centerLeft,
@@ -456,7 +456,8 @@ class DropDownListDataController {
   void changeItemStatusByText(String text, bool check) {
     _state?.items.firstWhere((element) => element.text == text).check = check;
     if (_state?.multipleChoice == true) {
-      _state?.confirmItems.firstWhere((element) => element.text == text).check = check;
+      _state?.confirmItems.firstWhere((element) => element.text == text).check =
+          check;
     }
     _state?.update();
   }

@@ -96,7 +96,7 @@ class DropDownGridView extends DropDownViewStatefulWidget {
     this.itemStyle = const DropDownItemStyle(
       activeBackgroundColor: Color(0xFFF5F5F5),
       activeIconColor: Colors.blue,
-      activeTextStyle: const TextStyle(color: Colors.blue),
+      activeTextStyle: TextStyle(color: Colors.blue),
     ),
     this.itemBuilder,
     this.onDropDownItemTap,
@@ -488,7 +488,8 @@ class DropDownGridDataController {
   void changeItemStatusByText(String text, bool check) {
     _state?.items.firstWhere((element) => element.text == text).check = check;
     if (_state?.multipleChoice == true) {
-      _state?.confirmItems.firstWhere((element) => element.text == text).check = check;
+      _state?.confirmItems.firstWhere((element) => element.text == text).check =
+          check;
     }
     _state?.update();
   }
