@@ -277,10 +277,13 @@ class _DropDownDemoState extends State<DropDownDemo4>
                     onItemTap: (index, item) {
                       dropDownController.toggle(
                         index,
-                        offsetY: dropDownViewOffsetY +
-                            dropDownMenuHeight -
-                            statusBarHeight -
-                            56, // appBar
+                        offset: Offset(
+                          0,
+                          dropDownViewOffsetY +
+                              dropDownMenuHeight -
+                              statusBarHeight -
+                              56,
+                        ),
                       );
                     },
                   );

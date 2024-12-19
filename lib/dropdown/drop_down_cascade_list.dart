@@ -112,6 +112,9 @@ class DropDownCascadeList extends DropDownViewStatefulWidget {
   State<DropDownCascadeList> createState() => _DropDownCascadeListState();
 
   @override
+  double? get actualWidth => boxStyle.width;
+
+  @override
   double get actualHeight =>
       boxStyle.height ??
       firstFloorItemStyle.height * items.length +

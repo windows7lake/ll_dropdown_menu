@@ -101,9 +101,7 @@ class _DropDownViewState extends State<DropDownView>
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: widget.controller.viewOffsetY > 0
-          ? widget.controller.viewOffsetY
-          : widget.offsetY,
+      top: widget.controller.viewOffset?.dy ?? widget.offsetY,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

@@ -118,6 +118,9 @@ class DropDownGridView extends DropDownViewStatefulWidget {
   State<DropDownGridView> createState() => _DropDownGridViewState();
 
   @override
+  double? get actualWidth => boxStyle.width;
+
+  @override
   double get actualHeight {
     int rowCount = items.length ~/ crossAxisCount +
         (items.length % crossAxisCount == 0 ? 0 : 1);

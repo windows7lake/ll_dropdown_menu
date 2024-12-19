@@ -108,6 +108,9 @@ class DropDownListView extends DropDownViewStatefulWidget {
   State<DropDownListView> createState() => _DropDownListViewState();
 
   @override
+  double? get actualWidth => boxStyle.width;
+
+  @override
   double get actualHeight =>
       boxStyle.height ??
       itemStyle.height * items.length +

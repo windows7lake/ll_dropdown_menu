@@ -254,9 +254,6 @@ class _DropDownDemoTaobaoState extends State<DropDownDemoTaobao>
           activeIcon: const Icon(Icons.arrow_drop_up),
         ),
       ),
-      viewOffsetY: offsetY > (cardHeight + 76)
-          ? topHeight
-          : ((cardHeight + 76) + topHeight - offsetY),
       viewBuilders: [
         DropDownListView(
           controller: _dropDown1Controller,

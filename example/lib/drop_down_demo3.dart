@@ -174,6 +174,7 @@ class _DropDownDemoState extends State<DropDownDemo3>
                     maxMultiChoiceSize: 3,
                   ),
                   DropDownViewWrapper(
+                    width: MediaQuery.of(context).size.width,
                     height: 300,
                     child: Container(
                       color: Colors.yellow,

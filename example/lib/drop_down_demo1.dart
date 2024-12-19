@@ -89,6 +89,8 @@ class _DropDownDemoState extends State<DropDownDemo1>
       ),
       body: Column(children: [
         DropDownMenu(
+          maskFullScreen: true,
+          maskColor: Colors.black.withOpacity(0.1),
           controller: dropDownController,
           disposeController: dropDownDisposeController,
           headerItemStyle: const DropDownItemStyle(
@@ -174,7 +176,6 @@ class _DropDownDemoState extends State<DropDownDemo1>
               },
             ),
           ],
-          maskFullScreen: true,
         ),
         Expanded(
           child: Container(

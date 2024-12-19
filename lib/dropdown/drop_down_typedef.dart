@@ -37,6 +37,8 @@ class DropDownItem<T> {
     Widget? activeIcon,
     T? data,
     bool? check,
+    double? height,
+    double? width,
   }) {
     return DropDownItem<T>(
       text: text ?? this.text,
@@ -54,12 +56,18 @@ abstract class DropDownViewProperty extends Widget {
 
   /// The height of the DropDownMenu content view
   double get actualHeight;
+
+  /// The width of the DropDownMenu content view
+  double? get actualWidth;
 }
 
 /// DropDownMenu body component StatefulWidget
 abstract class DropDownViewStatefulWidget extends StatefulWidget
     implements DropDownViewProperty {
   const DropDownViewStatefulWidget({super.key});
+
+  @override
+  double? get actualWidth => null;
 }
 
 /// DropDownMenu body component StatelessWidget

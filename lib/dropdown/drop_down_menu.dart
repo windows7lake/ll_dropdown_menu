@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ll_dropdown_menu/extension/key_ext.dart';
+import 'package:ll_dropdown_menu/extension/list_extension.dart';
 
 import '../button/text_button.dart';
 import 'drop_down_controller.dart';
@@ -52,21 +54,28 @@ class DropDownMenu extends StatefulWidget {
   /// Color of the mask layer in body component of the drop-down menu
   final Color? maskColor;
 
+  /// Whether the mask layer is visible
+  final bool maskVisible;
+
   /// Whether the mask layer cover full screen
   final bool maskFullScreen;
 
   /// Animation duration of the drop-down menu body component
   final Duration animationDuration;
 
-  /// Y-axis offset of the drop-down menu body component
-  final double? viewOffsetY;
+  /// offset of the drop-down menu body component
+  final Offset? viewOffset;
+
+  /// offset of the drop-down menu body component relative to the header
+  final Offset? relativeOffset;
 
   const DropDownMenu({
     super.key,
     required this.controller,
     required this.headerItems,
     required this.viewBuilders,
-    this.viewOffsetY,
+    this.viewOffset,
+    this.relativeOffset,
     this.disposeController,
     this.headerPhysics,
     this.headerBoxStyle = const DropDownBoxStyle(height: 50),
@@ -78,6 +87,7 @@ class DropDownMenu extends StatefulWidget {
     this.onExpandStateChanged,
     this.viewColor = Colors.white,
     this.maskColor,
+    this.maskVisible = true,
     this.maskFullScreen = true,
     this.animationDuration = const Duration(milliseconds: 150),
   }) : assert(headerItems.length > 0);
@@ -96,18 +106,23 @@ class _DropDownMenuState extends State<DropDownMenu>
   double viewHeight = 0;
   double animationViewHeight = 0;
   double maskOpacity = 0;
-  double maskHeight = 0;
   int currentIndex = 0;
   bool expand = false;
 
-  double get width =>
+  double get headerWidth =>
       (widget.headerBoxStyle.width ?? MediaQuery.of(context).size.width) -
       widget.headerBoxStyle.margin.horizontal;
 
-  double get headerOffset =>
-      (headerKey.currentContext?.findRenderObject() as RenderBox)
-          .localToGlobal(Offset.zero)
-          .dy;
+  double? get headerHeight => widget.headerBoxStyle.height;
+
+  Offset get headerOffset =>
+      widget.controller.viewOffset ??
+      widget.viewOffset ??
+      headerKey.localToGlobal;
+
+  double get bodyWidth =>
+      widget.viewBuilders.item(currentIndex)?.actualWidth ??
+      MediaQuery.of(context).size.width;
 
   @override
   void initState() {
@@ -145,79 +160,85 @@ class _DropDownMenuState extends State<DropDownMenu>
     }
     if (mounted) setState(() {});
     if (expand) {
-      viewHeight = widget.viewBuilders[currentIndex].actualHeight;
+      viewHeight = widget.viewBuilders.item(currentIndex)?.actualHeight ?? 0;
       animation?.removeListener(animationListener);
       animation = Tween<double>(begin: 0, end: viewHeight).animate(
           CurvedAnimation(
               parent: animationController!, curve: Curves.easeInOut))
         ..addListener(animationListener);
       if (overlayEntry == null) {
-        overlayEntry = OverlayEntry(
-          builder: (context) {
-            if (widget.maskFullScreen) {
-              if (maskHeight == 0) {
-                return const SizedBox();
-              }
-              return Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  mask(
-                    height: widget.controller.viewOffsetY > 0
-                        ? widget.controller.viewOffsetY
-                        : widget.viewOffsetY ?? headerOffset,
-                    color: Colors.transparent,
-                  ),
-                  SizedBox(height: widget.headerBoxStyle.height!),
-                  view(),
-                  Expanded(child: mask()),
-                ],
-              );
-            }
-            return Positioned(
-              top: widget.headerBoxStyle.height! +
-                  (widget.controller.viewOffsetY > 0
-                      ? widget.controller.viewOffsetY
-                      : widget.viewOffsetY ?? headerOffset),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  view(),
-                  mask(),
-                ],
-              ),
-            );
-          },
-        );
+        overlayEntry = buildOverlayEntry();
         overlayState!.insert(overlayEntry!);
       }
-      if (!mounted) return;
-      maskHeight = MediaQuery.of(context).size.height -
-          (widget.viewOffsetY ?? headerOffset) -
-          widget.headerBoxStyle.height!;
       overlayState?.setState(() {});
       animationController?.forward();
     } else {
       await animationController?.reverse();
-      maskHeight = 0;
       overlayState?.setState(() {});
     }
   }
 
   void animationListener() {
     animationViewHeight = animation!.value;
+    widget.controller.viewHeight = animationViewHeight;
     maskOpacity =
-        (animation!.value / viewHeight) * (widget.maskColor?.opacity ?? 0.3);
+        (animation!.value / viewHeight) * (widget.maskColor?.opacity ?? 0);
     if (overlayState != null && overlayState!.mounted) {
       overlayState?.setState(() {});
     }
   }
 
+  OverlayEntry buildOverlayEntry() {
+    return OverlayEntry(
+      builder: (context) {
+        double offsetX = headerOffset.dx + (widget.relativeOffset?.dx ?? 0);
+        double offsetY = headerOffset.dy +
+            (headerHeight ?? 0) +
+            (widget.relativeOffset?.dy ?? 0);
+
+        Widget? maskWidget = mask();
+        if (!widget.maskFullScreen) {
+          maskWidget = Positioned(
+            top: offsetY,
+            child: mask(),
+          );
+        }
+        if (!widget.maskVisible || !expand) {
+          maskWidget = null;
+        }
+        return Stack(children: [
+          if (maskWidget != null) maskWidget,
+          Positioned(
+            top: offsetY,
+            left: offsetX,
+            child: body(),
+          ),
+        ]);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget child = Container(
-      key: headerKey,
-      width: width,
-      height: widget.headerBoxStyle.height,
+    Widget child = header(key: headerKey);
+    if (widget.controller.isExpand) {
+      child = PopScope(
+        onPopInvokedWithResult: (didPop, result) async {
+          if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+            await animationController?.reverse();
+          }
+        },
+        child: child,
+      );
+    }
+    return child;
+  }
+
+  Widget header({GlobalKey? key}) {
+    return Container(
+      key: key,
+      width: headerWidth,
+      height: headerHeight,
       margin: widget.headerBoxStyle.margin,
       padding: widget.headerBoxStyle.padding,
       decoration: widget.headerBoxStyle.decoration ??
@@ -233,17 +254,6 @@ class _DropDownMenuState extends State<DropDownMenu>
         separatorBuilder: widget.headerDividerBuilder ?? headerDivider,
       ),
     );
-    if (widget.controller.isExpand) {
-      child = PopScope(
-        onPopInvokedWithResult: (didPop, result) async {
-          if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-            await animationController?.reverse();
-          }
-        },
-        child: child,
-      );
-    }
-    return child;
   }
 
   Widget headerItem(BuildContext context, int index) {
@@ -251,26 +261,29 @@ class _DropDownMenuState extends State<DropDownMenu>
         widget.controller.isExpand && widget.controller.headerIndex == index;
     DropDownHeaderStatus status = widget.controller.headerStatus[index];
 
-    var item = widget.headerItems[index];
-    double itemWidth = width;
+    var item = widget.headerItems.item(index);
+    double itemWidth = headerWidth;
+    double itemHeight = widget.headerItemStyle.height;
     if (widget.headerBoxStyle.expand) {
-      itemWidth = (width - widget.headerBoxStyle.padding.horizontal) /
+      itemWidth = (headerWidth - widget.headerBoxStyle.padding.horizontal) /
               widget.headerItems.length -
           (widget.headerItemStyle.margin?.horizontal ?? 0);
     }
 
     Widget child = WrapperButton(
+      width: itemWidth,
+      height: itemHeight,
       onPressed: () {
         if (widget.onHeaderItemChanged != null) {
           widget.onHeaderItemChanged!(index, widget.headerItems);
         }
         if (widget.onHeaderItemTap != null) {
-          widget.onHeaderItemTap!(index, item);
+          widget.onHeaderItemTap!(index, item!);
           return;
         }
         widget.controller.toggle(index);
       },
-      text: status.text.isEmpty ? item.text : status.text,
+      text: status.text.isEmpty ? item?.text : status.text,
       textStyle: active
           ? widget.headerItemStyle.activeTextStyle
           : (status.highlight
@@ -281,25 +294,24 @@ class _DropDownMenuState extends State<DropDownMenu>
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
       icon: active
-          ? (item.activeIcon ?? widget.headerItemStyle.activeIcon)
-          : (status.highlight
-              ? widget.headerItemStyle.highlightIcon
-              : (item.icon ?? widget.headerItemStyle.icon)),
+          ? (item?.activeIcon ?? widget.headerItemStyle.activeIcon)
+          : (status.highlight ? widget.headerItemStyle.highlightIcon : null) ??
+              (item?.icon ?? widget.headerItemStyle.icon),
       iconColor: active
           ? widget.headerItemStyle.activeIconColor
           : (status.highlight
-              ? widget.headerItemStyle.highlightIconColor
-              : widget.headerItemStyle.iconColor),
+                  ? widget.headerItemStyle.highlightIconColor
+                  : null) ??
+              widget.headerItemStyle.iconColor,
       iconSize: active
           ? widget.headerItemStyle.activeIconSize
           : (status.highlight
-              ? widget.headerItemStyle.highlightIconSize
-              : widget.headerItemStyle.iconSize),
+                  ? widget.headerItemStyle.highlightIconSize
+                  : null) ??
+              widget.headerItemStyle.iconSize,
       iconPosition: widget.headerItemStyle.iconPosition,
       gap: widget.headerItemStyle.gap,
       padding: widget.headerItemStyle.padding,
-      width: itemWidth,
-      height: widget.headerItemStyle.height,
       alignment: widget.headerItemStyle.alignment,
       borderSide: active
           ? widget.headerItemStyle.activeBorderSide
@@ -346,14 +358,14 @@ class _DropDownMenuState extends State<DropDownMenu>
 
     if (widget.headerItemStyle.painter != null && !active) {
       child = CustomPaint(
-        size: Size(width, widget.headerItemStyle.height),
+        size: Size(headerWidth, widget.headerItemStyle.height),
         painter: widget.headerItemStyle.painter!,
         child: child,
       );
     }
     if (widget.headerItemStyle.activePainter != null && active) {
       child = CustomPaint(
-        size: Size(width, widget.headerItemStyle.height),
+        size: Size(headerWidth, widget.headerItemStyle.height),
         painter: widget.headerItemStyle.activePainter!,
         child: child,
       );
@@ -374,9 +386,9 @@ class _DropDownMenuState extends State<DropDownMenu>
     return const SizedBox();
   }
 
-  Widget view() {
+  Widget body() {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: bodyWidth,
       height: animationViewHeight,
       color: widget.viewColor,
       child: IndexedStack(
@@ -386,7 +398,7 @@ class _DropDownMenuState extends State<DropDownMenu>
     );
   }
 
-  Widget mask({double? height, Color? color}) {
+  Widget mask() {
     if (maskOpacity.isNaN) {
       return const SizedBox();
     }
@@ -396,11 +408,8 @@ class _DropDownMenuState extends State<DropDownMenu>
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: height ?? maskHeight,
-        color: color ??
-            (widget.maskColor != null
-                ? widget.maskColor!.withOpacity(maskOpacity)
-                : Colors.black.withOpacity(maskOpacity)),
+        height: MediaQuery.of(context).size.height,
+        color: (widget.maskColor ?? Colors.black).withOpacity(maskOpacity),
       ),
     );
   }

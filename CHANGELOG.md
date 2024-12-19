@@ -1,3 +1,11 @@
+## 0.8.0
+* Feature:
+  + support dropdown button style
+  + add maskVisible property for DropDownMenu, which can control the visibility of the mask
+  + add relativeOffset property for DropDownMenu, which can control the relative position of the drop-down body to the drop-down header
+  + (*breaking*) change property: viewOffsetY (double) -> viewOffset (Offset)
+  + add example for above features
+  
 ## 0.7.0
 * Feature:
   + add custom painter for DropDownButton
