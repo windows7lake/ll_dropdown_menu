@@ -34,7 +34,11 @@
 * [Demo4](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo4.dart)
   ：在 `CustomScrollView` 中使用及 `SliverPersistentHeader` 的使用
 * [Demo5](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo5.dart):
-  : 自定义下拉菜单栏主体内容
+  ：自定义下拉菜单栏主体内容
+* [Demo6](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo_taobao.dart):
+  ：在 `NestedScrollView` 中使用并且同时包含两个下拉菜单
+* [Demo7](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo_button.dart):
+  ：下拉菜单按钮
 
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo1.gif">
 <img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo1.gif" width="250" height="500" align="center" style="max-width:100%;">
@@ -50,6 +54,9 @@
 </a>
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo6.gif">
 <img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo6.gif" width="250" height="500" align="center" style="max-width:100%;">
+</a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo7.gif">
+<img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo7.gif" width="250" height="500" align="center" style="max-width:100%;">
 </a>
 
 ## 安装

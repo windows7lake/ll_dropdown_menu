@@ -42,6 +42,12 @@ Powerful and customizable drop-down menu component.
 * [Demo5](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo5.dart):
   Customize drop-down view
 
+* [Demo6](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo_taobao.dart):
+  Used in `NestedScrollView` with two drop-down menu
+
+* [Demo7](https://github.com/windows7lake/ll_dropdown_menu/blob/main/example/lib/drop_down_demo_button.dart):
+  Drop-down menu button
+
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo1.gif">
 <img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo1.gif" width="250" height="500" align="center" style="max-width:100%;">
 </a>
@@ -56,6 +62,9 @@ Powerful and customizable drop-down menu component.
 </a>
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo6.gif">
 <img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo6.gif" width="250" height="500" align="center" style="max-width:100%;">
+</a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/windows7lake/ll_dropdown_menu/blob/main/preview/demo7.gif">
+<img src="https://raw.githubusercontent.com/windows7lake/ll_dropdown_menu/main/preview/demo7.gif" width="250" height="500" align="center" style="max-width:100%;">
 </a>
 
 ## Install

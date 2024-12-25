@@ -109,13 +109,15 @@ class _DropDownMenuState extends State<DropDownMenu>
   int currentIndex = 0;
   bool expand = false;
 
+  double get screenWidth => MediaQuery.of(context).size.width;
+
+  double get screenHeight => MediaQuery.of(context).size.height;
+
   double get headerWidth {
     double width = widget.headerItems.length *
-        ((widget.headerBoxStyle.width ?? MediaQuery.of(context).size.width) -
+        ((widget.headerBoxStyle.width ?? screenWidth) -
             widget.headerBoxStyle.margin.horizontal);
-    return width > MediaQuery.of(context).size.width
-        ? MediaQuery.of(context).size.width
-        : width;
+    return width > screenWidth ? screenWidth : width;
   }
 
   double? get headerHeight => widget.headerBoxStyle.height;
@@ -126,8 +128,7 @@ class _DropDownMenuState extends State<DropDownMenu>
       headerKey.localToGlobal;
 
   double get bodyWidth =>
-      widget.viewBuilders.item(currentIndex)?.actualWidth ??
-      MediaQuery.of(context).size.width;
+      widget.viewBuilders.item(currentIndex)?.actualWidth ?? screenWidth;
 
   @override
   void initState() {
@@ -200,9 +201,6 @@ class _DropDownMenuState extends State<DropDownMenu>
         double offsetY = headerOffset.dy +
             (headerHeight ?? 0) +
             (widget.relativeOffset?.dy ?? 0);
-        double screenHeight = MediaQuery.of(context).size.height;
-        double screenWidth = MediaQuery.of(context).size.width;
-
         List<Widget> maskWidget = [];
         if (!widget.maskFullScreen) {
           maskWidget = [
@@ -295,8 +293,7 @@ class _DropDownMenuState extends State<DropDownMenu>
     DropDownHeaderStatus status = widget.controller.headerStatus[index];
 
     var item = widget.headerItems.item(index);
-    double itemWidth =
-        widget.headerBoxStyle.width ?? MediaQuery.of(context).size.width;
+    double itemWidth = widget.headerBoxStyle.width ?? screenWidth;
     double itemHeight = widget.headerItemStyle.height;
     if (widget.headerBoxStyle.expand) {
       itemWidth = (headerWidth - widget.headerBoxStyle.padding.horizontal) /
@@ -440,8 +437,8 @@ class _DropDownMenuState extends State<DropDownMenu>
         widget.controller.hide();
       },
       child: Container(
-        width: width ?? MediaQuery.of(context).size.width,
-        height: height ?? MediaQuery.of(context).size.height,
+        width: width ?? screenWidth,
+        height: height ?? screenHeight,
         color: (widget.maskColor ?? Colors.black).withOpacity(maskOpacity),
       ),
     );
