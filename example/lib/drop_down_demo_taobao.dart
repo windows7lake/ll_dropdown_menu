@@ -280,9 +280,12 @@ class _DropDownDemoTaobaoState extends State<DropDownDemoTaobao>
     return DropDownMenu(
       controller: _dropDown2Controller,
       disposeController: _dropDown2DisposeController,
+      headerPhysics: const BouncingScrollPhysics(),
       headerBoxStyle: const DropDownBoxStyle(
         height: 50,
+        width: 100,
         backgroundColor: Colors.white,
+        expand: false,
       ),
       headerItemStyle: DropDownItemStyle(
         iconColor: const Color(0xFF666666),
@@ -297,7 +300,7 @@ class _DropDownDemoTaobaoState extends State<DropDownDemoTaobao>
         activePainter: BorderPainter(),
       ),
       headerItems: List.generate(
-        4,
+        8,
         (index) => DropDownItem<Tab>(
           text: "Sub $index",
           icon: const Icon(Icons.arrow_drop_down),
@@ -305,41 +308,16 @@ class _DropDownDemoTaobaoState extends State<DropDownDemoTaobao>
         ),
       ),
       viewColor: Colors.white,
-      viewBuilders: [
-        DropDownListView(
+      viewBuilders: List.generate(8, (index) {
+        return DropDownListView(
           controller: _dropDown2Controller,
           items: items1,
           itemStyle: DropDownItemStyle(
             backgroundColor: Colors.grey.shade200,
             activeBackgroundColor: Colors.grey.shade200,
           ),
-        ),
-        DropDownListView(
-          controller: _dropDown2Controller,
-          items: items1,
-          itemStyle: DropDownItemStyle(
-            backgroundColor: Colors.grey.shade200,
-            activeBackgroundColor: Colors.grey.shade200,
-          ),
-        ),
-        DropDownListView(
-          controller: _dropDown2Controller,
-          items: items1,
-          itemStyle: DropDownItemStyle(
-            backgroundColor: Colors.grey.shade200,
-            activeBackgroundColor: Colors.grey.shade200,
-          ),
-        ),
-        DropDownListView(
-          controller: _dropDown2Controller,
-          items: items1,
-          itemStyle: DropDownItemStyle(
-            backgroundColor: Colors.grey.shade200,
-            activeBackgroundColor: Colors.grey.shade200,
-          ),
-        ),
-      ],
-      maskFullScreen: true,
+        );
+      }),
     );
   }
 }

@@ -109,9 +109,14 @@ class _DropDownMenuState extends State<DropDownMenu>
   int currentIndex = 0;
   bool expand = false;
 
-  double get headerWidth =>
-      (widget.headerBoxStyle.width ?? MediaQuery.of(context).size.width) -
-      widget.headerBoxStyle.margin.horizontal;
+  double get headerWidth {
+    double width = widget.headerItems.length *
+        ((widget.headerBoxStyle.width ?? MediaQuery.of(context).size.width) -
+            widget.headerBoxStyle.margin.horizontal);
+    return width > MediaQuery.of(context).size.width
+        ? MediaQuery.of(context).size.width
+        : width;
+  }
 
   double? get headerHeight => widget.headerBoxStyle.height;
 
@@ -195,19 +200,47 @@ class _DropDownMenuState extends State<DropDownMenu>
         double offsetY = headerOffset.dy +
             (headerHeight ?? 0) +
             (widget.relativeOffset?.dy ?? 0);
+        double screenHeight = MediaQuery.of(context).size.height;
+        double screenWidth = MediaQuery.of(context).size.width;
 
-        Widget? maskWidget = mask();
+        List<Widget> maskWidget = [];
         if (!widget.maskFullScreen) {
-          maskWidget = Positioned(
-            top: offsetY,
-            child: mask(),
-          );
+          maskWidget = [
+            Positioned(
+              top: offsetY,
+              child: mask(height: screenHeight - offsetY),
+            ),
+          ];
+        } else {
+          maskWidget = [
+            Positioned(
+              top: 0,
+              child: mask(height: offsetY - (headerHeight ?? 0)),
+            ),
+            Positioned(
+              top: offsetY - (headerHeight ?? 0),
+              left: 0,
+              child: mask(height: offsetY, width: offsetX),
+            ),
+            Positioned(
+              top: offsetY - (headerHeight ?? 0),
+              left: offsetX + headerWidth,
+              child: mask(
+                height: offsetY,
+                width: screenWidth - offsetX - headerWidth,
+              ),
+            ),
+            Positioned(
+              top: offsetY,
+              child: mask(height: screenHeight - offsetY),
+            ),
+          ];
         }
         if (!widget.maskVisible || !expand) {
-          maskWidget = null;
+          maskWidget = [];
         }
         return Stack(children: [
-          if (maskWidget != null) maskWidget,
+          ...maskWidget,
           Positioned(
             top: offsetY,
             left: offsetX,
@@ -262,7 +295,8 @@ class _DropDownMenuState extends State<DropDownMenu>
     DropDownHeaderStatus status = widget.controller.headerStatus[index];
 
     var item = widget.headerItems.item(index);
-    double itemWidth = headerWidth;
+    double itemWidth =
+        widget.headerBoxStyle.width ?? MediaQuery.of(context).size.width;
     double itemHeight = widget.headerItemStyle.height;
     if (widget.headerBoxStyle.expand) {
       itemWidth = (headerWidth - widget.headerBoxStyle.padding.horizontal) /
@@ -374,7 +408,6 @@ class _DropDownMenuState extends State<DropDownMenu>
     if (widget.controller.isExpand) {
       child = GestureDetector(
         onVerticalDragDown: (details) {},
-        onHorizontalDragDown: (details) {},
         child: child,
       );
     }
@@ -398,7 +431,7 @@ class _DropDownMenuState extends State<DropDownMenu>
     );
   }
 
-  Widget mask() {
+  Widget mask({double? height, double? width}) {
     if (maskOpacity.isNaN) {
       return const SizedBox();
     }
@@ -407,8 +440,8 @@ class _DropDownMenuState extends State<DropDownMenu>
         widget.controller.hide();
       },
       child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        width: width ?? MediaQuery.of(context).size.width,
+        height: height ?? MediaQuery.of(context).size.height,
         color: (widget.maskColor ?? Colors.black).withOpacity(maskOpacity),
       ),
     );

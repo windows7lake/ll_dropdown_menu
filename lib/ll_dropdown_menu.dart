@@ -10,5 +10,6 @@ export 'dropdown/drop_down_view.dart';
 export 'dropdown/drop_down_view_wrapper.dart';
 export 'button/text_button.dart';
 export 'extension/key_ext.dart';
+export 'extension/list_extension.dart';
 export 'sliver/sliver_grid_delegate_height.dart';
 export 'sliver/sliver_persistent_header_delegate.dart';
