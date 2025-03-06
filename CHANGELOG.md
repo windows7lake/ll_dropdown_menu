@@ -1,3 +1,6 @@
+## 0.8.1
+* Fixed: init DropDownCascadeList with checked data, the checked data is not displayed correctly. (pr #8 by [liuhll])
+
 ## 0.8.0
 * Feature:
   + support dropdown button style
