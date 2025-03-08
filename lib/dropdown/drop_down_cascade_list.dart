@@ -152,11 +152,11 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
     widget.dataController?.bind(this);
     multipleChoice =
         widget.maxMultiChoiceSize != null && widget.maxMultiChoiceSize! > 0;
-    var defaultFirstFloorItem = widget.items.firstWhere((e) => e.check);
-    if (defaultFirstFloorItem.data == null) {
-      widget.items.first.check = true;
+    var anyChecked = widget.items.any((e) => e.check);
+    if (anyChecked) {
+      firstFloorIndex = widget.items.indexWhere((e) => e.check);
     } else {
-      firstFloorIndex = widget.items.indexOf(defaultFirstFloorItem);
+      widget.items.first.check = true;
     }
     items = List.generate(
       widget.items.length,
