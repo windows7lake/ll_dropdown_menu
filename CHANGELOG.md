@@ -1,3 +1,6 @@
+## 0.8.2
+* Fix no element error
+
 ## 0.8.1
 * Fixed: init DropDownCascadeList with checked data, the checked data is not displayed correctly. (pr #8 by [liuhll])
 
