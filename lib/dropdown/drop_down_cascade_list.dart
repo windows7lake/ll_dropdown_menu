@@ -156,7 +156,7 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
     if (anyChecked) {
       firstFloorIndex = widget.items.indexWhere((e) => e.check);
     } else {
-      widget.items.first.check = true;
+      widget.items.firstOrNull?.check = true;
     }
     items = List.generate(
       widget.items.length,
