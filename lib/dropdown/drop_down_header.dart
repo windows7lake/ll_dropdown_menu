@@ -167,7 +167,7 @@ class _DropDownHeaderState extends State<DropDownHeader> {
       iconPosition: widget.itemStyle.iconPosition,
       gap: widget.itemStyle.gap,
       padding: widget.itemStyle.padding,
-      width: width,
+      width: widget.itemStyle.width ?? width,
       height: widget.itemStyle.height,
       alignment: widget.itemStyle.alignment,
       borderSide: active
