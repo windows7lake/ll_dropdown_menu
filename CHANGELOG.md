@@ -1,3 +1,6 @@
+## 0.8.4
+* fix: drop_down_header mix attribute
+
 ## 0.8.3
 * Fix no element error
 
