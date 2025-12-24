@@ -188,10 +188,12 @@ class _DropDownGridViewState extends State<DropDownGridView> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: Container(
         width: widget.boxStyle.width,
         height: widget.boxStyle.height,
         margin: widget.boxStyle.margin,
+        clipBehavior: Clip.hardEdge,
         decoration: widget.boxStyle.decoration ??
             BoxDecoration(
               color: widget.boxStyle.backgroundColor,

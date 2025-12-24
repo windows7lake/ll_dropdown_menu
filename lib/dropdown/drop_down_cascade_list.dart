@@ -217,11 +217,13 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: Container(
         width: widget.boxStyle.width,
         height: widget.boxStyle.height,
         margin: widget.boxStyle.margin,
         padding: widget.boxStyle.padding,
+        clipBehavior: Clip.hardEdge,
         decoration: widget.boxStyle.decoration ??
             BoxDecoration(
               color: widget.boxStyle.backgroundColor,

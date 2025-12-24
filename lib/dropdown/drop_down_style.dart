@@ -7,7 +7,7 @@ class DropDownBoxStyle {
   const DropDownBoxStyle({
     this.width,
     this.height,
-    this.backgroundColor = Colors.transparent,
+    this.backgroundColor = Colors.white,
     this.border,
     this.decoration,
     this.margin = EdgeInsets.zero,

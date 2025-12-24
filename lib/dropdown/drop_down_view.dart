@@ -27,7 +27,7 @@ class DropDownView extends StatefulWidget {
     super.key,
     required this.controller,
     required this.builders,
-    this.viewColor = Colors.white,
+    this.viewColor = Colors.transparent,
     this.maskColor,
     this.animationDuration = const Duration(milliseconds: 150),
     this.offsetY = 0,
@@ -102,13 +102,10 @@ class _DropDownViewState extends State<DropDownView>
   Widget build(BuildContext context) {
     return Positioned(
       top: widget.controller.viewOffset?.dy ?? widget.offsetY,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          view(),
-          mask(),
-        ],
-      ),
+      child: Stack(children: [
+        mask(),
+        view(),
+      ]),
     );
   }
 

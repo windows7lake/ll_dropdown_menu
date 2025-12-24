@@ -1,3 +1,7 @@
+## 0.9.1
+
+fix: Rounded corners on the dropdown view background are not working.
+
 ## 0.9.0
 
 * feat: add 'dataCopy' property in `DropDownCascadeList`, `DropDownGridView`, `DropDownListView`  to determine whether need to copy data to avoid modify the origin data.

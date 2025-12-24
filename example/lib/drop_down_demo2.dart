@@ -76,11 +76,7 @@ class _DropDownDemoState extends State<DropDownDemo2>
       body: Column(children: [
         DropDownHeader(
           controller: dropDownController,
-          boxStyle: DropDownBoxStyle(
-            expand: false,
-          ),
           itemStyle: const DropDownItemStyle(
-            width: 80,
             activeIconColor: Colors.blue,
             activeTextStyle: TextStyle(color: Colors.blue),
           ),
@@ -92,12 +88,12 @@ class _DropDownDemoState extends State<DropDownDemo2>
               activeIcon: const Icon(Icons.arrow_drop_up),
             ),
           ),
-          itemBuilder: (context, index) {
-            if (index == 3) {
-              return Container(width: 200, color: Colors.red);
-            }
-            return null;
-          },
+          // itemBuilder: (context, index) {
+          //   if (index == 3) {
+          //     return Container(width: 200, color: Colors.red);
+          //   }
+          //   return null;
+          // },
         ),
         Expanded(
           child: Stack(
@@ -109,6 +105,17 @@ class _DropDownDemoState extends State<DropDownDemo2>
                 controller: dropDownController,
                 builders: [
                   DropDownListView(
+                    boxStyle: const DropDownBoxStyle(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                    itemStyle: const DropDownItemStyle(
+                      backgroundColor: Colors.white,
+                    ),
                     controller: dropDownController,
                     items: items1,
                   ),
