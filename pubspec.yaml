@@ -4,7 +4,7 @@ version: 0.9.1
 homepage: https://github.com/windows7lake/ll_dropdown_menu
 
 environment:
-  sdk: '>=3.0.0'
+  sdk: '^3.0.0'
 
 dependencies:
   flutter:
