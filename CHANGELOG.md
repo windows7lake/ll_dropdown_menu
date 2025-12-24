@@ -1,3 +1,8 @@
+## 0.9.0
+
+* feat: add 'dataCopy' property in `DropDownCascadeList`, `DropDownGridView`, `DropDownListView`  to determine whether need to copy data to avoid modify the origin data.
+* feat: add support for custom DropDownHeader itemBuilder for each items.
+
 ## 0.8.4
 * fix: drop_down_header mix attribute
 

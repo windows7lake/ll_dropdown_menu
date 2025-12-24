@@ -62,7 +62,6 @@ class _DropDownHeaderState extends State<DropDownHeader> {
   @override
   void initState() {
     super.initState();
-    assert(widget.boxStyle.height != null);
     intiController();
   }
 
@@ -97,7 +96,7 @@ class _DropDownHeaderState extends State<DropDownHeader> {
         widget.boxStyle.margin.horizontal;
     return Container(
       width: _width,
-      height: widget.boxStyle.height,
+      height: widget.boxStyle.height ?? widget.itemStyle.height,
       margin: widget.boxStyle.margin,
       padding: widget.boxStyle.padding,
       decoration: widget.boxStyle.decoration ??
@@ -109,8 +108,12 @@ class _DropDownHeaderState extends State<DropDownHeader> {
         physics: widget.physics ?? NeverScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: widget.items.length,
-        itemBuilder: widget.itemBuilder ?? listItem,
-        separatorBuilder: widget.dividerBuilder ?? divider,
+        itemBuilder: (context, index) =>
+            widget.itemBuilder?.call(context, index) ??
+            listItem(context, index),
+        separatorBuilder: (context, index) =>
+            widget.dividerBuilder?.call(context, index) ??
+            divider(context, index),
       ),
     );
   }

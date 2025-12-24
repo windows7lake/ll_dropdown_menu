@@ -72,6 +72,9 @@ class DropDownCascadeList extends DropDownViewStatefulWidget {
   /// headerIndex should not be null when using this callback
   final OnDropDownHeaderUpdate? onDropDownHeaderUpdate;
 
+  /// Whether need to copy data to avoid modify the origin data
+  final bool dataCopy;
+
   const DropDownCascadeList({
     super.key,
     required this.controller,
@@ -106,6 +109,7 @@ class DropDownCascadeList extends DropDownViewStatefulWidget {
     this.onDropDownItemsReset,
     this.onDropDownItemsConfirm,
     this.onDropDownHeaderUpdate,
+    this.dataCopy = true,
   });
 
   @override
@@ -165,8 +169,10 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
         return widget.items[index].copyWith(
           data: List.generate(
             item.data?.length ?? 0,
-            (subIndex) => item.data![subIndex].copyWith(),
+            (subIndex) =>
+                item.data![subIndex].copyWith(dataCopy: widget.dataCopy),
           ),
+          dataCopy: widget.dataCopy,
         );
       },
     );
@@ -177,8 +183,10 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
         return widget.items[index].copyWith(
           data: List.generate(
             item.data?.length ?? 0,
-            (subIndex) => item.data![subIndex].copyWith(),
+            (subIndex) =>
+                item.data![subIndex].copyWith(dataCopy: widget.dataCopy),
           ),
+          dataCopy: widget.dataCopy,
         );
       },
     );
@@ -195,8 +203,10 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
           return confirmItems[index].copyWith(
             data: List.generate(
               item.data?.length ?? 0,
-              (subIndex) => item.data![subIndex].copyWith(),
+              (subIndex) =>
+                  item.data![subIndex].copyWith(dataCopy: widget.dataCopy),
             ),
+            dataCopy: widget.dataCopy,
           );
         },
       );
@@ -298,8 +308,10 @@ class _DropDownCascadeListState extends State<DropDownCascadeList> {
                             return items[index].copyWith(
                               data: List.generate(
                                 item.data?.length ?? 0,
-                                (subIndex) => item.data![subIndex].copyWith(),
+                                (subIndex) => item.data![subIndex]
+                                    .copyWith(dataCopy: widget.dataCopy),
                               ),
+                              dataCopy: widget.dataCopy,
                             );
                           },
                         );

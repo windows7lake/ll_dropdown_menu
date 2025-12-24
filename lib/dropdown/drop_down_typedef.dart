@@ -21,6 +21,7 @@ class DropDownItem<T> {
   final Widget? icon;
   final Widget? activeIcon;
   final T? data;
+  final Object? extra;
   bool check;
 
   DropDownItem({
@@ -29,6 +30,7 @@ class DropDownItem<T> {
     this.activeIcon,
     this.data,
     this.check = false,
+    this.extra,
   });
 
   DropDownItem<T> copyWith({
@@ -39,13 +41,17 @@ class DropDownItem<T> {
     bool? check,
     double? height,
     double? width,
+    Object? extra,
+    bool dataCopy = true,
   }) {
+    if (!dataCopy) return this;
     return DropDownItem<T>(
       text: text ?? this.text,
       icon: icon ?? this.icon,
       activeIcon: activeIcon ?? this.activeIcon,
       data: data ?? this.data,
       check: check ?? this.check,
+      extra: extra ?? this.extra,
     );
   }
 }

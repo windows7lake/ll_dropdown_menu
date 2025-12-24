@@ -83,6 +83,9 @@ class DropDownGridView extends DropDownViewStatefulWidget {
   /// determined by the contents being viewed.
   final bool? shrinkWrap;
 
+  /// Whether need to copy data to avoid modify the origin data
+  final bool dataCopy;
+
   const DropDownGridView({
     super.key,
     required this.controller,
@@ -112,6 +115,7 @@ class DropDownGridView extends DropDownViewStatefulWidget {
     this.onDropDownHeaderUpdate,
     this.physics,
     this.shrinkWrap,
+    this.dataCopy = true,
   });
 
   @override
@@ -162,11 +166,11 @@ class _DropDownGridViewState extends State<DropDownGridView> {
         widget.maxMultiChoiceSize != null && widget.maxMultiChoiceSize! > 0;
     items = List.generate(
       widget.items.length,
-      (index) => widget.items[index].copyWith(),
+      (index) => widget.items[index].copyWith(dataCopy: widget.dataCopy),
     );
     confirmItems = List.generate(
       widget.items.length,
-      (index) => widget.items[index].copyWith(),
+      (index) => widget.items[index].copyWith(dataCopy: widget.dataCopy),
     );
   }
 
@@ -175,7 +179,7 @@ class _DropDownGridViewState extends State<DropDownGridView> {
     if (widget.controller.isExpand) {
       items = List.generate(
         confirmItems.length,
-        (index) => confirmItems[index].copyWith(),
+        (index) => confirmItems[index].copyWith(dataCopy: widget.dataCopy),
       );
       if (mounted) setState(() {});
     }
@@ -294,7 +298,8 @@ class _DropDownGridViewState extends State<DropDownGridView> {
                         setState(() {});
                         confirmItems = List.generate(
                           items.length,
-                          (index) => items[index].copyWith(),
+                          (index) =>
+                              items[index].copyWith(dataCopy: widget.dataCopy),
                         );
                         var checkItems =
                             items.where((element) => element.check).toList();
