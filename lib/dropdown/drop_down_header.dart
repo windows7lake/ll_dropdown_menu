@@ -108,14 +108,27 @@ class _DropDownHeaderState extends State<DropDownHeader> {
         physics: widget.physics ?? NeverScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: widget.items.length,
-        itemBuilder: (context, index) =>
-            widget.itemBuilder?.call(context, index) ??
-            listItem(context, index),
+        itemBuilder: (context, index) => GestureDetector(
+          onTap: () => onItemTap(index, widget.items),
+          child: widget.itemBuilder?.call(context, index) ??
+              listItem(context, index),
+        ),
         separatorBuilder: (context, index) =>
             widget.dividerBuilder?.call(context, index) ??
             divider(context, index),
       ),
     );
+  }
+
+  void onItemTap(int index, List<DropDownItem> items) {
+    if (widget.onItemChanged != null) {
+      widget.onItemChanged!(index, widget.items);
+    }
+    if (widget.onItemTap != null) {
+      widget.onItemTap!(index, widget.items[index]);
+      return;
+    }
+    widget.controller.toggle(index);
   }
 
   Widget listItem(BuildContext context, int index) {
@@ -132,16 +145,7 @@ class _DropDownHeaderState extends State<DropDownHeader> {
     }
 
     Widget child = WrapperButton(
-      onPressed: () {
-        if (widget.onItemChanged != null) {
-          widget.onItemChanged!(index, widget.items);
-        }
-        if (widget.onItemTap != null) {
-          widget.onItemTap!(index, item);
-          return;
-        }
-        widget.controller.toggle(index);
-      },
+      onPressed: () => onItemTap(index, widget.items),
       text: status.text.isEmpty ? item.text : status.text,
       textStyle: active
           ? widget.itemStyle.activeTextStyle

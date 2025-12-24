@@ -1,3 +1,7 @@
+## 0.9.2
+
+fix: itemBuilder wrapper with interaction
+
 ## 0.9.1
 
 fix: Rounded corners on the dropdown view background are not working.
